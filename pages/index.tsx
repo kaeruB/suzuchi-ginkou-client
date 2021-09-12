@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.scss'
-import Dashboard from "./Dashboard";
+import Dashboard from './Dashboard'
 
 const Home: NextPage = () => {
   return (
@@ -13,10 +13,8 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          鈴地銀行
-        </h1>
-          <Dashboard/>
+        <h1 className={styles.title}>鈴地銀行</h1>
+        <Dashboard />
       </main>
     </div>
   )
