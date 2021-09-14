@@ -1,8 +1,9 @@
-import {useState, useEffect, VFC} from 'react'
+import { useState, useEffect, VFC } from 'react'
+import Link from 'next/link'
 
 export const Dashboard: VFC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [dashboardData, setDashboardData] = useState(null) //TODO dodac jaki array
+  const [dashboardData, setDashboardData] = useState(null) //TODO add types when format is decided
 
   useEffect(() => {
     async function fetchDashboardData() {
@@ -11,6 +12,7 @@ export const Dashboard: VFC = () => {
       setDashboardData(data)
       setIsLoading(false)
     }
+
     fetchDashboardData()
   }, [])
 
@@ -18,15 +20,8 @@ export const Dashboard: VFC = () => {
     return <h2>Loading...</h2>
   }
 
-  return (
-    <>
-      {/*
-      TODO zamiast <a>, uzywa sie <Link> w Next.js
-        A jak przejdzie na inna strone w Reacie, to powinno uzywac Router.push(blabla)
-        https://nextjs.org/docs/api-reference/next/link
-        https://nextjs.org/docs/api-reference/next/router#userouter
-        (unchanekku nie mozna patrzyc tu, wiec nie moge zmieniac desu nya)
-      */}
+  return dashboardData && dashboardData[0] ? (
+    <Link href={dashboardData[0]['url']}>
       <a
         href={
           dashboardData && dashboardData[0]
@@ -34,10 +29,10 @@ export const Dashboard: VFC = () => {
             : undefined
         }
       >
-        {dashboardData && dashboardData[0] ? dashboardData[0]['height'] : null}
+        {dashboardData[0]['height']}
       </a>
-    </>
-  )
+    </Link>
+  ) : null
 }
 
 export default Dashboard
