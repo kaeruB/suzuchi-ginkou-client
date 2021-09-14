@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const Dashboard: VFC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [dashboardData, setDashboardData] = useState(null) //TODO add types when format is decided
+  const [dashboardData, setDashboardData] = useState(null) //TODO dodac type kiedy form bedzie zdecydowany
 
   useEffect(() => {
     async function fetchDashboardData() {
