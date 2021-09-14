@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, VFC } from 'react'
+import Link from 'next/link'
 
-function Dashboard() {
-  const [isLoading, setIsLoading] = useState(true)
-  const [dashboardData, setDashboardData] = useState(null)
+export const Dashboard: VFC = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [dashboardData, setDashboardData] = useState(null) //TODO add types when format is decided
 
   useEffect(() => {
     async function fetchDashboardData() {
@@ -11,6 +12,7 @@ function Dashboard() {
       setDashboardData(data)
       setIsLoading(false)
     }
+
     fetchDashboardData()
   }, [])
 
@@ -18,8 +20,8 @@ function Dashboard() {
     return <h2>Loading...</h2>
   }
 
-  return (
-    <div>
+  return dashboardData && dashboardData[0] ? (
+    <Link href={dashboardData[0]['url']}>
       <a
         href={
           dashboardData && dashboardData[0]
@@ -27,10 +29,10 @@ function Dashboard() {
             : undefined
         }
       >
-        {dashboardData && dashboardData[0] ? dashboardData[0]['height'] : null}
+        {dashboardData[0]['height']}
       </a>
-    </div>
-  )
+    </Link>
+  ) : null
 }
 
 export default Dashboard
