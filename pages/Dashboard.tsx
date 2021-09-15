@@ -1,15 +1,19 @@
-import { useState, useEffect, VFC } from 'react'
-import Link from 'next/link'
+import { useEffect, useState, VFC } from 'react'
+import { BankState, Currency } from './utils/types'
+import { BankStateTemporaryMock } from './utils/data'
+import { numberWithSpaces } from './utils/functions'
 
 export const Dashboard: VFC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [dashboardData, setDashboardData] = useState(null) //TODO add types when format is decided
+  const [dashboardData, setDashboardData] = useState<BankState | null>(null)
+  const [currency, setCurrency] = useState<Currency>(Currency.PLN)
 
   useEffect(() => {
     async function fetchDashboardData() {
-      const response = await fetch('http://localhost:3005')
-      const data = await response.json()
-      setDashboardData(data)
+      // TODO fetch BankState from API, write request
+      // const response = await fetch('http://localhost:3005')
+      // const data = await response.json()
+      setDashboardData(BankStateTemporaryMock)
       setIsLoading(false)
     }
 
@@ -20,18 +24,18 @@ export const Dashboard: VFC = () => {
     return <h2>Loading...</h2>
   }
 
-  return dashboardData && dashboardData[0] ? (
-    <Link href={dashboardData[0]['url']}>
-      <a
-        href={
-          dashboardData && dashboardData[0]
-            ? dashboardData[0]['url']
-            : undefined
-        }
-      >
-        {dashboardData[0]['height']}
-      </a>
-    </Link>
+  return dashboardData ? (
+    <div>
+      <h2>
+        {dashboardData.summary.borrowedBy} should return{' '}
+        {numberWithSpaces(dashboardData.summary.amount)} {currency} to{' '}
+        {dashboardData.summary.borrowedFrom}.
+      </h2>
+      <div>
+        <h4>New transaction</h4>
+        Borrowed By Amount Category Description
+      </div>
+    </div>
   ) : null
 }
 
