@@ -5,7 +5,8 @@ export type Transaction = {
 
 export type TransactionDetails = Transaction & {
   category: string
-  description: string | null
+  description: string | null,
+  date: string
 }
 
 export type BankState = {

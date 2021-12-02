@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useState, VFC } from 'react'
 import { BankState, Currency, TransactionDetails } from './utils/types'
 import { BankStateTemporaryMock } from './utils/data'
-import { numberWithSpaces } from './utils/functions'
+import {getCurrentDate, numberWithSpaces} from './utils/functions'
 
 export const Dashboard: VFC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -16,6 +16,7 @@ export const Dashboard: VFC = () => {
       borrowedBy: eventTarget.borrowedBy.value,
       category: eventTarget.category.value,
       description: eventTarget.description.value,
+      date: eventTarget.date.value
     })
 
     const res = await fetch('http://localhost:3005/api/v1/transactions', {
@@ -56,8 +57,8 @@ export const Dashboard: VFC = () => {
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {Object.keys(dashboardData.summary).map((borrowedBy: string) => (
           <div key={borrowedBy}>
-            {numberWithSpaces(dashboardData.summary[borrowedBy])} {currency} borrowed by{' '}
-            {borrowedBy}
+            {numberWithSpaces(dashboardData.summary[borrowedBy])} {currency}{' '}
+            borrowed by {borrowedBy}
           </div>
         ))}
       </div>
@@ -67,8 +68,8 @@ export const Dashboard: VFC = () => {
           {dashboardData.history.map(
             (history: TransactionDetails, i: number) => (
               <div key={i}>
-                {numberWithSpaces(history.amount)} {currency} borrowed by {history.borrowedBy}.{' '}
-                {history.category}, {history.description}
+                {numberWithSpaces(history.amount)} {currency} borrowed by{' '}
+                {history.borrowedBy}. {history.category}, {history.description} on {history.date}
               </div>
             ),
           )}
@@ -112,6 +113,15 @@ export const Dashboard: VFC = () => {
             autoComplete="description"
             name="description"
             required
+          />
+
+          <label htmlFor="date">Date:</label>
+          <input
+            type="date"
+            id="date"
+            name="date"
+            defaultValue={getCurrentDate()}
+            autoComplete="date"
           />
 
           <button type="submit">Add Transaction</button>
