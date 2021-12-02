@@ -9,7 +9,7 @@ export type TransactionDetails = Transaction & {
 }
 
 export type BankState = {
-  summary: Transaction & { borrowedFrom: string }
+  summary: { [borrowedBy: string]: number } //Transaction & { borrowedFrom: string }
   history: Array<TransactionDetails>
 }
 

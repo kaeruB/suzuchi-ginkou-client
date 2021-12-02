@@ -1,5 +1,5 @@
-import { useEffect, useState, VFC } from 'react'
-import { BankState, Currency } from './utils/types'
+import { SyntheticEvent, useEffect, useState, VFC } from 'react'
+import { BankState, Currency, TransactionDetails } from './utils/types'
 import { BankStateTemporaryMock } from './utils/data'
 import { numberWithSpaces } from './utils/functions'
 
@@ -8,12 +8,39 @@ export const Dashboard: VFC = () => {
   const [dashboardData, setDashboardData] = useState<BankState | null>(null)
   const [currency, setCurrency] = useState<Currency>(Currency.PLN)
 
+  async function addTransaction(event: SyntheticEvent) {
+    event.preventDefault()
+    const eventTarget: EventTarget | any = event.target
+    const body = JSON.stringify({
+      amount: eventTarget.amount.value,
+      borrowedBy: eventTarget.borrowedBy.value,
+      category: eventTarget.category.value,
+      description: eventTarget.description.value,
+    })
+
+    const res = await fetch('http://localhost:3005/api/v1/transactions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body,
+    })
+
+    const result = await res.json()
+  }
+
   useEffect(() => {
     async function fetchDashboardData() {
-      // TODO fetch BankState from API, write request
-      // const response = await fetch('http://localhost:3005')
-      // const data = await response.json()
-      setDashboardData(BankStateTemporaryMock)
+      const response = await fetch(
+        'http://localhost:3005/api/v1/transactions/summary',
+      )
+      const data = await response.json()
+
+      if (data && data.data) {
+        setDashboardData(data.data)
+      } else {
+        setDashboardData(BankStateTemporaryMock)
+      }
       setIsLoading(false)
     }
 
@@ -26,14 +53,69 @@ export const Dashboard: VFC = () => {
 
   return dashboardData ? (
     <div>
-      <h2>
-        {dashboardData.summary.borrowedBy} should return{' '}
-        {numberWithSpaces(dashboardData.summary.amount)} {currency} to{' '}
-        {dashboardData.summary.borrowedFrom}.
-      </h2>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {Object.keys(dashboardData.summary).map((borrowedBy: string) => (
+          <div key={borrowedBy}>
+            {numberWithSpaces(dashboardData.summary[borrowedBy])} {currency} borrowed by{' '}
+            {borrowedBy}
+          </div>
+        ))}
+      </div>
+      <div>
+        <h1>Past Transactions:</h1>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {dashboardData.history.map(
+            (history: TransactionDetails, i: number) => (
+              <div key={i}>
+                {numberWithSpaces(history.amount)} {currency} borrowed by {history.borrowedBy}.{' '}
+                {history.category}, {history.description}
+              </div>
+            ),
+          )}
+        </div>
+      </div>
       <div>
         <h4>New transaction</h4>
-        Borrowed By Amount Category Description
+
+        <form onSubmit={addTransaction}>
+          <label htmlFor="borrowedBy">Borrowed By:</label>
+          <input
+            type="text"
+            id="borrowedBy"
+            autoComplete="borrowedBy"
+            name="borrowedBy"
+            required
+          />
+
+          <label htmlFor="amount">Amount:</label>
+          <input
+            type="number"
+            id="amount"
+            autoComplete="amount"
+            name="amount"
+            required
+          />
+
+          <label htmlFor="category">Category:</label>
+          <input
+            type="text"
+            id="category"
+            autoComplete="category"
+            name="category"
+            required
+          />
+
+          <label htmlFor="description">Description:</label>
+          <input
+            type="text"
+            id="description"
+            autoComplete="description"
+            name="description"
+            required
+          />
+
+          <button type="submit">Add Transaction</button>
+        </form>
       </div>
     </div>
   ) : null
