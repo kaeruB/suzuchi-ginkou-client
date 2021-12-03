@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useEffect, useState } from 'react'
+import {FC, MouseEvent, SyntheticEvent, useEffect, useState} from 'react'
 import {
   BankState,
   Currency,
@@ -44,6 +44,23 @@ export const Dashboard: FC = () => {
     }
   }
 
+  async function removeTransaction(event: SyntheticEvent) {
+    event.preventDefault()
+
+    const transactionId = (event?.target as HTMLButtonElement).id
+    const res = await fetch(
+        `http://localhost:3005/api/v1/transactions/${transactionId}`,
+        {
+          method: RequestMethod.DELETE
+        },
+    )
+
+    const result = await res.json()
+    if (result) {
+      fetchDashboardData()
+    }
+  }
+
   if (isLoading) {
     return <h2>Loading...</h2>
   }
@@ -69,6 +86,12 @@ export const Dashboard: FC = () => {
           onClick={(e: MouseEvent) => toggleUpdateMode(e)}
         >
           Edit
+        </button>
+        <button
+          id={historyItem._id}
+          onClick={(e: MouseEvent) => removeTransaction(e)}
+        >
+          Remove
         </button>
       </div>
     )
