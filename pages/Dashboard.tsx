@@ -9,6 +9,8 @@ import { BankStateTemporaryMock } from './utils/data'
 import { numberWithSpaces } from './utils/functions'
 import CreateTransactionForm from './components/CreateOrUpdateTransactionForm'
 
+// TODO https://stackoverflow.com/questions/51791163/warning-prop-classname-did-not-match-when-using-styled-components-with-seman
+
 export const Dashboard: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [dashboardData, setDashboardData] = useState<BankState | null>(null)
