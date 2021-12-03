@@ -1,4 +1,4 @@
-import {FC, MouseEvent, SyntheticEvent, useEffect, useState} from 'react'
+import { FC, MouseEvent, SyntheticEvent, useEffect, useState } from 'react'
 import {
   BankState,
   Currency,
@@ -33,7 +33,7 @@ export const Dashboard: FC = () => {
 
   useEffect(() => {
     fetchDashboardData()
-  })
+  }, [])
 
   const toggleUpdateMode = (e?: MouseEvent) => {
     if (isTransactionInUpdateMode) {
@@ -49,10 +49,10 @@ export const Dashboard: FC = () => {
 
     const transactionId = (event?.target as HTMLButtonElement).id
     const res = await fetch(
-        `http://localhost:3005/api/v1/transactions/${transactionId}`,
-        {
-          method: RequestMethod.DELETE
-        },
+      `http://localhost:3005/api/v1/transactions/${transactionId}`,
+      {
+        method: RequestMethod.DELETE,
+      },
     )
 
     const result = await res.json()

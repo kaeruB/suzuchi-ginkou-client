@@ -1,6 +1,6 @@
 import { SyntheticEvent, VFC } from 'react'
 import { getCurrentDate } from '../utils/functions'
-import {RequestMethod, TransactionDetails} from '../utils/types'
+import { RequestMethod, TransactionDetails } from '../utils/types'
 
 export const CreateOrUpdateTransactionForm: VFC<{
   requestMethod: string
@@ -13,9 +13,14 @@ export const CreateOrUpdateTransactionForm: VFC<{
   toggleUpdateMode?: () => void
   fetchDashboardData: () => void
 }) => {
-  const deleteUnchangedDetailsForPatchRequest = (transactionDetails: TransactionDetails): TransactionDetails => {
+  const deleteUnchangedDetailsForPatchRequest = (
+    transactionDetails: TransactionDetails,
+  ): TransactionDetails => {
     Object.keys(transactionDetails).forEach((detailsKey: string) => {
-      if ((transactionDetails as any)[detailsKey] === (props.defaultValues as any)[detailsKey]) {
+      if (
+        (transactionDetails as any)[detailsKey] ===
+        (props.defaultValues as any)[detailsKey]
+      ) {
         delete (transactionDetails as any)[detailsKey]
       }
     })
@@ -34,7 +39,8 @@ export const CreateOrUpdateTransactionForm: VFC<{
     }
 
     if (props.requestMethod === RequestMethod.PATCH) {
-      transactionDetails = deleteUnchangedDetailsForPatchRequest(transactionDetails)
+      transactionDetails =
+        deleteUnchangedDetailsForPatchRequest(transactionDetails)
     }
 
     const body = JSON.stringify(transactionDetails)
