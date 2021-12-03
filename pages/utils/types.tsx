@@ -5,8 +5,9 @@ export type Transaction = {
 
 export type TransactionDetails = Transaction & {
   category: string
-  description: string | null,
-  date: string
+  description: string,
+  date: string,
+  _id?: string
 }
 
 export type BankState = {
@@ -17,4 +18,10 @@ export type BankState = {
 export enum Currency {
   PLN = 'PLN',
   YEN = 'YEN',
+}
+
+export enum RequestType {
+  PATCH = 'PATCH',
+  POST = 'POST',
+  DELETE = 'DELETE',
 }

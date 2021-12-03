@@ -1,55 +1,77 @@
-import { SyntheticEvent, useEffect, useState, VFC } from 'react'
-import { BankState, Currency, TransactionDetails } from './utils/types'
+import { FC, MouseEvent, useEffect, useState } from 'react'
+import {
+  BankState,
+  Currency,
+  RequestType,
+  TransactionDetails,
+} from './utils/types'
 import { BankStateTemporaryMock } from './utils/data'
-import {getCurrentDate, numberWithSpaces} from './utils/functions'
+import { numberWithSpaces } from './utils/functions'
+import CreateTransactionForm from './components/CreateOrUpdateTransactionForm'
 
-export const Dashboard: VFC = () => {
+export const Dashboard: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [dashboardData, setDashboardData] = useState<BankState | null>(null)
   const [currency, setCurrency] = useState<Currency>(Currency.PLN)
+  const [isTransactionInUpdateMode, setIsTransactionInUpdateMode] = useState<
+    string | null
+  >(null)
 
-  async function addTransaction(event: SyntheticEvent) {
-    event.preventDefault()
-    const eventTarget: EventTarget | any = event.target
-    const body = JSON.stringify({
-      amount: eventTarget.amount.value,
-      borrowedBy: eventTarget.borrowedBy.value,
-      category: eventTarget.category.value,
-      description: eventTarget.description.value,
-      date: eventTarget.date.value
-    })
+  async function fetchDashboardData() {
+    const response = await fetch(
+      'http://localhost:3005/api/v1/transactions/summary',
+    )
+    const data = await response.json()
 
-    const res = await fetch('http://localhost:3005/api/v1/transactions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body,
-    })
-
-    const result = await res.json()
+    if (data && data.data) {
+      setDashboardData(data.data)
+    } else {
+      setDashboardData(BankStateTemporaryMock)
+    }
+    setIsLoading(false)
   }
 
   useEffect(() => {
-    async function fetchDashboardData() {
-      const response = await fetch(
-        'http://localhost:3005/api/v1/transactions/summary',
-      )
-      const data = await response.json()
-
-      if (data && data.data) {
-        setDashboardData(data.data)
-      } else {
-        setDashboardData(BankStateTemporaryMock)
-      }
-      setIsLoading(false)
-    }
-
     fetchDashboardData()
-  }, [])
+  })
+
+  const toggleUpdateMode = (e?: MouseEvent) => {
+    if (isTransactionInUpdateMode) {
+      setIsTransactionInUpdateMode(null)
+    } else {
+      const transactionId = (e?.target as HTMLButtonElement).id
+      setIsTransactionInUpdateMode(transactionId)
+    }
+  }
 
   if (isLoading) {
     return <h2>Loading...</h2>
+  }
+
+  const renderHistoryItem = (historyItem: TransactionDetails) => {
+    return isTransactionInUpdateMode === historyItem._id ? (
+      <CreateTransactionForm
+        requestMethod={RequestType.PATCH}
+        defaultValues={historyItem}
+        toggleUpdateMode={toggleUpdateMode}
+        key={historyItem._id}
+        fetchDashboardData={fetchDashboardData}
+      />
+    ) : (
+      <div key={historyItem._id}>
+        <div>
+          {numberWithSpaces(historyItem.amount)} {currency} borrowed by{' '}
+          {historyItem.borrowedBy}. {historyItem.category},{' '}
+          {historyItem.description} on {historyItem.date}
+        </div>
+        <button
+          id={historyItem._id}
+          onClick={(e: MouseEvent) => toggleUpdateMode(e)}
+        >
+          Edit
+        </button>
+      </div>
+    )
   }
 
   return dashboardData ? (
@@ -65,68 +87,15 @@ export const Dashboard: VFC = () => {
       <div>
         <h1>Past Transactions:</h1>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {dashboardData.history.map(
-            (history: TransactionDetails, i: number) => (
-              <div key={i}>
-                {numberWithSpaces(history.amount)} {currency} borrowed by{' '}
-                {history.borrowedBy}. {history.category}, {history.description} on {history.date}
-              </div>
-            ),
+          {dashboardData.history.map((history: TransactionDetails) =>
+            renderHistoryItem(history),
           )}
         </div>
       </div>
-      <div>
-        <h4>New transaction</h4>
-
-        <form onSubmit={addTransaction}>
-          <label htmlFor="borrowedBy">Borrowed By:</label>
-          <input
-            type="text"
-            id="borrowedBy"
-            autoComplete="borrowedBy"
-            name="borrowedBy"
-            required
-          />
-
-          <label htmlFor="amount">Amount:</label>
-          <input
-            type="number"
-            id="amount"
-            autoComplete="amount"
-            name="amount"
-            required
-          />
-
-          <label htmlFor="category">Category:</label>
-          <input
-            type="text"
-            id="category"
-            autoComplete="category"
-            name="category"
-            required
-          />
-
-          <label htmlFor="description">Description:</label>
-          <input
-            type="text"
-            id="description"
-            autoComplete="description"
-            name="description"
-            required
-          />
-
-          <label htmlFor="date">Date:</label>
-          <input
-            type="date"
-            id="date"
-            name="date"
-            defaultValue={getCurrentDate()}
-            autoComplete="date"
-          />
-
-          <button type="submit">Add Transaction</button>
-        </form>
-      </div>
+      <CreateTransactionForm
+        requestMethod={RequestType.POST}
+        fetchDashboardData={fetchDashboardData}
+      />
     </div>
   ) : null
 }
