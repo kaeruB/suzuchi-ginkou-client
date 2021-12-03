@@ -2,7 +2,7 @@ import { FC, MouseEvent, useEffect, useState } from 'react'
 import {
   BankState,
   Currency,
-  RequestType,
+  RequestMethod,
   TransactionDetails,
 } from './utils/types'
 import { BankStateTemporaryMock } from './utils/data'
@@ -51,7 +51,7 @@ export const Dashboard: FC = () => {
   const renderHistoryItem = (historyItem: TransactionDetails) => {
     return isTransactionInUpdateMode === historyItem._id ? (
       <CreateTransactionForm
-        requestMethod={RequestType.PATCH}
+        requestMethod={RequestMethod.PATCH}
         defaultValues={historyItem}
         toggleUpdateMode={toggleUpdateMode}
         key={historyItem._id}
@@ -93,7 +93,7 @@ export const Dashboard: FC = () => {
         </div>
       </div>
       <CreateTransactionForm
-        requestMethod={RequestType.POST}
+        requestMethod={RequestMethod.POST}
         fetchDashboardData={fetchDashboardData}
       />
     </div>

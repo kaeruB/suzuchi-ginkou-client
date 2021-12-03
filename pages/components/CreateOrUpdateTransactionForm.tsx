@@ -1,6 +1,6 @@
 import { SyntheticEvent, VFC } from 'react'
 import { getCurrentDate } from '../utils/functions'
-import {RequestType, TransactionDetails} from '../utils/types'
+import {RequestMethod, TransactionDetails} from '../utils/types'
 
 export const CreateOrUpdateTransactionForm: VFC<{
   requestMethod: string
@@ -13,16 +13,31 @@ export const CreateOrUpdateTransactionForm: VFC<{
   toggleUpdateMode?: () => void
   fetchDashboardData: () => void
 }) => {
+  const deleteUnchangedDetailsForPatchRequest = (transactionDetails: TransactionDetails): TransactionDetails => {
+    Object.keys(transactionDetails).forEach((detailsKey: string) => {
+      if ((transactionDetails as any)[detailsKey] === (props.defaultValues as any)[detailsKey]) {
+        delete (transactionDetails as any)[detailsKey]
+      }
+    })
+    return transactionDetails
+  }
+
   async function addTransaction(event: SyntheticEvent) {
     event.preventDefault()
     const eventTarget: EventTarget | any = event.target
-    const body = JSON.stringify({
-      amount: eventTarget.amount.value,
+    let transactionDetails: TransactionDetails = {
+      amount: parseInt(eventTarget.amount.value),
       borrowedBy: eventTarget.borrowedBy.value,
       category: eventTarget.category.value,
       description: eventTarget.description.value,
       date: eventTarget.date.value,
-    })
+    }
+
+    if (props.requestMethod === RequestMethod.PATCH) {
+      transactionDetails = deleteUnchangedDetailsForPatchRequest(transactionDetails)
+    }
+
+    const body = JSON.stringify(transactionDetails)
 
     const requestPostfix = props.defaultValues
       ? `/${props.defaultValues._id}`
@@ -111,7 +126,7 @@ export const CreateOrUpdateTransactionForm: VFC<{
         />
 
         <button type="submit">
-          {props.requestMethod === RequestType.POST
+          {props.requestMethod === RequestMethod.POST
             ? 'Add Transaction'
             : 'Save'}
         </button>

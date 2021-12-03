@@ -20,7 +20,7 @@ export enum Currency {
   YEN = 'YEN',
 }
 
-export enum RequestType {
+export enum RequestMethod {
   PATCH = 'PATCH',
   POST = 'POST',
   DELETE = 'DELETE',
