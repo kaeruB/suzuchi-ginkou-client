@@ -1,10 +1,10 @@
 import { SyntheticEvent, VFC } from 'react'
 import { getCurrentDate } from '../utils/functions'
-import { RequestMethod, TransactionDetails } from '../utils/types'
+import { RequestMethod, Transaction } from '../utils/types'
 
 interface CreateOrUpdateTransactionFormProps {
   requestMethod: string
-  defaultValues?: TransactionDetails
+  defaultValues?: Transaction
   toggleUpdateMode?: () => void
   fetchDashboardData: () => void
 }
@@ -12,8 +12,8 @@ interface CreateOrUpdateTransactionFormProps {
 export const CreateOrUpdateTransactionForm: VFC<CreateOrUpdateTransactionFormProps> =
   (props: CreateOrUpdateTransactionFormProps) => {
     const deleteUnchangedDetailsForPatchRequest = (
-      transactionDetails: TransactionDetails,
-    ): TransactionDetails => {
+      transactionDetails: Transaction,
+    ): Transaction => {
       Object.keys(transactionDetails).forEach((detailsKey: string) => {
         if (
           (transactionDetails as any)[detailsKey] ===
@@ -28,7 +28,7 @@ export const CreateOrUpdateTransactionForm: VFC<CreateOrUpdateTransactionFormPro
     async function addTransaction(event: SyntheticEvent) {
       event.preventDefault()
       const eventTarget: EventTarget | any = event.target
-      let transactionDetails: TransactionDetails = {
+      let transactionDetails: Transaction = {
         amount: parseInt(eventTarget.amount.value),
         borrowedBy: eventTarget.borrowedBy.value,
         category: eventTarget.category.value,

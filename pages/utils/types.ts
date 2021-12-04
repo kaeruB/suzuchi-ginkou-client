@@ -1,9 +1,6 @@
 export type Transaction = {
   amount: number
   borrowedBy: string
-}
-
-export type TransactionDetails = Transaction & {
   category: string
   description: string,
   date: string,
@@ -11,8 +8,8 @@ export type TransactionDetails = Transaction & {
 }
 
 export type BankState = {
-  summary: { [borrowedBy: string]: number } //Transaction & { borrowedFrom: string }
-  history: Array<TransactionDetails>
+  summary: { [borrowedBy: string]: number }
+  history: Array<Transaction>
 }
 
 export enum Currency {

@@ -3,7 +3,7 @@ import {
   BankState,
   Currency,
   RequestMethod,
-  TransactionDetails,
+  Transaction,
 } from './utils/types'
 import { BankStateTemporaryMock } from './utils/data'
 import { numberWithSpaces } from './utils/functions'
@@ -67,7 +67,7 @@ export const Dashboard: FC = () => {
     return <h2>Loading...</h2>
   }
 
-  const renderHistoryItem = (historyItem: TransactionDetails) => {
+  const renderHistoryItem = (historyItem: Transaction) => {
     return isTransactionInUpdateMode === historyItem._id ? (
       <CreateTransactionForm
         requestMethod={RequestMethod.PATCH}
@@ -112,7 +112,7 @@ export const Dashboard: FC = () => {
       <div>
         <h1>Past Transactions:</h1>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {dashboardData.history.map((history: TransactionDetails) =>
+          {dashboardData.history.map((history: Transaction) =>
             renderHistoryItem(history),
           )}
         </div>
