@@ -1,23 +1,28 @@
-import { FC, MouseEvent, SyntheticEvent, useEffect, useState } from 'react'
+import { FC, MouseEvent, useEffect, useState } from 'react'
 import {
   BankState,
   Currency,
+  PopupType,
   RequestMethod,
   Transaction,
 } from './utils/types'
 import { BankStateTemporaryMock } from './utils/data'
-import { numberWithSpaces } from './utils/functions'
-import CreateTransactionForm from './components/CreateOrUpdateTransactionForm'
-
-// TODO https://stackoverflow.com/questions/51791163/warning-prop-classname-did-not-match-when-using-styled-components-with-seman
+import CreateTransactionForm from './components/TransactionForm'
+import Header from './components/header/Header'
+import styled from 'styled-components'
+import { FONT_SIZE_HEADER_SECONDARY } from './utils/styles/constants/fontSizes'
+import History from './components/history/History'
+import Modal from './components/common/Modal'
+import { CustomButton } from './utils/styles/components/button'
 
 export const Dashboard: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [dashboardData, setDashboardData] = useState<BankState | null>(null)
   const [currency, setCurrency] = useState<Currency>(Currency.PLN)
-  const [isTransactionInUpdateMode, setIsTransactionInUpdateMode] = useState<
-    string | null
-  >(null)
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [historyItemToEdit, setHistoryItemToEdit] =
+    useState<Transaction | null>(null)
+  const [addOrUpdateMode, setAddOrUpdateMode] = useState<PopupType | null>(null)
 
   async function fetchDashboardData() {
     const response = await fetch(
@@ -37,92 +42,90 @@ export const Dashboard: FC = () => {
     fetchDashboardData()
   }, [])
 
-  const toggleUpdateMode = (e?: MouseEvent) => {
-    if (isTransactionInUpdateMode) {
-      setIsTransactionInUpdateMode(null)
-    } else {
-      const transactionId = (e?.target as HTMLButtonElement).id
-      setIsTransactionInUpdateMode(transactionId)
-    }
-  }
-
-  async function removeTransaction(event: SyntheticEvent) {
-    event.preventDefault()
-
-    const transactionId = (event?.target as HTMLButtonElement).id
-    const res = await fetch(
-      `http://localhost:3005/api/v1/transactions/${transactionId}`,
-      {
-        method: RequestMethod.DELETE,
-      },
-    )
-
-    const result = await res.json()
-    if (result) {
-      fetchDashboardData()
-    }
-  }
-
   if (isLoading) {
     return <h2>Loading...</h2>
   }
 
-  const renderHistoryItem = (historyItem: Transaction) => {
-    return isTransactionInUpdateMode === historyItem._id ? (
-      <CreateTransactionForm
-        requestMethod={RequestMethod.PATCH}
-        defaultValues={historyItem}
-        toggleUpdateMode={toggleUpdateMode}
-        key={historyItem._id}
-        fetchDashboardData={fetchDashboardData}
-      />
-    ) : (
-      <div key={historyItem._id}>
-        <div>
-          {numberWithSpaces(historyItem.amount)} {currency} borrowed by{' '}
-          {historyItem.borrowedBy}. {historyItem.category},{' '}
-          {historyItem.description} on {historyItem.date}
-        </div>
-        <button
-          id={historyItem._id}
-          onClick={(e: MouseEvent) => toggleUpdateMode(e)}
-        >
-          Edit
-        </button>
-        <button
-          id={historyItem._id}
-          onClick={(e: MouseEvent) => removeTransaction(e)}
-        >
-          Remove
-        </button>
-      </div>
-    )
+  const showAddOrEditPopup = (e: MouseEvent, addOrUpdate: PopupType) => {
+    const transactionId = (e.target as HTMLButtonElement).id
+    setAddOrUpdateMode(addOrUpdate)
+    if (addOrUpdate === PopupType.ADD) {
+      setHistoryItemToEdit(null)
+    } else if (dashboardData) {
+      const transaction = dashboardData.history.find(
+        (t) => t._id === transactionId,
+      )
+      if (transaction) {
+        setHistoryItemToEdit(transaction)
+      } else {
+        setHistoryItemToEdit(null)
+      }
+    }
+
+    setShowModal(true)
   }
 
   return dashboardData ? (
-    <div>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {Object.keys(dashboardData.summary).map((borrowedBy: string) => (
-          <div key={borrowedBy}>
-            {numberWithSpaces(dashboardData.summary[borrowedBy])} {currency}{' '}
-            borrowed by {borrowedBy}
-          </div>
-        ))}
-      </div>
-      <div>
-        <h1>Past Transactions:</h1>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {dashboardData.history.map((history: Transaction) =>
-            renderHistoryItem(history),
-          )}
-        </div>
-      </div>
-      <CreateTransactionForm
-        requestMethod={RequestMethod.POST}
-        fetchDashboardData={fetchDashboardData}
-      />
-    </div>
+    <DashboardWrapper>
+      <LeftPanel>
+        <Header summary={dashboardData.summary} currency={currency} />
+        <CustomButton
+          onClick={(e: MouseEvent) => showAddOrEditPopup(e, PopupType.ADD)}
+        >
+          Add New Transaction
+        </CustomButton>
+      </LeftPanel>
+
+      <RightPanel>
+        <SubHeader>Transaction History</SubHeader>
+        <History
+          historyData={dashboardData.history}
+          currency={currency}
+          showAddOrEditPopup={showAddOrEditPopup}
+          fetchDashboardData={fetchDashboardData}
+        />
+
+        <Modal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          title={
+            addOrUpdateMode === PopupType.ADD
+              ? 'Add Transaction'
+              : 'Edit Transaction'
+          }
+        >
+          <CreateTransactionForm
+            requestMethod={
+              addOrUpdateMode === PopupType.ADD
+                ? RequestMethod.POST
+                : RequestMethod.PATCH
+            }
+            defaultValues={historyItemToEdit}
+            fetchDashboardData={fetchDashboardData}
+            setShowModal={setShowModal}
+          />
+        </Modal>
+      </RightPanel>
+    </DashboardWrapper>
   ) : null
 }
+
+const DashboardWrapper = styled.div`
+  width: 100%;
+`
+
+const LeftPanel = styled.div`
+  width: 33%;
+  float: left;
+`
+
+const RightPanel = styled.div`
+  width: 64%;
+  float: right;
+`
+
+const SubHeader = styled.h2`
+  font-size: ${FONT_SIZE_HEADER_SECONDARY};
+`
 
 export default Dashboard
