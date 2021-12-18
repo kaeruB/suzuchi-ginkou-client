@@ -14,6 +14,7 @@ import { FONT_SIZE_HEADER_SECONDARY } from './utils/styles/constants/fontSizes'
 import History from './components/history/History'
 import Modal from './components/common/Modal'
 import { CustomButton } from './utils/styles/components/button'
+import { getUrl, LOCALHOST, URL_TRANSACTION_SUMMARY } from './utils/endpoints'
 
 export const Dashboard: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -25,9 +26,7 @@ export const Dashboard: FC = () => {
   const [addOrUpdateMode, setAddOrUpdateMode] = useState<PopupType | null>(null)
 
   async function fetchDashboardData() {
-    const response = await fetch(
-      'http://localhost:3005/api/v1/transactions/summary',
-    )
+    const response = await fetch(getUrl(LOCALHOST, URL_TRANSACTION_SUMMARY))
     const data = await response.json()
 
     if (data && data.data) {

@@ -9,6 +9,11 @@ import {
 } from '../../utils/types'
 import RoundPicture from '../common/RoundPicture'
 import { numberWithSpaces } from '../../utils/functions'
+import {
+  getUrl,
+  LOCALHOST,
+  URL_MODIFY_TRANSACTION,
+} from '../../utils/endpoints'
 
 interface HistoryListItemProps {
   transactionData: Transaction
@@ -35,7 +40,7 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
 
     const transactionId = (event?.target as HTMLButtonElement).id
     const res = await fetch(
-      `http://localhost:3005/api/v1/transactions/${transactionId}`,
+      getUrl(LOCALHOST, URL_MODIFY_TRANSACTION(transactionId)),
       {
         method: RequestMethod.DELETE,
       },
