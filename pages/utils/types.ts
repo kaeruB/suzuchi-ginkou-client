@@ -3,7 +3,7 @@ export type Transaction = {
   borrowedBy: string
   category: string
   description: string
-  date: string
+  timestamp: number
   _id?: string
 }
 

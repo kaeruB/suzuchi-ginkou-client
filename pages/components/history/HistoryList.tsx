@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Currency, PopupType, Transaction } from '../../utils/types'
 import HistoryListItem from './HistoryListItem'
 import { FONT_SIZE_PRIMARY } from '../../utils/styles/constants/fontSizes'
+import { convertTimestampToDateString } from '../../utils/functions'
 
 interface HistoryListProps {
   historyData: Array<Transaction>
@@ -26,7 +27,9 @@ export const HistoryList: VFC<HistoryListProps> = (props: HistoryListProps) => {
 
   return (
     <>
-      <DateHeader>{props.historyData[0].date}</DateHeader>
+      <DateHeader>
+        {convertTimestampToDateString(props.historyData[0].timestamp)}
+      </DateHeader>
       <HistoryListItemsWrapper>
         {props.historyData.map((historyData: Transaction) =>
           renderHistoryListItem(historyData),

@@ -1,0 +1,1 @@
+export const DATE_PARTS_SEPARATOR = '-'

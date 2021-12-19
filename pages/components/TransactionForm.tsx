@@ -1,14 +1,14 @@
 import { SyntheticEvent, VFC } from 'react'
-import { getCurrentDate } from '../utils/functions'
+import {
+  convertDateToTimestamp,
+  convertTimestampToDateString,
+  getCurrentDate,
+} from '../utils/functions'
 import { RequestMethod, Transaction } from '../utils/types'
 import styled from 'styled-components'
 import { FONT_SIZE_PRIMARY } from '../utils/styles/constants/fontSizes'
 import { CustomButton } from '../utils/styles/components/button'
-import {
-  getUrl,
-  LOCALHOST,
-  URL_MODIFY_TRANSACTION,
-} from '../utils/endpoints'
+import { getUrl, LOCALHOST, URL_MODIFY_TRANSACTION } from '../utils/endpoints'
 
 interface TransactionFormProps {
   requestMethod: string
@@ -37,12 +37,15 @@ export const TransactionForm: VFC<TransactionFormProps> = (
   async function addTransaction(event: SyntheticEvent) {
     event.preventDefault()
     const eventTarget: EventTarget | any = event.target
+
+    const timestamp = convertDateToTimestamp(eventTarget.date.value)
+
     let transactionDetails: Transaction = {
       amount: parseInt(eventTarget.amount.value),
       borrowedBy: eventTarget.borrowedBy.value,
       category: eventTarget.category.value,
       description: eventTarget.description.value,
-      date: eventTarget.date.value,
+      timestamp,
     }
 
     if (props.requestMethod === RequestMethod.PATCH) {
@@ -159,7 +162,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
               name="date"
               defaultValue={
                 props.defaultValues
-                  ? props.defaultValues?.date
+                  ? convertTimestampToDateString(props.defaultValues?.timestamp)
                   : getCurrentDate()
               }
               autoComplete="date"

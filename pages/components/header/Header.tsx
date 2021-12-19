@@ -9,6 +9,7 @@ import {
   FONT_SIZE_HEADER_SECONDARY,
   FONT_SIZE_HEADER_TERTIARY,
 } from '../../utils/styles/constants/fontSizes'
+import { formatNumberWithSpaces } from '../../utils/functions'
 
 interface HeaderProps {
   summary: Summary
@@ -26,7 +27,11 @@ export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
 
   useEffect(() => {
     const borrowedMoneyByAgata = props.summary[Person.AGATA]
+      ? props.summary[Person.AGATA]
+      : 0
     const borrowedMoneyByKazu = props.summary[Person.KAZU]
+      ? props.summary[Person.KAZU]
+      : 0
     const difference = Math.abs(borrowedMoneyByAgata - borrowedMoneyByKazu)
 
     const personWithDebt =
@@ -46,7 +51,7 @@ export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
           <RoundPicture size={10} person={personWithDebt as Person} />
           <MoneyTransition>
             <Amount>
-              {moneyAmountToReturn}
+              {formatNumberWithSpaces(moneyAmountToReturn)}
               {props.currency}
             </Amount>
             <Arrow />
@@ -56,7 +61,7 @@ export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
         <GeneralStateSentence>
           <HighlightedText>{personWithDebt}</HighlightedText> should return{' '}
           <HighlightedText>
-            {moneyAmountToReturn} {props.currency}
+            {formatNumberWithSpaces(moneyAmountToReturn)} {props.currency}
           </HighlightedText>{' '}
           to {personWithoutDebt}
         </GeneralStateSentence>

@@ -8,7 +8,7 @@ import {
   RequestMethod,
 } from '../../utils/types'
 import RoundPicture from '../common/RoundPicture'
-import { numberWithSpaces } from '../../utils/functions'
+import { formatNumberWithSpaces } from '../../utils/functions'
 import {
   getUrl,
   LOCALHOST,
@@ -63,7 +63,8 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
       </LeftContainer>
       <RightContainer>
         <MoneyAmount>
-          {numberWithSpaces(props.transactionData.amount)} {props.currency}
+          {formatNumberWithSpaces(props.transactionData.amount)}{' '}
+          {props.currency}
         </MoneyAmount>
         <EditButton
           id={props.transactionData._id}
