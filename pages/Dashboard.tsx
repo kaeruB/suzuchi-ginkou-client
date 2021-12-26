@@ -26,15 +26,20 @@ export const Dashboard: FC = () => {
   const [addOrUpdateMode, setAddOrUpdateMode] = useState<PopupType | null>(null)
 
   async function fetchDashboardData() {
-    const response = await fetch(getUrl(LOCALHOST, URL_TRANSACTION_SUMMARY))
-    const data = await response.json()
+    try {
+      const response = await fetch(getUrl(LOCALHOST, URL_TRANSACTION_SUMMARY))
+      const data = await response.json()
 
-    if (data && data.data) {
-      setDashboardData(data.data)
-    } else {
+      if (data && data.data) {
+        setDashboardData(data.data)
+      } else {
+        setDashboardData(BankStateTemporaryMock)
+      }
+      setIsLoading(false)
+    } catch (e) {
       setDashboardData(BankStateTemporaryMock)
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   useEffect(() => {
