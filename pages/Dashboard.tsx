@@ -45,8 +45,11 @@ export const Dashboard: FC = () => {
     return <h2>Loading...</h2>
   }
 
-  const showAddOrEditPopup = (e: MouseEvent, addOrUpdate: PopupType) => {
-    const transactionId = (e.target as HTMLButtonElement).id
+  const showAddOrEditPopup = (
+    e: MouseEvent,
+    addOrUpdate: PopupType,
+    transactionId?: string,
+  ) => {
     setAddOrUpdateMode(addOrUpdate)
     if (addOrUpdate === PopupType.ADD) {
       setHistoryItemToEdit(null)

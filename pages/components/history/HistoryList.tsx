@@ -8,7 +8,11 @@ import { convertTimestampToDateString } from '../../utils/functions'
 interface HistoryListProps {
   historyData: Array<Transaction>
   currency: Currency
-  showAddOrEditPopup: (e: MouseEvent, popupType: PopupType) => void
+  showAddOrEditPopup: (
+    e: MouseEvent,
+    popupType: PopupType,
+    transactionId: string,
+  ) => void
   fetchDashboardData: () => void
 }
 

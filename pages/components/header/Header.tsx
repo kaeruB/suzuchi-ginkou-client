@@ -10,6 +10,7 @@ import {
   FONT_SIZE_HEADER_TERTIARY,
 } from '../../utils/styles/constants/fontSizes'
 import { formatNumberWithSpaces } from '../../utils/functions'
+import { IMG_PATHS } from '../../utils/constants'
 
 interface HeaderProps {
   summary: Summary
@@ -48,7 +49,11 @@ export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
     return personWithDebt ? (
       <GeneralState>
         <GeneralStateIllustration>
-          <RoundPicture size={10} person={personWithDebt as Person} />
+          <RoundPicture
+            size={10}
+            src={IMG_PATHS[personWithDebt as Person]}
+            alt={personWithDebt as Person}
+          />
           <MoneyTransition>
             <Amount>
               {formatNumberWithSpaces(moneyAmountToReturn)}
@@ -56,7 +61,11 @@ export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
             </Amount>
             <Arrow />
           </MoneyTransition>
-          <RoundPicture size={10} person={personWithoutDebt as Person} />
+          <RoundPicture
+            size={10}
+            src={IMG_PATHS[personWithoutDebt as Person]}
+            alt={personWithoutDebt as Person}
+          />
         </GeneralStateIllustration>
         <GeneralStateSentence>
           <HighlightedText>{personWithDebt}</HighlightedText> should return{' '}

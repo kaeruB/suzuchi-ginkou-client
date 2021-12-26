@@ -1,11 +1,12 @@
 import { MouseEvent, SyntheticEvent, useEffect, useState, VFC } from 'react'
 import styled from 'styled-components'
 import {
-  PopupType,
   Currency,
+  IconId,
   Person,
-  Transaction,
+  PopupType,
   RequestMethod,
+  Transaction,
 } from '../../utils/types'
 import RoundPicture from '../common/RoundPicture'
 import { formatNumberWithSpaces } from '../../utils/functions'
@@ -14,11 +15,17 @@ import {
   LOCALHOST,
   URL_MODIFY_TRANSACTION,
 } from '../../utils/endpoints'
+import { IMG_PATHS } from '../../utils/constants'
+import { IconFactory } from '../IconFactory'
 
 interface HistoryListItemProps {
   transactionData: Transaction
   currency: Currency
-  showAddOrEditPopup: (e: MouseEvent, popupType: PopupType) => void
+  showAddOrEditPopup: (
+    e: MouseEvent,
+    popupType: PopupType,
+    transactionId: string,
+  ) => void
   fetchDashboardData: () => void
 }
 
@@ -35,10 +42,12 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
     )
   }, [props.transactionData])
 
-  async function deleteTransaction(event: SyntheticEvent) {
+  async function deleteTransaction(
+    event: SyntheticEvent,
+    transactionId: string,
+  ) {
     event.preventDefault()
 
-    const transactionId = (event?.target as HTMLButtonElement).id
     const res = await fetch(
       getUrl(LOCALHOST, URL_MODIFY_TRANSACTION(transactionId)),
       {
@@ -56,7 +65,14 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
     <HistoryListItemElement>
       <LeftContainer>
         <PhotoAndCategoryWrapper>
-          <RoundPicture size={3} person={personWhoPaid} />
+          <RoundPicture
+            size={4}
+            src={IMG_PATHS[personWhoPaid]}
+            alt={personWhoPaid}
+          />
+          <CategoryWrapper>
+            <IconFactory size={2} iconId={props.transactionData.category} />
+          </CategoryWrapper>
         </PhotoAndCategoryWrapper>
 
         {props.transactionData.description}
@@ -66,20 +82,26 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
           {formatNumberWithSpaces(props.transactionData.amount)}{' '}
           {props.currency}
         </MoneyAmount>
-        <EditButton
+        <IconButton
           id={props.transactionData._id}
           onClick={(e: MouseEvent) =>
-            props.showAddOrEditPopup(e, PopupType.UPDATE)
+            props.showAddOrEditPopup(
+              e,
+              PopupType.UPDATE,
+              props.transactionData._id!,
+            )
           }
         >
-          Edit
-        </EditButton>
-        <DeleteButton
+          <IconFactory iconId={IconId.EDIT} size={2} />
+        </IconButton>
+        <IconButton
           id={props.transactionData._id}
-          onClick={(e: MouseEvent) => deleteTransaction(e)}
+          onClick={(e: MouseEvent) =>
+            deleteTransaction(e, props.transactionData._id!)
+          }
         >
-          Delete
-        </DeleteButton>
+          <IconFactory iconId={IconId.DELETE} size={2} />
+        </IconButton>
       </RightContainer>
     </HistoryListItemElement>
   )
@@ -97,15 +119,29 @@ const LeftContainer = styled.div`
   align-items: center;
 `
 
-const RightContainer = styled.div``
+const RightContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 const PhotoAndCategoryWrapper = styled.div`
   margin: 1rem;
+  position: relative;
 `
 
-const EditButton = styled.button``
+const CategoryWrapper = styled.div`
+  position: absolute;
+  bottom: -4px;
+  right: -7px;
+`
 
-const DeleteButton = styled.button``
+const IconButton = styled.button`
+  width: 20px;
+  background: none;
+  border: none;
+  margin: 0 5px;
+  cursor: pointer;
+`
 
 const MoneyAmount = styled.span``
 

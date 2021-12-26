@@ -6,7 +6,11 @@ import { getDateTimestampToTransactionsObject } from '../../utils/functions'
 interface HistoryProps {
   historyData: Array<Transaction>
   currency: Currency
-  showAddOrEditPopup: (e: MouseEvent, popupType: PopupType) => void
+  showAddOrEditPopup: (
+    e: MouseEvent,
+    popupType: PopupType,
+    transactionId: string,
+  ) => void
   fetchDashboardData: () => void
 }
 

@@ -1,14 +1,18 @@
-import { SyntheticEvent, VFC } from 'react'
+import { SyntheticEvent, useState, VFC } from 'react'
 import {
   convertDateToTimestamp,
   convertTimestampToDateString,
   getCurrentDate,
 } from '../utils/functions'
-import { RequestMethod, Transaction } from '../utils/types'
+import { Category, Person, RequestMethod, Transaction } from '../utils/types'
 import styled from 'styled-components'
 import { FONT_SIZE_PRIMARY } from '../utils/styles/constants/fontSizes'
 import { CustomButton } from '../utils/styles/components/button'
 import { getUrl, LOCALHOST, URL_MODIFY_TRANSACTION } from '../utils/endpoints'
+import RoundPicture from './common/RoundPicture'
+import { COLOR_MEDIUM } from '../utils/styles/constants/colors'
+import { IMG_PATHS } from '../utils/constants'
+import { IconFactory } from './IconFactory'
 
 interface TransactionFormProps {
   requestMethod: string
@@ -20,6 +24,13 @@ interface TransactionFormProps {
 export const TransactionForm: VFC<TransactionFormProps> = (
   props: TransactionFormProps,
 ) => {
+  const [selectedPerson, setSelectedPerson] = useState<Person>(
+    props.defaultValues ? props.defaultValues.borrowedBy : Person.AGATA,
+  )
+  const [selectedCategory, setSelectedCategory] = useState<Category>(
+    props.defaultValues ? props.defaultValues.category : Category.SHOPPING,
+  )
+
   const deleteUnchangedDetailsForPatchRequest = (
     transactionDetails: Transaction,
   ): Transaction => {
@@ -42,8 +53,8 @@ export const TransactionForm: VFC<TransactionFormProps> = (
 
     let transactionDetails: Transaction = {
       amount: parseInt(eventTarget.amount.value),
-      borrowedBy: eventTarget.borrowedBy.value,
-      category: eventTarget.category.value,
+      borrowedBy: selectedPerson,
+      category: selectedCategory,
       description: eventTarget.description.value,
       timestamp,
     }
@@ -77,6 +88,30 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     }
   }
 
+  const renderCategoryButton = (category: Category) => {
+    return (
+      <FormButton
+        onClick={() => setSelectedCategory(category)}
+        isActive={selectedCategory === category}
+        type={'button'}
+      >
+        <IconFactory size={4} iconId={category} />
+      </FormButton>
+    )
+  }
+
+  const renderPersonButton = (person: Person) => {
+    return (
+      <FormButton
+        onClick={() => setSelectedPerson(person)}
+        isActive={selectedPerson === person}
+        type={'button'}
+      >
+        <RoundPicture size={5} src={IMG_PATHS[person]} alt={person} />
+      </FormButton>
+    )
+  }
+
   return (
     <div
       key={props.defaultValues ? props.defaultValues._id : 'transaction-input'}
@@ -87,16 +122,10 @@ export const TransactionForm: VFC<TransactionFormProps> = (
             <FormRowLabel htmlFor="borrowedBy">Borrowed By</FormRowLabel>
           </Column>
           <DoubleColumn>
-            <FormRowInput
-              type="text"
-              id="borrowedBy"
-              autoComplete="borrowedBy"
-              name="borrowedBy"
-              required
-              defaultValue={
-                props.defaultValues ? props.defaultValues.borrowedBy : ''
-              }
-            />
+            <FlexRow>
+              {renderPersonButton(Person.AGATA)}
+              {renderPersonButton(Person.KAZU)}
+            </FlexRow>
           </DoubleColumn>
         </FormRow>
 
@@ -122,16 +151,13 @@ export const TransactionForm: VFC<TransactionFormProps> = (
             <FormRowLabel htmlFor="category">Category</FormRowLabel>
           </Column>
           <DoubleColumn>
-            <FormRowInput
-              type="text"
-              id="category"
-              autoComplete="category"
-              name="category"
-              required
-              defaultValue={
-                props.defaultValues ? props.defaultValues.category : ''
-              }
-            />
+            <FlexRow>
+              {renderCategoryButton(Category.SHOPPING)}
+              {renderCategoryButton(Category.HOME)}
+              {renderCategoryButton(Category.HEALTH)}
+              {renderCategoryButton(Category.ENTERTAINMENT)}
+              {renderCategoryButton(Category.OTHER)}
+            </FlexRow>
           </DoubleColumn>
         </FormRow>
         <FormRow>
@@ -217,6 +243,27 @@ const FormRowInput = styled.input`
   border-radius: 6px;
   height: 3rem;
   padding: 5px;
+`
+
+const FlexRow = styled.div`
+  display: flex;
+`
+
+const FormButton = styled.button<{ isActive: boolean }>`
+  border: none;
+  background: none;
+  border-radius: 50%;
+  padding: 3px;
+  cursor: pointer;
+  filter: brightness(80%);
+
+  ${(props) =>
+    props.isActive &&
+    `
+    border: 3px solid ${COLOR_MEDIUM};
+    padding: 0;
+    filter: none;
+  `}
 `
 
 export default TransactionForm
