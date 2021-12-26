@@ -8,6 +8,5 @@ export const CustomButton = styled.button`
   height: 3.5rem;
   border-radius: 4px;
   color: white;
-  font-style: italic;
   cursor: pointer;
 `
