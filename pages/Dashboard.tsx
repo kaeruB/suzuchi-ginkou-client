@@ -72,7 +72,7 @@ export const Dashboard: FC = () => {
     setShowModal(true)
   }
 
-  return dashboardData ? (
+  return dashboardData && (
     <DashboardWrapper>
       <LeftPanel>
         <Header summary={dashboardData.summary} currency={currency} />
@@ -114,7 +114,7 @@ export const Dashboard: FC = () => {
         </Modal>
       </RightPanel>
     </DashboardWrapper>
-  ) : null
+  )
 }
 
 const DashboardWrapper = styled.div`

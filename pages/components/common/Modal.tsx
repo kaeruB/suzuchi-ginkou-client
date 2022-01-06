@@ -23,7 +23,7 @@ export const Modal: VFC<ModalProps> = (props: ModalProps) => {
     props.onClose()
   }
 
-  const modalContent = props.show ? (
+  const modalContent = props.show && (
     <StyledModalOverlay>
       <StyledModal>
         <StyledModalHeader>
@@ -37,7 +37,7 @@ export const Modal: VFC<ModalProps> = (props: ModalProps) => {
         <StyledModalBody>{props.children}</StyledModalBody>
       </StyledModal>
     </StyledModalOverlay>
-  ) : null
+  )
 
   if (isBrowser) {
     const rootNode = document.getElementById('modal-root')

@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import styled from 'styled-components'
 import Dashboard from './Dashboard'
+import {COLOR_FONT_PRIMARY} from "./utils/styles/constants/colors";
 
 const Home: NextPage = () => {
   return (
@@ -28,6 +29,7 @@ const Wrapper = styled.div`
   min-height: 100vh;
   height: 100vh;
   font-family: 'Poppins', sans-serif;
+  color: ${COLOR_FONT_PRIMARY};
 `
 
 export default Home

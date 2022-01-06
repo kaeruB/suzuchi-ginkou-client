@@ -12,6 +12,7 @@ export const BankStateTemporaryMock: BankState = {
       category: Category.SHOPPING,
       description: 'ikea stół',
       timestamp: 1639699200000,
+      _id: '1',
     },
     {
       amount: 120,
@@ -19,6 +20,7 @@ export const BankStateTemporaryMock: BankState = {
       category: Category.SHOPPING,
       description: 'truskawki',
       timestamp: 1639699200000,
+      _id: '12',
     },
     {
       amount: 100,
@@ -26,6 +28,7 @@ export const BankStateTemporaryMock: BankState = {
       category: Category.ENTERTAINMENT,
       description: 'risotto',
       timestamp: 1639699200000,
+      _id: '13',
     },
     {
       amount: 100,
@@ -33,6 +36,7 @@ export const BankStateTemporaryMock: BankState = {
       category: Category.OTHER,
       description: '-',
       timestamp: 1639699200000,
+      _id: '14',
     },
     {
       amount: 100,
@@ -40,6 +44,7 @@ export const BankStateTemporaryMock: BankState = {
       category: Category.SHOPPING,
       description: 'jajka',
       timestamp: 1639799200000,
+      _id: '15',
     },
   ],
 }

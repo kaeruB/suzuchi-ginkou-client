@@ -1,6 +1,7 @@
 import { MouseEvent, SyntheticEvent, useEffect, useState, VFC } from 'react'
 import styled from 'styled-components'
 import {
+  Category,
   Currency,
   IconId,
   Person,
@@ -9,17 +10,35 @@ import {
   Transaction,
 } from '../../utils/types'
 import RoundPicture from '../common/RoundPicture'
-import { formatNumberWithSpaces } from '../../utils/functions'
+import { IMG_PATHS } from '../../utils/constants'
+import { IconFactory } from '../IconFactory'
 import {
   getUrl,
   LOCALHOST,
   URL_MODIFY_TRANSACTION,
 } from '../../utils/endpoints'
-import { IMG_PATHS } from '../../utils/constants'
-import { IconFactory } from '../IconFactory'
+import { formatNumberWithSpaces } from '../../utils/functions'
 
 interface HistoryListItemProps {
   transactionData: Transaction
+  currency: Currency
+  showAddOrEditPopup: (
+    e: MouseEvent,
+    popupType: PopupType,
+    transactionId: string,
+  ) => void
+  fetchDashboardData: () => void
+}
+
+interface HistoryListItemLeftContainerProps {
+  personWhoPaid: Person
+  category: Category
+  description: string
+}
+
+interface HistoryListItemRightContainerProps {
+  transactionId: string
+  amount: number
   currency: Currency
   showAddOrEditPopup: (
     e: MouseEvent,
@@ -42,6 +61,48 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
     )
   }, [props.transactionData])
 
+  return (
+    <HistoryListItemElement>
+      <HistoryListItemLeftContainer
+        personWhoPaid={personWhoPaid}
+        category={props.transactionData.category}
+        description={props.transactionData.description}
+      />
+      <HistoryListItemRightContainer
+        amount={props.transactionData.amount}
+        currency={props.currency}
+        transactionId={props.transactionData._id!}
+        showAddOrEditPopup={props.showAddOrEditPopup}
+        fetchDashboardData={props.fetchDashboardData}
+      />
+    </HistoryListItemElement>
+  )
+}
+
+const HistoryListItemLeftContainer: VFC<HistoryListItemLeftContainerProps> = (
+  props: HistoryListItemLeftContainerProps,
+) => {
+  return (
+    <LeftContainer>
+      <PhotoAndCategoryWrapper>
+        <RoundPicture
+          size={4}
+          src={IMG_PATHS[props.personWhoPaid]}
+          alt={props.personWhoPaid}
+        />
+        <CategoryWrapper>
+          <IconFactory size={2} iconId={props.category} />
+        </CategoryWrapper>
+      </PhotoAndCategoryWrapper>
+
+      {props.description}
+    </LeftContainer>
+  )
+}
+
+const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
+  props: HistoryListItemRightContainerProps,
+) => {
   async function deleteTransaction(
     event: SyntheticEvent,
     transactionId: string,
@@ -62,48 +123,25 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
   }
 
   return (
-    <HistoryListItemElement>
-      <LeftContainer>
-        <PhotoAndCategoryWrapper>
-          <RoundPicture
-            size={4}
-            src={IMG_PATHS[personWhoPaid]}
-            alt={personWhoPaid}
-          />
-          <CategoryWrapper>
-            <IconFactory size={2} iconId={props.transactionData.category} />
-          </CategoryWrapper>
-        </PhotoAndCategoryWrapper>
-
-        {props.transactionData.description}
-      </LeftContainer>
-      <RightContainer>
-        <MoneyAmount>
-          {formatNumberWithSpaces(props.transactionData.amount)}{' '}
-          {props.currency}
-        </MoneyAmount>
-        <IconButton
-          id={props.transactionData._id}
-          onClick={(e: MouseEvent) =>
-            props.showAddOrEditPopup(
-              e,
-              PopupType.UPDATE,
-              props.transactionData._id!,
-            )
-          }
-        >
-          <IconFactory iconId={IconId.EDIT} size={2} />
-        </IconButton>
-        <IconButton
-          id={props.transactionData._id}
-          onClick={(e: MouseEvent) =>
-            deleteTransaction(e, props.transactionData._id!)
-          }
-        >
-          <IconFactory iconId={IconId.DELETE} size={2} />
-        </IconButton>
-      </RightContainer>
-    </HistoryListItemElement>
+    <RightContainer>
+      <span>
+        {formatNumberWithSpaces(props.amount)} {props.currency}
+      </span>
+      <IconButton
+        id={props.transactionId}
+        onClick={(e: MouseEvent) =>
+          props.showAddOrEditPopup(e, PopupType.UPDATE, props.transactionId!)
+        }
+      >
+        <IconFactory iconId={IconId.EDIT} size={2} />
+      </IconButton>
+      <IconButton
+        id={props.transactionId}
+        onClick={(e: MouseEvent) => deleteTransaction(e, props.transactionId!)}
+      >
+        <IconFactory iconId={IconId.DELETE} size={2} />
+      </IconButton>
+    </RightContainer>
   )
 }
 
@@ -119,11 +157,6 @@ const LeftContainer = styled.div`
   align-items: center;
 `
 
-const RightContainer = styled.div`
-  display: flex;
-  align-items: center;
-`
-
 const PhotoAndCategoryWrapper = styled.div`
   margin: 1rem;
   position: relative;
@@ -135,6 +168,11 @@ const CategoryWrapper = styled.div`
   right: -7px;
 `
 
+const RightContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const IconButton = styled.button`
   width: 20px;
   background: none;
@@ -142,7 +180,5 @@ const IconButton = styled.button`
   margin: 0 5px;
   cursor: pointer;
 `
-
-const MoneyAmount = styled.span``
 
 export default HistoryListItem

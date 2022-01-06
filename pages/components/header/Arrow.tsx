@@ -1,5 +1,6 @@
 import { VFC } from 'react'
 import styled from 'styled-components'
+import {COLOR_FONT_PRIMARY} from "../../utils/styles/constants/colors";
 
 export const Arrow: VFC = () => {
   return (
@@ -32,7 +33,7 @@ const ArrowCommon = styled.span`
   top: -0.3rem;
   bottom: 0;
   height: 1rem;
-  border-right: 0.2rem solid black;
+  border-right: 0.2rem solid ${COLOR_FONT_PRIMARY};
   display: inline-block;
 `
 
@@ -42,7 +43,7 @@ const ArrowLeft = styled(ArrowCommon)`
 `
 
 const Line = styled.span`
-  border-right: 0.2rem dashed black;
+  border-right: 0.2rem dashed ${COLOR_FONT_PRIMARY};
   display: inline-block;
   height: 20rem;
 `

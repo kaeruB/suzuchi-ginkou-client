@@ -46,36 +46,38 @@ export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
   }, [props.summary])
 
   const renderMoneyTransitionStatus = () => {
-    return personWithDebt ? (
-      <GeneralState>
-        <GeneralStateIllustration>
-          <RoundPicture
-            size={10}
-            src={IMG_PATHS[personWithDebt as Person]}
-            alt={personWithDebt as Person}
-          />
-          <MoneyTransition>
-            <Amount>
-              {formatNumberWithSpaces(moneyAmountToReturn)}
-              {props.currency}
-            </Amount>
-            <Arrow />
-          </MoneyTransition>
-          <RoundPicture
-            size={10}
-            src={IMG_PATHS[personWithoutDebt as Person]}
-            alt={personWithoutDebt as Person}
-          />
-        </GeneralStateIllustration>
-        <GeneralStateSentence>
-          <HighlightedText>{personWithDebt}</HighlightedText> should return{' '}
-          <HighlightedText>
-            {formatNumberWithSpaces(moneyAmountToReturn)} {props.currency}
-          </HighlightedText>{' '}
-          to {personWithoutDebt}
-        </GeneralStateSentence>
-      </GeneralState>
-    ) : null
+    return (
+      personWithDebt && (
+        <GeneralState>
+          <GeneralStateIllustration>
+            <RoundPicture
+              size={10}
+              src={IMG_PATHS[personWithDebt as Person]}
+              alt={personWithDebt as Person}
+            />
+            <MoneyTransition>
+              <Amount>
+                {formatNumberWithSpaces(moneyAmountToReturn)}
+                {props.currency}
+              </Amount>
+              <Arrow />
+            </MoneyTransition>
+            <RoundPicture
+              size={10}
+              src={IMG_PATHS[personWithoutDebt as Person]}
+              alt={personWithoutDebt as Person}
+            />
+          </GeneralStateIllustration>
+          <GeneralStateSentence>
+            <HighlightedText>{personWithDebt}</HighlightedText> should return{' '}
+            <HighlightedText>
+              {formatNumberWithSpaces(moneyAmountToReturn)} {props.currency}
+            </HighlightedText>{' '}
+            to {personWithoutDebt}
+          </GeneralStateSentence>
+        </GeneralState>
+      )
+    )
   }
 
   const renderNoMoneyToReturnMessage = () => {
@@ -88,7 +90,7 @@ export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
 
   return (
     <>
-      <Title>鈴地銀行</Title>
+      <Title>Suzuchi Ginkou</Title>
       {moneyAmountToReturn && moneyAmountToReturn > 0
         ? renderMoneyTransitionStatus()
         : renderNoMoneyToReturnMessage()}
