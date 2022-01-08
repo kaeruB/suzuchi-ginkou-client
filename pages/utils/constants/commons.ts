@@ -1,4 +1,4 @@
-import { Person } from './types'
+import { Person } from '../../models/types'
 
 export const DATE_PARTS_SEPARATOR = '-'
 

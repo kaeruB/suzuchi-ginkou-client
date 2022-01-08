@@ -7,7 +7,7 @@ import ShoppingIcon from '/public/icons/shopping.svg'
 import OtherIcon from '/public/icons/other.svg'
 import DeleteIcon from '/public/icons/trashbin.svg'
 import EditIcon from '/public/icons/edit.svg'
-import { Category, IconId } from '../utils/types'
+import { Category, IconId } from '../models/types'
 
 type IconFactoryProps = {
   iconId: Category | IconId

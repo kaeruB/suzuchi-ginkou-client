@@ -1,4 +1,4 @@
-import { BankState, Category, Person } from './types'
+import { BankState, Category, Person } from '../models/types'
 
 export const BankStateTemporaryMock: BankState = {
   summary: {

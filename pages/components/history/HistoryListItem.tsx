@@ -6,18 +6,14 @@ import {
   IconId,
   Person,
   PopupType,
-  RequestMethod,
   Transaction,
-} from '../../utils/types'
+} from '../../models/types'
 import RoundPicture from '../common/RoundPicture'
-import { IMG_PATHS } from '../../utils/constants'
+import { IMG_PATHS } from '../../utils/constants/commons'
 import { IconFactory } from '../IconFactory'
-import {
-  getUrl,
-  LOCALHOST,
-  URL_MODIFY_TRANSACTION,
-} from '../../utils/endpoints'
-import { formatNumberWithSpaces } from '../../utils/functions'
+import { URL_MODIFY_TRANSACTION } from '../../utils/constants/endpoints'
+import { formatNumberWithSpaces } from '../../utils/functions/commons'
+import { deleteTransaction } from '../../dataApi/dataApi'
 
 interface HistoryListItemProps {
   transactionData: Transaction
@@ -103,20 +99,14 @@ const HistoryListItemLeftContainer: VFC<HistoryListItemLeftContainerProps> = (
 const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
   props: HistoryListItemRightContainerProps,
 ) => {
-  async function deleteTransaction(
+  async function deleteTransactionOnClick(
     event: SyntheticEvent,
     transactionId: string,
   ) {
     event.preventDefault()
-
-    const res = await fetch(
-      getUrl(LOCALHOST, URL_MODIFY_TRANSACTION(transactionId)),
-      {
-        method: RequestMethod.DELETE,
-      },
+    const result = await deleteTransaction(
+      URL_MODIFY_TRANSACTION(transactionId),
     )
-
-    const result = await res.json()
     if (result) {
       props.fetchDashboardData()
     }
@@ -137,7 +127,9 @@ const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
       </IconButton>
       <IconButton
         id={props.transactionId}
-        onClick={(e: MouseEvent) => deleteTransaction(e, props.transactionId!)}
+        onClick={(e: MouseEvent) =>
+          deleteTransactionOnClick(e, props.transactionId!)
+        }
       >
         <IconFactory iconId={IconId.DELETE} size={2} />
       </IconButton>

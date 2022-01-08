@@ -1,5 +1,5 @@
-import { DATE_PARTS_SEPARATOR } from './constants'
-import { Transaction } from './types'
+import { DATE_PARTS_SEPARATOR } from '../constants/commons'
+import { Transaction } from '../../models/types'
 
 export const formatNumberWithSpaces = (n: number | null): string | null => {
   if (n == null) return null

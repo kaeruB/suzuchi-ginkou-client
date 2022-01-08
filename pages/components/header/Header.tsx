@@ -1,16 +1,16 @@
 import { useEffect, useState, VFC } from 'react'
 import styled from 'styled-components'
 import RoundPicture from '../common/RoundPicture'
-import { Person, Summary } from '../../utils/types'
+import { Person, Summary } from '../../models/types'
 import Arrow from './Arrow'
-import { COLOR_STRONG } from '../../utils/styles/constants/colors'
+import { COLOR_STRONG } from '../../styles/constants/colors'
 import {
   FONT_SIZE_HEADER_PRIMARY,
   FONT_SIZE_HEADER_SECONDARY,
   FONT_SIZE_HEADER_TERTIARY,
-} from '../../utils/styles/constants/fontSizes'
-import { formatNumberWithSpaces } from '../../utils/functions'
-import { IMG_PATHS } from '../../utils/constants'
+} from '../../styles/constants/fontSizes'
+import { formatNumberWithSpaces } from '../../utils/functions/commons'
+import { IMG_PATHS } from '../../utils/constants/commons'
 
 interface HeaderProps {
   summary: Summary

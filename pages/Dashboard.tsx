@@ -5,16 +5,17 @@ import {
   PopupType,
   RequestMethod,
   Transaction,
-} from './utils/types'
-import { BankStateTemporaryMock } from './utils/data'
+} from './models/types'
+import { BankStateTemporaryMock } from './mock/data'
 import CreateTransactionForm from './components/TransactionForm'
 import Header from './components/header/Header'
 import styled from 'styled-components'
-import { FONT_SIZE_HEADER_SECONDARY } from './utils/styles/constants/fontSizes'
+import { FONT_SIZE_HEADER_SECONDARY } from './styles/constants/fontSizes'
 import History from './components/history/History'
 import Modal from './components/common/Modal'
-import { CustomButton } from './utils/styles/components/button'
-import { getUrl, LOCALHOST, URL_TRANSACTION_SUMMARY } from './utils/endpoints'
+import { CustomButton } from './styles/components/button'
+import { URL_TRANSACTION_SUMMARY } from './utils/constants/endpoints'
+import { fetchTransactions } from './dataApi/dataApi'
 
 export const Dashboard: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -27,14 +28,10 @@ export const Dashboard: FC = () => {
 
   async function fetchDashboardData() {
     try {
-      const response = await fetch(getUrl(LOCALHOST, URL_TRANSACTION_SUMMARY))
-      const data = await response.json()
-
-      if (data && data.data) {
-        setDashboardData(data.data)
-      } else {
-        setDashboardData(BankStateTemporaryMock)
-      }
+      const responseData = await fetchTransactions(URL_TRANSACTION_SUMMARY)
+      responseData
+        ? setDashboardData(responseData)
+        : setDashboardData(BankStateTemporaryMock)
       setIsLoading(false)
     } catch (e) {
       setDashboardData(BankStateTemporaryMock)
@@ -72,48 +69,50 @@ export const Dashboard: FC = () => {
     setShowModal(true)
   }
 
-  return dashboardData && (
-    <DashboardWrapper>
-      <LeftPanel>
-        <Header summary={dashboardData.summary} currency={currency} />
-        <CustomButton
-          onClick={(e: MouseEvent) => showAddOrEditPopup(e, PopupType.ADD)}
-        >
-          Add New Transaction
-        </CustomButton>
-      </LeftPanel>
+  return (
+    dashboardData && (
+      <DashboardWrapper>
+        <LeftPanel>
+          <Header summary={dashboardData.summary} currency={currency} />
+          <CustomButton
+            onClick={(e: MouseEvent) => showAddOrEditPopup(e, PopupType.ADD)}
+          >
+            Add New Transaction
+          </CustomButton>
+        </LeftPanel>
 
-      <RightPanel>
-        <SubHeader>Transaction History</SubHeader>
-        <History
-          historyData={dashboardData.history}
-          currency={currency}
-          showAddOrEditPopup={showAddOrEditPopup}
-          fetchDashboardData={fetchDashboardData}
-        />
-
-        <Modal
-          show={showModal}
-          onClose={() => setShowModal(false)}
-          title={
-            addOrUpdateMode === PopupType.ADD
-              ? 'Add Transaction'
-              : 'Edit Transaction'
-          }
-        >
-          <CreateTransactionForm
-            requestMethod={
-              addOrUpdateMode === PopupType.ADD
-                ? RequestMethod.POST
-                : RequestMethod.PATCH
-            }
-            defaultValues={historyItemToEdit}
+        <RightPanel>
+          <SubHeader>Transaction History</SubHeader>
+          <History
+            historyData={dashboardData.history}
+            currency={currency}
+            showAddOrEditPopup={showAddOrEditPopup}
             fetchDashboardData={fetchDashboardData}
-            setShowModal={setShowModal}
           />
-        </Modal>
-      </RightPanel>
-    </DashboardWrapper>
+
+          <Modal
+            show={showModal}
+            onClose={() => setShowModal(false)}
+            title={
+              addOrUpdateMode === PopupType.ADD
+                ? 'Add Transaction'
+                : 'Edit Transaction'
+            }
+          >
+            <CreateTransactionForm
+              requestMethod={
+                addOrUpdateMode === PopupType.ADD
+                  ? RequestMethod.POST
+                  : RequestMethod.PATCH
+              }
+              defaultValues={historyItemToEdit}
+              fetchDashboardData={fetchDashboardData}
+              setShowModal={setShowModal}
+            />
+          </Modal>
+        </RightPanel>
+      </DashboardWrapper>
+    )
   )
 }
 

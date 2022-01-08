@@ -3,19 +3,20 @@ import {
   convertDateToTimestamp,
   convertTimestampToDateString,
   getCurrentDate,
-} from '../utils/functions'
-import { Category, Person, RequestMethod, Transaction } from '../utils/types'
+} from '../utils/functions/commons'
+import { Category, Person, RequestMethod, Transaction } from '../models/types'
 import styled from 'styled-components'
-import { FONT_SIZE_PRIMARY } from '../utils/styles/constants/fontSizes'
-import { CustomButton } from '../utils/styles/components/button'
-import { getUrl, LOCALHOST, URL_MODIFY_TRANSACTION } from '../utils/endpoints'
+import { FONT_SIZE_PRIMARY } from '../styles/constants/fontSizes'
+import { CustomButton } from '../styles/components/button'
+import { URL_MODIFY_TRANSACTION } from '../utils/constants/endpoints'
 import RoundPicture from './common/RoundPicture'
-import { COLOR_MEDIUM } from '../utils/styles/constants/colors'
-import { IMG_PATHS } from '../utils/constants'
+import { COLOR_MEDIUM } from '../styles/constants/colors'
+import { IMG_PATHS } from '../utils/constants/commons'
 import { IconFactory } from './IconFactory'
+import { addOrUpdateTransaction } from '../dataApi/dataApi'
 
 interface TransactionFormProps {
-  requestMethod: string
+  requestMethod: RequestMethod
   defaultValues: Transaction | null
   fetchDashboardData: () => void
   setShowModal: (show: boolean) => void
@@ -45,7 +46,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     return transactionDetails
   }
 
-  async function addTransaction(event: SyntheticEvent) {
+  async function addOrUpdateTransactionOnSubmit(event: SyntheticEvent) {
     event.preventDefault()
     const eventTarget: EventTarget | any = event.target
 
@@ -64,24 +65,17 @@ export const TransactionForm: VFC<TransactionFormProps> = (
         deleteUnchangedDetailsForPatchRequest(transactionDetails)
     }
 
-    const body = JSON.stringify(transactionDetails)
-
     const transactionId =
       props.requestMethod === RequestMethod.PATCH && props.defaultValues
         ? `${props.defaultValues._id}`
         : ''
-    const res = await fetch(
-      getUrl(LOCALHOST, URL_MODIFY_TRANSACTION(transactionId)),
-      {
-        method: props.requestMethod,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body,
-      },
+
+    const result = await addOrUpdateTransaction(
+      URL_MODIFY_TRANSACTION(transactionId),
+      props.requestMethod,
+      transactionDetails,
     )
 
-    const result = await res.json()
     if (result) {
       props.fetchDashboardData()
       props.setShowModal(false)
@@ -116,7 +110,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     <div
       key={props.defaultValues ? props.defaultValues._id : 'transaction-input'}
     >
-      <TransactionFormWrapper onSubmit={addTransaction}>
+      <TransactionFormWrapper onSubmit={addOrUpdateTransactionOnSubmit}>
         <FormRow>
           <Column>
             <FormRowLabel htmlFor="borrowedBy">Borrowed By</FormRowLabel>

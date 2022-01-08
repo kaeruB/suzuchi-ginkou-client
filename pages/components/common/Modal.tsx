@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { useEffect, useState, VFC } from 'react'
 import ReactDOM from 'react-dom'
-import { COLOR_BACKGROUND } from '../../utils/styles/constants/colors'
-import { FONT_SIZE_HEADER_SECONDARY } from '../../utils/styles/constants/fontSizes'
+import { COLOR_BACKGROUND } from '../../styles/constants/colors'
+import { FONT_SIZE_HEADER_SECONDARY } from '../../styles/constants/fontSizes'
 
 interface ModalProps {
   show: boolean

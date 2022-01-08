@@ -1,9 +1,9 @@
 import { MouseEvent, VFC } from 'react'
 import styled from 'styled-components'
-import { Currency, PopupType, Transaction } from '../../utils/types'
+import { Currency, PopupType, Transaction } from '../../models/types'
 import HistoryListItem from './HistoryListItem'
-import { FONT_SIZE_PRIMARY } from '../../utils/styles/constants/fontSizes'
-import { convertTimestampToDateString } from '../../utils/functions'
+import { FONT_SIZE_PRIMARY } from '../../styles/constants/fontSizes'
+import { convertTimestampToDateString } from '../../utils/functions/commons'
 
 interface HistoryListProps {
   historyData: Array<Transaction>
