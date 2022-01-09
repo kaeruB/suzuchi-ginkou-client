@@ -15,7 +15,7 @@ import History from './components/history/History'
 import Modal from './components/common/Modal'
 import { CustomButton } from './styles/components/button'
 import { URL_TRANSACTION_SUMMARY } from './utils/constants/endpoints'
-import {DataApi} from './dataApi/dataApi'
+import { fetchTransactions } from './api/transaction'
 
 export const Dashboard: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -27,10 +27,10 @@ export const Dashboard: FC = () => {
   const [addOrUpdateMode, setAddOrUpdateMode] = useState<PopupType | null>(null)
 
   async function fetchDashboardData() {
-    const responseData = await DataApi.get(URL_TRANSACTION_SUMMARY)
+    const responseData = await fetchTransactions(URL_TRANSACTION_SUMMARY)
     responseData
-      ? setDashboardData(responseData.data.data)
-      : setDashboardData(BankStateTemporaryMock)
+      ? setDashboardData(responseData)
+      : setDashboardData(BankStateTemporaryMock) // fixme: mock
     setIsLoading(false)
   }
 

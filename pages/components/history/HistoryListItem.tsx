@@ -11,9 +11,9 @@ import {
 import RoundPicture from '../common/RoundPicture'
 import { IMG_PATHS } from '../../utils/constants/commons'
 import { IconFactory } from '../IconFactory'
-import { URL_MODIFY_TRANSACTION } from '../../utils/constants/endpoints'
+import { URL_TRANSACTION_PATCH } from '../../utils/constants/endpoints'
 import { formatNumberWithSpaces } from '../../utils/functions/commons'
-import { DataApi } from '../../dataApi/dataApi'
+import { deleteTransaction } from '../../api/transaction'
 
 interface HistoryListItemProps {
   transactionData: Transaction
@@ -104,11 +104,8 @@ const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
     transactionId: string,
   ) {
     event.preventDefault()
-    const { status } = await DataApi.delete(
-      URL_MODIFY_TRANSACTION(transactionId),
-    )
-
-    if (status === 200) {
+    const result = await deleteTransaction(URL_TRANSACTION_PATCH(transactionId))
+    if (result) {
       props.fetchDashboardData()
     }
   }

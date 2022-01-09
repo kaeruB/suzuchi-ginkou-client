@@ -8,12 +8,15 @@ import { Category, Person, RequestMethod, Transaction } from '../models/types'
 import styled from 'styled-components'
 import { FONT_SIZE_PRIMARY } from '../styles/constants/fontSizes'
 import { CustomButton } from '../styles/components/button'
-import { URL_MODIFY_TRANSACTION } from '../utils/constants/endpoints'
+import {
+  URL_TRANSACTION_PATCH,
+  URL_TRANSACTION_POST,
+} from '../utils/constants/endpoints'
 import RoundPicture from './common/RoundPicture'
 import { COLOR_MEDIUM } from '../styles/constants/colors'
 import { IMG_PATHS } from '../utils/constants/commons'
 import { IconFactory } from './IconFactory'
-import { DataApi } from '../dataApi/dataApi'
+import { patchTransaction, postTransaction } from '../api/transaction'
 
 interface TransactionFormProps {
   requestMethod: RequestMethod
@@ -32,36 +35,40 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     props.defaultValues ? props.defaultValues.category : Category.SHOPPING,
   )
 
-  async function addOrUpdateTransactionOnSubmit(event: SyntheticEvent) {
+  const createRequestBody = (event: SyntheticEvent) => {
     event.preventDefault()
     const eventTarget: EventTarget | any = event.target
-
     const timestamp = convertDateToTimestamp(eventTarget.date.value)
 
-    let transactionDetails: Transaction = {
+    const transactionDetails: Transaction = {
       amount: parseInt(eventTarget.amount.value),
       borrowedBy: selectedPerson,
       category: selectedCategory,
       description: eventTarget.description.value,
       timestamp,
     }
+    return JSON.stringify(transactionDetails)
+  }
 
-    const transactionId =
-      props.requestMethod === RequestMethod.PATCH && props.defaultValues
-        ? `${props.defaultValues._id}`
-        : ''
-    const body = JSON.stringify(transactionDetails)
-    const url = URL_MODIFY_TRANSACTION(transactionId)
-    const { data } =
-      props.requestMethod === RequestMethod.PATCH
-        ? await DataApi.patch(url, body)
-        : await DataApi.post(url, body)
-    const result = data?.data
-
+  const afterSubmit = (result: Transaction) => {
     if (result) {
       props.fetchDashboardData()
       props.setShowModal(false)
     }
+  }
+
+  async function patchTransactionOnSubmit(event: SyntheticEvent) {
+    const body = createRequestBody(event)
+    const transactionId = (props.defaultValues && props.defaultValues._id) || ''
+    const url = URL_TRANSACTION_PATCH(transactionId)
+    const result = await patchTransaction(url, body)
+    afterSubmit(result)
+  }
+
+  async function postTransactionOnSubmit(event: SyntheticEvent) {
+    const body = createRequestBody(event)
+    const result = await postTransaction(URL_TRANSACTION_POST, body)
+    afterSubmit(result)
   }
 
   const renderCategoryButton = (category: Category) => {
@@ -92,7 +99,13 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     <div
       key={props.defaultValues ? props.defaultValues._id : 'transaction-input'}
     >
-      <TransactionFormWrapper onSubmit={addOrUpdateTransactionOnSubmit}>
+      <TransactionFormWrapper
+        onSubmit={
+          props.requestMethod === RequestMethod.PATCH
+            ? patchTransactionOnSubmit
+            : postTransactionOnSubmit
+        }
+      >
         <FormRow>
           <Column>
             <FormRowLabel htmlFor="borrowedBy">Borrowed By</FormRowLabel>
