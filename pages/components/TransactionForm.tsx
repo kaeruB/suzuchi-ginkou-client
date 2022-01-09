@@ -13,7 +13,7 @@ import RoundPicture from './common/RoundPicture'
 import { COLOR_MEDIUM } from '../styles/constants/colors'
 import { IMG_PATHS } from '../utils/constants/commons'
 import { IconFactory } from './IconFactory'
-import { addOrUpdateTransaction } from '../dataApi/dataApi'
+import { DataApi } from '../dataApi/dataApi'
 
 interface TransactionFormProps {
   requestMethod: RequestMethod
@@ -32,20 +32,6 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     props.defaultValues ? props.defaultValues.category : Category.SHOPPING,
   )
 
-  const deleteUnchangedDetailsForPatchRequest = (
-    transactionDetails: Transaction,
-  ): Transaction => {
-    Object.keys(transactionDetails).forEach((detailsKey: string) => {
-      if (
-        (transactionDetails as any)[detailsKey] ===
-        (props.defaultValues as any)[detailsKey]
-      ) {
-        delete (transactionDetails as any)[detailsKey]
-      }
-    })
-    return transactionDetails
-  }
-
   async function addOrUpdateTransactionOnSubmit(event: SyntheticEvent) {
     event.preventDefault()
     const eventTarget: EventTarget | any = event.target
@@ -60,21 +46,17 @@ export const TransactionForm: VFC<TransactionFormProps> = (
       timestamp,
     }
 
-    if (props.requestMethod === RequestMethod.PATCH) {
-      transactionDetails =
-        deleteUnchangedDetailsForPatchRequest(transactionDetails)
-    }
-
     const transactionId =
       props.requestMethod === RequestMethod.PATCH && props.defaultValues
         ? `${props.defaultValues._id}`
         : ''
-
-    const result = await addOrUpdateTransaction(
-      URL_MODIFY_TRANSACTION(transactionId),
-      props.requestMethod,
-      transactionDetails,
-    )
+    const body = JSON.stringify(transactionDetails)
+    const url = URL_MODIFY_TRANSACTION(transactionId)
+    const { data } =
+      props.requestMethod === RequestMethod.PATCH
+        ? await DataApi.patch(url, body)
+        : await DataApi.post(url, body)
+    const result = data?.data
 
     if (result) {
       props.fetchDashboardData()

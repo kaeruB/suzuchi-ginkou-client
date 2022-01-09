@@ -13,7 +13,7 @@ import { IMG_PATHS } from '../../utils/constants/commons'
 import { IconFactory } from '../IconFactory'
 import { URL_MODIFY_TRANSACTION } from '../../utils/constants/endpoints'
 import { formatNumberWithSpaces } from '../../utils/functions/commons'
-import { deleteTransaction } from '../../dataApi/dataApi'
+import { DataApi } from '../../dataApi/dataApi'
 
 interface HistoryListItemProps {
   transactionData: Transaction
@@ -104,10 +104,11 @@ const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
     transactionId: string,
   ) {
     event.preventDefault()
-    const result = await deleteTransaction(
+    const { status } = await DataApi.delete(
       URL_MODIFY_TRANSACTION(transactionId),
     )
-    if (result) {
+
+    if (status === 200) {
       props.fetchDashboardData()
     }
   }
