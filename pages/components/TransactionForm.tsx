@@ -40,14 +40,13 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     const eventTarget: EventTarget | any = event.target
     const timestamp = convertDateToTimestamp(eventTarget.date.value)
 
-    const transactionDetails: Transaction = {
+    return {
       amount: parseInt(eventTarget.amount.value),
       borrowedBy: selectedPerson,
       category: selectedCategory,
       description: eventTarget.description.value,
       timestamp,
     }
-    return JSON.stringify(transactionDetails)
   }
 
   const afterSubmit = (result: Transaction) => {
@@ -57,7 +56,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     }
   }
 
-  async function patchTransactionOnSubmit(event: SyntheticEvent) {
+  const patchTransactionOnSubmit = async (event: SyntheticEvent) => {
     const body = createRequestBody(event)
     const transactionId = (props.defaultValues && props.defaultValues._id) || ''
     const url = URL_TRANSACTION_PATCH(transactionId)

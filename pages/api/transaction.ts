@@ -8,7 +8,7 @@ export const fetchTransactions = async (url: string): Promise<BankState> => {
 
 export const patchTransaction = async (
   url: string,
-  body: string,
+  body: Transaction,
 ): Promise<Transaction> => {
   const { data } = await DataApi.patch(url, body)
   return data?.data
@@ -16,7 +16,7 @@ export const patchTransaction = async (
 
 export const postTransaction = async (
   url: string,
-  body: string,
+  body: Transaction,
 ): Promise<Transaction> => {
   const { data } = await DataApi.post(url, body)
   return data?.data
@@ -24,6 +24,5 @@ export const postTransaction = async (
 
 export const deleteTransaction = async (url: string): Promise<boolean> => {
   const tmp = await DataApi.delete(url)
-  console.log('tmp', tmp)
   return tmp.status === 200
 }
