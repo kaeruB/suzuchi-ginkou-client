@@ -26,7 +26,7 @@ export const Dashboard: FC = () => {
     useState<Transaction | null>(null)
   const [addOrUpdateMode, setAddOrUpdateMode] = useState<PopupType | null>(null)
 
-  async function fetchDashboardData() {
+  const fetchDashboardData = async () => {
     const responseData = await fetchTransactions(URL_TRANSACTION_SUMMARY)
     responseData
       ? setDashboardData(responseData)

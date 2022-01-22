@@ -99,10 +99,10 @@ const HistoryListItemLeftContainer: VFC<HistoryListItemLeftContainerProps> = (
 const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
   props: HistoryListItemRightContainerProps,
 ) => {
-  async function deleteTransactionOnClick(
+  const deleteTransactionOnClick = async (
     event: SyntheticEvent,
     transactionId: string,
-  ) {
+  ) => {
     event.preventDefault()
     const result = await deleteTransaction(URL_TRANSACTION_PATCH(transactionId))
     if (result) {

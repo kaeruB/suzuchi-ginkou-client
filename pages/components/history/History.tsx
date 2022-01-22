@@ -1,7 +1,7 @@
 import { FC, MouseEvent, useEffect, useState } from 'react'
 import { Currency, PopupType, Transaction } from '../../models/types'
 import HistoryList from './HistoryList'
-import { getDateTimestampToTransactionsObject } from '../../utils/functions/commons'
+import { getDateTimestampToTransactionsArrayObject } from '../../utils/functions/commons'
 
 interface HistoryProps {
   historyData: Array<Transaction>
@@ -23,7 +23,7 @@ export const History: FC<HistoryProps> = (props: HistoryProps) => {
     const historyDataDescending = props.historyData.reverse()
     const dateTimestampToTransactionsObject: {
       [timestamp: string]: Array<Transaction>
-    } = getDateTimestampToTransactionsObject(historyDataDescending)
+    } = getDateTimestampToTransactionsArrayObject(historyDataDescending)
 
     setSplitByDateTransactions(dateTimestampToTransactionsObject)
   }, [props.historyData])

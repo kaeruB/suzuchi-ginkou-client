@@ -64,7 +64,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     afterSubmit(result)
   }
 
-  async function postTransactionOnSubmit(event: SyntheticEvent) {
+  const postTransactionOnSubmit = async (event: SyntheticEvent) => {
     const body = createRequestBody(event)
     const result = await postTransaction(URL_TRANSACTION_POST, body)
     afterSubmit(result)

@@ -22,18 +22,18 @@ export const convertDateToTimestamp = (date: string): number => Date.parse(date)
 export const convertTimestampToDateString = (timestamp: number) =>
   parseDateObjToDateString(new Date(timestamp))
 
-export const getDateTimestampToTransactionsObject = (
+export const getDateTimestampToTransactionsArrayObject = (
   historyData: Array<Transaction>,
 ): { [timestamp: string]: Array<Transaction> } => {
-  const dateTimestampToTransactionsObject: {
+  const dateTimestampToTransactions: {
     [timestamp: string]: Array<Transaction>
   } = {}
   historyData.forEach((t) => {
     const timestampAsString = t.timestamp.toString()
-    if (dateTimestampToTransactionsObject[timestampAsString] == null) {
-      dateTimestampToTransactionsObject[timestampAsString] = []
+    if (!dateTimestampToTransactions[timestampAsString]) {
+      dateTimestampToTransactions[timestampAsString] = []
     }
-    dateTimestampToTransactionsObject[timestampAsString].push(t)
+    dateTimestampToTransactions[timestampAsString].push(t)
   })
-  return dateTimestampToTransactionsObject
+  return dateTimestampToTransactions
 }
