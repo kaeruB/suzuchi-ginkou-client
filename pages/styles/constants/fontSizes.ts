@@ -1,0 +1,5 @@
+export const FONT_SIZE_HEADER_PRIMARY = '3rem'
+export const FONT_SIZE_HEADER_SECONDARY = '2rem'
+export const FONT_SIZE_HEADER_TERTIARY = '1.6rem'
+export const FONT_SIZE_PRIMARY = '1.4rem'
+export const FONT_SIZE_SMALL = '1rem'
