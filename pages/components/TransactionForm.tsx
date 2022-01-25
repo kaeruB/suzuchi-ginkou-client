@@ -41,7 +41,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     const timestamp = convertDateToTimestamp(eventTarget.date.value)
 
     return {
-      amount: parseInt(eventTarget.amount.value),
+      amount: eventTarget.amount.value,
       borrowedBy: selectedPerson,
       category: selectedCategory,
       description: eventTarget.description.value,
