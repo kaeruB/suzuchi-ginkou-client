@@ -9,4 +9,11 @@ export const CustomButton = styled.button`
   border-radius: 4px;
   color: white;
   cursor: pointer;
+  transition: all .3s;
+  :disabled {
+    // TODO set color, and set in other file
+    background: #cdcdcd;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 `

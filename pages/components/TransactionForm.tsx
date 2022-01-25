@@ -35,6 +35,10 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     props.defaultValues ? props.defaultValues.category : Category.SHOPPING,
   )
 
+  // TODO: maybe boolean is better? like isAmountVal, isDescVal
+  const [amountVal, setAmountVal] = useState<number>(0)
+  const [descVal, setDescVal] = useState<string>('')
+
   const createRequestBody = (event: SyntheticEvent) => {
     event.preventDefault()
     const eventTarget: EventTarget | any = event.target
@@ -131,6 +135,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
               defaultValue={
                 props.defaultValues ? props.defaultValues.amount : ''
               }
+              onInput={(e)=>setAmountVal(e.target.value)}
             />
           </DoubleColumn>
         </FormRow>
@@ -162,6 +167,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
               defaultValue={
                 props.defaultValues ? props.defaultValues.description : ''
               }
+              onInput={(e)=>setDescVal(e.target.value)}
             />
           </DoubleColumn>
         </FormRow>
@@ -183,8 +189,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
             />
           </DoubleColumn>
         </FormRow>
-
-        <CustomButton type="submit">
+        <CustomButton disabled={amountVal <= 0 || descVal == ''} type="submit">
           {props.requestMethod === RequestMethod.POST
             ? 'Add Transaction'
             : 'Save'}
