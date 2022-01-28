@@ -2,7 +2,7 @@ import { SyntheticEvent, useState, VFC } from 'react'
 import {
   convertDateToTimestamp,
   convertTimestampToDateString,
-  getCurrentDate,
+  getCurrentTimestamp,
 } from '../utils/functions/commons'
 import { Category, Person, RequestMethod, Transaction } from '../models/types'
 import styled from 'styled-components'
@@ -34,22 +34,25 @@ export const TransactionForm: VFC<TransactionFormProps> = (
   const [selectedCategory, setSelectedCategory] = useState<Category>(
     props.defaultValues ? props.defaultValues.category : Category.SHOPPING,
   )
-
-  // TODO: maybe boolean is better? like isAmountVal, isDescVal
-  const [amountVal, setAmountVal] = useState<number>(0)
-  const [descVal, setDescVal] = useState<string>('')
+  const [amountVal, setAmountVal] = useState<number>(
+    props.defaultValues ? props.defaultValues.amount : 0,
+  )
+  const [descVal, setDescVal] = useState<string>(
+    props.defaultValues ? props.defaultValues.description : '',
+  )
+  const [timestampVal, setTimestampVal] = useState<number>(
+    props.defaultValues ? props.defaultValues.timestamp : getCurrentTimestamp,
+  )
 
   const createRequestBody = (event: SyntheticEvent) => {
     event.preventDefault()
-    const eventTarget: EventTarget | any = event.target
-    const timestamp = convertDateToTimestamp(eventTarget.date.value)
 
     return {
-      amount: parseInt(eventTarget.amount.value),
+      amount: amountVal,
       borrowedBy: selectedPerson,
       category: selectedCategory,
-      description: eventTarget.description.value,
-      timestamp,
+      description: descVal,
+      timestamp: timestampVal,
     }
   }
 
@@ -135,7 +138,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
               defaultValue={
                 props.defaultValues ? props.defaultValues.amount : ''
               }
-              onInput={(e)=>setAmountVal(e.target.value)}
+              onInput={(e) => setAmountVal((e.target as any).value)}
             />
           </DoubleColumn>
         </FormRow>
@@ -167,7 +170,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
               defaultValue={
                 props.defaultValues ? props.defaultValues.description : ''
               }
-              onInput={(e)=>setDescVal(e.target.value)}
+              onInput={(e) => setDescVal((e.target as any).value)}
             />
           </DoubleColumn>
         </FormRow>
@@ -180,12 +183,11 @@ export const TransactionForm: VFC<TransactionFormProps> = (
               type="date"
               id="date"
               name="date"
-              defaultValue={
-                props.defaultValues
-                  ? convertTimestampToDateString(props.defaultValues?.timestamp)
-                  : getCurrentDate()
-              }
+              defaultValue={convertTimestampToDateString(timestampVal)}
               autoComplete="date"
+              onChange={(e: SyntheticEvent) =>
+                setTimestampVal(convertDateToTimestamp((e.target as any).value))
+              }
             />
           </DoubleColumn>
         </FormRow>

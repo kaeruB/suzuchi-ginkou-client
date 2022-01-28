@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {COLOR_DELICATE_GRAY} from "../constants/colors";
 
 export const CustomButton = styled.button`
   width: 100%;
@@ -11,8 +12,7 @@ export const CustomButton = styled.button`
   cursor: pointer;
   transition: all .3s;
   :disabled {
-    // TODO set color, and set in other file
-    background: #cdcdcd;
+    background: ${COLOR_DELICATE_GRAY};
     cursor: not-allowed;
     pointer-events: none;
   }
