@@ -16,6 +16,7 @@ import Modal from './components/common/Modal'
 import { CustomButton } from './styles/components/button'
 import { URL_TRANSACTION_SUMMARY } from './utils/constants/endpoints'
 import { fetchTransactions } from './api/transaction'
+import { DEFAULT_HISTORY_ITEMS } from './api/env'
 
 export const Dashboard: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -25,9 +26,15 @@ export const Dashboard: FC = () => {
   const [historyItemToEdit, setHistoryItemToEdit] =
     useState<Transaction | null>(null)
   const [addOrUpdateMode, setAddOrUpdateMode] = useState<PopupType | null>(null)
+  const [historyListLength, setHistoryListLength] = useState<number>(
+    DEFAULT_HISTORY_ITEMS,
+  )
 
   const fetchDashboardData = async () => {
-    const responseData = await fetchTransactions(URL_TRANSACTION_SUMMARY)
+    const responseData = await fetchTransactions(
+      URL_TRANSACTION_SUMMARY,
+      historyListLength,
+    )
     responseData
       ? setDashboardData(responseData)
       : setDashboardData(BankStateTemporaryMock) // fixme: mock
@@ -36,7 +43,7 @@ export const Dashboard: FC = () => {
 
   useEffect(() => {
     fetchDashboardData()
-  }, [])
+  }, [historyListLength])
 
   if (isLoading) {
     return <h2>Loading...</h2>
@@ -64,6 +71,11 @@ export const Dashboard: FC = () => {
     setShowModal(true)
   }
 
+  const loadMoreData = () => {
+    const newHistoryListLength = historyListLength + DEFAULT_HISTORY_ITEMS
+    setHistoryListLength(newHistoryListLength)
+  }
+
   return (
     dashboardData && (
       <DashboardWrapper>
@@ -84,6 +96,9 @@ export const Dashboard: FC = () => {
             showAddOrEditPopup={showAddOrEditPopup}
             fetchDashboardData={fetchDashboardData}
           />
+          <CustomButton onClick={() => loadMoreData()}>
+            Load More Data
+          </CustomButton>
 
           <Modal
             show={showModal}

@@ -1,8 +1,11 @@
 import { DataApi } from './dataApi'
 import { BankState, Transaction } from '../models/types'
 
-export const fetchTransactions = async (url: string): Promise<BankState> => {
-  const { data } = await DataApi.get(url)
+export const fetchTransactions = async (
+  url: string,
+  historyListLength: number,
+): Promise<BankState> => {
+  const { data } = await DataApi.get(url, { params: { historyListLength } })
   return data?.data
 }
 
