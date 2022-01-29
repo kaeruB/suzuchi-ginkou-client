@@ -6,7 +6,7 @@ import { getDateTimestampToTransactionsArrayObject } from '../../utils/functions
 interface HistoryProps {
   historyData: Array<Transaction>
   currency: Currency
-  showEditPopup: (transactionId: string) => void
+  onShowEditModal: (transactionId: string) => void
   fetchDashboardData: () => void
 }
 
@@ -32,7 +32,7 @@ export const History: FC<HistoryProps> = (props: HistoryProps) => {
           key={timestamp}
           historyData={splitByDateTransactions[timestamp]}
           currency={props.currency}
-          showEditPopup={props.showEditPopup}
+          onShowEditModal={props.onShowEditModal}
           fetchDashboardData={props.fetchDashboardData}
         />
       ))

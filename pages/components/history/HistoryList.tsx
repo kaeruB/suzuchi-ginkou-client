@@ -8,7 +8,7 @@ import { convertTimestampToDateString } from '../../utils/functions/commons'
 interface HistoryListProps {
   historyData: Array<Transaction>
   currency: Currency
-  showEditPopup: (transactionId: string) => void
+  onShowEditModal: (transactionId: string) => void
   fetchDashboardData: () => void
 }
 
@@ -19,7 +19,7 @@ export const HistoryList: VFC<HistoryListProps> = (props: HistoryListProps) => {
         transactionData={transactionData}
         key={transactionData._id}
         currency={props.currency}
-        showEditPopup={props.showEditPopup}
+        onShowEditModal={props.onShowEditModal}
         fetchDashboardData={props.fetchDashboardData}
       />
     )

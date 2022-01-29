@@ -17,7 +17,7 @@ import { deleteTransaction } from '../../api/transaction'
 interface HistoryListItemProps {
   transactionData: Transaction
   currency: Currency
-  showEditPopup: (transactionId: string) => void
+  onShowEditModal: (transactionId: string) => void
   fetchDashboardData: () => void
 }
 
@@ -45,7 +45,7 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
         amount={props.transactionData.amount}
         currency={props.currency}
         transactionId={props.transactionData._id!}
-        showEditPopup={props.showEditPopup}
+        onShowEditModal={props.onShowEditModal}
         fetchDashboardData={props.fetchDashboardData}
       />
     </HistoryListItemElement>
@@ -83,7 +83,7 @@ interface HistoryListItemRightContainerProps {
   transactionId: string
   amount: number
   currency: Currency
-  showEditPopup: (transactionId: string) => void
+  onShowEditModal: (transactionId: string) => void
   fetchDashboardData: () => void
 }
 
@@ -108,7 +108,7 @@ const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
       </span>
       <IconButton
         id={props.transactionId}
-        onClick={() => props.showEditPopup(props.transactionId)}
+        onClick={() => props.onShowEditModal(props.transactionId)}
       >
         <IconFactory iconId={IconId.EDIT} size={2} />
       </IconButton>

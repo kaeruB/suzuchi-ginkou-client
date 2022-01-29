@@ -36,13 +36,13 @@ export const Dashboard: FC = () => {
     return <h2>Loading...</h2>
   }
 
-  const showAddPopup = () => {
+  const onShowCreateModal = () => {
     setIsEditMode(false)
     setHistoryItemToEdit(null)
     setShowModal(true)
   }
 
-  const showEditPopup = (transactionId: string) => {
+  const onShowEditModal = (transactionId: string) => {
     setIsEditMode(true)
 
     const transaction =
@@ -58,7 +58,7 @@ export const Dashboard: FC = () => {
       <DashboardWrapper>
         <LeftPanel>
           <Header summary={dashboardData.summary} currency={currency} />
-          <CustomButton onClick={() => showAddPopup()}>
+          <CustomButton onClick={() => onShowCreateModal()}>
             Add New Transaction
           </CustomButton>
         </LeftPanel>
@@ -68,7 +68,7 @@ export const Dashboard: FC = () => {
           <History
             historyData={dashboardData.history}
             currency={currency}
-            showEditPopup={showEditPopup}
+            onShowEditModal={onShowEditModal}
             fetchDashboardData={fetchDashboardData}
           />
 
