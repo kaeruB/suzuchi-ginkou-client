@@ -43,8 +43,3 @@ export enum RequestMethod {
   POST = 'POST',
   DELETE = 'DELETE',
 }
-
-export enum PopupType {
-  ADD = 'ADD',
-  UPDATE = 'UPDATE',
-}
