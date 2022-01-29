@@ -1,8 +1,8 @@
-import { SyntheticEvent, useState, VFC } from 'react'
+import { ChangeEvent, SyntheticEvent, useState, VFC } from 'react'
 import {
   convertDateToTimestamp,
   convertTimestampToDateString,
-  getCurrentTimestamp,
+  getCurrentDate,
 } from '../utils/functions/commons'
 import { Category, Person, RequestMethod, Transaction } from '../models/types'
 import styled from 'styled-components'
@@ -28,31 +28,35 @@ interface TransactionFormProps {
 export const TransactionForm: VFC<TransactionFormProps> = (
   props: TransactionFormProps,
 ) => {
-  const [selectedPerson, setSelectedPerson] = useState<Person>(
+  const [borrowedBy, setBorrowedBy] = useState<Person>(
     props.defaultValues ? props.defaultValues.borrowedBy : Person.AGATA,
   )
-  const [selectedCategory, setSelectedCategory] = useState<Category>(
+  const [category, setCategory] = useState<Category>(
     props.defaultValues ? props.defaultValues.category : Category.SHOPPING,
   )
-  const [amountVal, setAmountVal] = useState<number>(
-    props.defaultValues ? props.defaultValues.amount : 0,
+  const [amountString, setAmountString] = useState<string>(
+    props.defaultValues ? props.defaultValues.amount.toString() : '0',
   )
-  const [descVal, setDescVal] = useState<string>(
+  const [description, setDescription] = useState<string>(
     props.defaultValues ? props.defaultValues.description : '',
   )
-  const [timestampVal, setTimestampVal] = useState<number>(
-    props.defaultValues ? props.defaultValues.timestamp : getCurrentTimestamp,
+  const [date, setDate] = useState<string>(
+    props.defaultValues
+      ? convertTimestampToDateString(props.defaultValues.timestamp)
+      : getCurrentDate(),
   )
 
   const createRequestBody = (event: SyntheticEvent) => {
     event.preventDefault()
 
+    const timestamp = convertDateToTimestamp(date)
+    const amount = Number(amountString)
     return {
-      amount: amountVal,
-      borrowedBy: selectedPerson,
-      category: selectedCategory,
-      description: descVal,
-      timestamp: timestampVal,
+      amount,
+      borrowedBy,
+      category,
+      description,
+      timestamp,
     }
   }
 
@@ -77,26 +81,30 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     afterSubmit(result)
   }
 
-  const renderCategoryButton = (category: Category) => {
+  const renderCategoryButton = (buttonCategory: Category) => {
     return (
       <FormButton
-        onClick={() => setSelectedCategory(category)}
-        isActive={selectedCategory === category}
+        onClick={() => setCategory(buttonCategory)}
+        isActive={category === buttonCategory}
         type={'button'}
       >
-        <IconFactory size={4} iconId={category} />
+        <IconFactory size={4} iconId={buttonCategory} />
       </FormButton>
     )
   }
 
-  const renderPersonButton = (person: Person) => {
+  const renderPersonButton = (buttonPerson: Person) => {
     return (
       <FormButton
-        onClick={() => setSelectedPerson(person)}
-        isActive={selectedPerson === person}
+        onClick={() => setBorrowedBy(buttonPerson)}
+        isActive={borrowedBy === buttonPerson}
         type={'button'}
       >
-        <RoundPicture size={5} src={IMG_PATHS[person]} alt={person} />
+        <RoundPicture
+          size={5}
+          src={IMG_PATHS[buttonPerson]}
+          alt={buttonPerson}
+        />
       </FormButton>
     )
   }
@@ -135,10 +143,10 @@ export const TransactionForm: VFC<TransactionFormProps> = (
               autoComplete="amount"
               name="amount"
               required
-              defaultValue={
-                props.defaultValues ? props.defaultValues.amount : ''
+              defaultValue={amountString}
+              onInput={(e: ChangeEvent<HTMLInputElement>) =>
+                setAmountString(e.target.value)
               }
-              onInput={(e) => setAmountVal((e.target as any).value)}
             />
           </DoubleColumn>
         </FormRow>
@@ -167,10 +175,10 @@ export const TransactionForm: VFC<TransactionFormProps> = (
               autoComplete="description"
               name="description"
               required
-              defaultValue={
-                props.defaultValues ? props.defaultValues.description : ''
+              defaultValue={description}
+              onInput={(e: ChangeEvent<HTMLInputElement>) =>
+                setDescription(e.target.value)
               }
-              onInput={(e) => setDescVal((e.target as any).value)}
             />
           </DoubleColumn>
         </FormRow>
@@ -183,15 +191,18 @@ export const TransactionForm: VFC<TransactionFormProps> = (
               type="date"
               id="date"
               name="date"
-              defaultValue={convertTimestampToDateString(timestampVal)}
+              defaultValue={date}
               autoComplete="date"
-              onChange={(e: SyntheticEvent) =>
-                setTimestampVal(convertDateToTimestamp((e.target as any).value))
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setDate(e.target.value)
               }
             />
           </DoubleColumn>
         </FormRow>
-        <CustomButton disabled={amountVal <= 0 || descVal == ''} type="submit">
+        <CustomButton
+          disabled={amountString === '' || description === ''}
+          type="submit"
+        >
           {props.requestMethod === RequestMethod.POST
             ? 'Add Transaction'
             : 'Save'}
