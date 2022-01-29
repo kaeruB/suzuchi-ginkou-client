@@ -21,7 +21,7 @@ export const Dashboard: FC = () => {
     useState<Transaction | null>(null)
   const [isEditMode, setIsEditMode] = useState<boolean>(false)
   const [historyListLength, setHistoryListLength] = useState<number>(
-      DEFAULT_HISTORY_ITEMS,
+    DEFAULT_HISTORY_ITEMS,
   )
 
   const fetchDashboardData = async () => {
@@ -67,40 +67,42 @@ export const Dashboard: FC = () => {
 
   return (
     dashboardData && (
-      <DashboardWrapper>
-        <LeftPanel>
-          <Header summary={dashboardData.summary} currency={currency} />
-          <CustomButton onClick={() => onShowCreateModal()}>
-            Add New Transaction
-          </CustomButton>
-        </LeftPanel>
+      <>
+        <DashboardWrapper>
+          <LeftPanel>
+            <Header summary={dashboardData.summary} currency={currency} />
+            <CreateButton onClick={() => onShowCreateModal()}>
+              Add New Transaction
+            </CreateButton>
+          </LeftPanel>
 
-        <RightPanel>
-          <SubHeader>Transaction History</SubHeader>
-          <History
-            historyData={dashboardData.history}
-            currency={currency}
-            onShowEditModal={onShowEditModal}
-            fetchDashboardData={fetchDashboardData}
-          />
-          <CustomButton onClick={() => loadMoreData()}>
-            Load More Data
-          </CustomButton>
-
-          <Modal
-            show={showModal}
-            onClose={() => setShowModal(false)}
-            title={isEditMode ? 'Edit Transaction' : 'Add Transaction'}
-          >
-            <TransactionForm
-              isEditMode={isEditMode}
-              defaultValues={historyItemToEdit}
+          <RightPanel>
+            <SubHeader>Transaction History</SubHeader>
+            <History
+              historyData={dashboardData.history}
+              currency={currency}
+              onShowEditModal={onShowEditModal}
               fetchDashboardData={fetchDashboardData}
-              setShowModal={setShowModal}
             />
-          </Modal>
-        </RightPanel>
-      </DashboardWrapper>
+            <LoadMoreButton onClick={() => loadMoreData()}>
+              Load More Data
+            </LoadMoreButton>
+          </RightPanel>
+        </DashboardWrapper>
+
+        <Modal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          title={isEditMode ? 'Edit Transaction' : 'Add Transaction'}
+        >
+          <TransactionForm
+            isEditMode={isEditMode}
+            defaultValues={historyItemToEdit}
+            fetchDashboardData={fetchDashboardData}
+            setShowModal={setShowModal}
+          />
+        </Modal>
+      </>
     )
   )
 }
@@ -121,6 +123,15 @@ const RightPanel = styled.div`
 
 const SubHeader = styled.h2`
   font-size: ${FONT_SIZE_HEADER_SECONDARY};
+`
+
+const CreateButton = styled(CustomButton)`
+  margin-top: 10rem;
+`
+
+const LoadMoreButton = styled(CustomButton)`
+  max-width: 60rem;
+  margin: 3rem;
 `
 
 export default Dashboard
