@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, VFC } from 'react'
+import { ChangeEvent, useEffect, useState, VFC } from 'react'
 import {
   convertDateToTimestamp,
   convertTimestampToDateString,
@@ -28,6 +28,7 @@ interface TransactionFormProps {
 export const TransactionForm: VFC<TransactionFormProps> = (
   props: TransactionFormProps,
 ) => {
+  const [isEditMode, setIsEditMode] = useState<boolean>(false)
   const [borrowedBy, setBorrowedBy] = useState<Person>(
     props.defaultValues ? props.defaultValues.borrowedBy : Person.AGATA,
   )
@@ -44,6 +45,11 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     props.defaultValues
       ? convertTimestampToDateString(props.defaultValues.timestamp)
       : getCurrentDate(),
+  )
+
+  useEffect(
+    () => setIsEditMode(props.requestMethod === RequestMethod.PATCH),
+    [props.requestMethod],
   )
 
   const createRequestBody = () => ({
@@ -188,14 +194,10 @@ export const TransactionForm: VFC<TransactionFormProps> = (
       <CustomButton
         disabled={amount.toString() === '' || description === ''}
         onClick={() =>
-          props.requestMethod === RequestMethod.PATCH
-            ? patchTransactionOnSubmit()
-            : postTransactionOnSubmit()
+          isEditMode ? patchTransactionOnSubmit() : postTransactionOnSubmit()
         }
       >
-        {props.requestMethod === RequestMethod.POST
-          ? 'Add Transaction'
-          : 'Save'}
+        {isEditMode ? 'Save' : 'Add Transaction'}
       </CustomButton>
     </TransactionFormWrapper>
   )
