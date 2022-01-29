@@ -1,13 +1,6 @@
-import { FC, MouseEvent, useEffect, useState } from 'react'
-import {
-  BankState,
-  Currency,
-  PopupType,
-  RequestMethod,
-  Transaction,
-} from './models/types'
+import { FC, useEffect, useState } from 'react'
+import { BankState, Currency, Transaction } from './models/types'
 import { BankStateTemporaryMock } from './mock/data'
-import CreateTransactionForm from './components/TransactionForm'
 import Header from './components/header/Header'
 import styled from 'styled-components'
 import { FONT_SIZE_HEADER_SECONDARY } from './styles/constants/fontSizes'
@@ -16,6 +9,7 @@ import Modal from './components/common/Modal'
 import { CustomButton } from './styles/components/button'
 import { URL_TRANSACTION_SUMMARY } from './utils/constants/endpoints'
 import { fetchTransactions } from './api/transaction'
+import TransactionForm from './components/TransactionForm'
 
 export const Dashboard: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -24,13 +18,13 @@ export const Dashboard: FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
   const [historyItemToEdit, setHistoryItemToEdit] =
     useState<Transaction | null>(null)
-  const [addOrUpdateMode, setAddOrUpdateMode] = useState<PopupType | null>(null)
+  const [isEditMode, setIsEditMode] = useState<boolean>(false)
 
   const fetchDashboardData = async () => {
     const responseData = await fetchTransactions(URL_TRANSACTION_SUMMARY)
     responseData
       ? setDashboardData(responseData)
-      : setDashboardData(BankStateTemporaryMock) // fixme: mock
+      : setDashboardData(BankStateTemporaryMock)
     setIsLoading(false)
   }
 
@@ -42,24 +36,19 @@ export const Dashboard: FC = () => {
     return <h2>Loading...</h2>
   }
 
-  const showAddOrEditPopup = (
-    e: MouseEvent,
-    addOrUpdate: PopupType,
-    transactionId?: string,
-  ) => {
-    setAddOrUpdateMode(addOrUpdate)
-    if (addOrUpdate === PopupType.ADD) {
-      setHistoryItemToEdit(null)
-    } else if (dashboardData) {
-      const transaction = dashboardData.history.find(
-        (t) => t._id === transactionId,
-      )
-      if (transaction) {
-        setHistoryItemToEdit(transaction)
-      } else {
-        setHistoryItemToEdit(null)
-      }
-    }
+  const onShowCreateModal = () => {
+    setIsEditMode(false)
+    setHistoryItemToEdit(null)
+    setShowModal(true)
+  }
+
+  const onShowEditModal = (transactionId: string) => {
+    setIsEditMode(true)
+
+    const transaction =
+      dashboardData &&
+      dashboardData.history.find((t: Transaction) => t._id === transactionId)
+    transaction ? setHistoryItemToEdit(transaction) : setHistoryItemToEdit(null)
 
     setShowModal(true)
   }
@@ -69,9 +58,7 @@ export const Dashboard: FC = () => {
       <DashboardWrapper>
         <LeftPanel>
           <Header summary={dashboardData.summary} currency={currency} />
-          <CustomButton
-            onClick={(e: MouseEvent) => showAddOrEditPopup(e, PopupType.ADD)}
-          >
+          <CustomButton onClick={() => onShowCreateModal()}>
             Add New Transaction
           </CustomButton>
         </LeftPanel>
@@ -81,25 +68,17 @@ export const Dashboard: FC = () => {
           <History
             historyData={dashboardData.history}
             currency={currency}
-            showAddOrEditPopup={showAddOrEditPopup}
+            onShowEditModal={onShowEditModal}
             fetchDashboardData={fetchDashboardData}
           />
 
           <Modal
             show={showModal}
             onClose={() => setShowModal(false)}
-            title={
-              addOrUpdateMode === PopupType.ADD
-                ? 'Add Transaction'
-                : 'Edit Transaction'
-            }
+            title={isEditMode ? 'Edit Transaction' : 'Add Transaction'}
           >
-            <CreateTransactionForm
-              requestMethod={
-                addOrUpdateMode === PopupType.ADD
-                  ? RequestMethod.POST
-                  : RequestMethod.PATCH
-              }
+            <TransactionForm
+              isEditMode={isEditMode}
               defaultValues={historyItemToEdit}
               fetchDashboardData={fetchDashboardData}
               setShowModal={setShowModal}
