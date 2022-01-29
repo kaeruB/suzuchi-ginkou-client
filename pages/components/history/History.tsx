@@ -1,16 +1,12 @@
-import { FC, MouseEvent, useEffect, useState } from 'react'
-import { Currency, PopupType, Transaction } from '../../models/types'
+import { FC, useEffect, useState } from 'react'
+import { Currency, Transaction } from '../../models/types'
 import HistoryList from './HistoryList'
 import { getDateTimestampToTransactionsArrayObject } from '../../utils/functions/commons'
 
 interface HistoryProps {
   historyData: Array<Transaction>
   currency: Currency
-  showAddOrEditPopup: (
-    e: MouseEvent,
-    popupType: PopupType,
-    transactionId: string,
-  ) => void
+  showEditPopup: (transactionId: string) => void
   fetchDashboardData: () => void
 }
 
@@ -36,7 +32,7 @@ export const History: FC<HistoryProps> = (props: HistoryProps) => {
           key={timestamp}
           historyData={splitByDateTransactions[timestamp]}
           currency={props.currency}
-          showAddOrEditPopup={props.showAddOrEditPopup}
+          showEditPopup={props.showEditPopup}
           fetchDashboardData={props.fetchDashboardData}
         />
       ))

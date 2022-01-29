@@ -1,10 +1,10 @@
-import { ChangeEvent, useEffect, useState, VFC } from 'react'
+import { ChangeEvent, useState, VFC } from 'react'
 import {
   convertDateToTimestamp,
   convertTimestampToDateString,
   getCurrentDate,
 } from '../utils/functions/commons'
-import { Category, Person, RequestMethod, Transaction } from '../models/types'
+import { Category, Person, Transaction } from '../models/types'
 import styled from 'styled-components'
 import { FONT_SIZE_PRIMARY } from '../styles/constants/fontSizes'
 import { CustomButton } from '../styles/components/button'
@@ -19,7 +19,7 @@ import { IconFactory } from './IconFactory'
 import { patchTransaction, postTransaction } from '../api/transaction'
 
 interface TransactionFormProps {
-  requestMethod: RequestMethod
+  isEditMode: boolean
   defaultValues: Transaction | null
   fetchDashboardData: () => void
   setShowModal: (show: boolean) => void
@@ -28,7 +28,6 @@ interface TransactionFormProps {
 export const TransactionForm: VFC<TransactionFormProps> = (
   props: TransactionFormProps,
 ) => {
-  const [isEditMode, setIsEditMode] = useState<boolean>(false)
   const [borrowedBy, setBorrowedBy] = useState<Person>(
     props.defaultValues ? props.defaultValues.borrowedBy : Person.AGATA,
   )
@@ -45,11 +44,6 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     props.defaultValues
       ? convertTimestampToDateString(props.defaultValues.timestamp)
       : getCurrentDate(),
-  )
-
-  useEffect(
-    () => setIsEditMode(props.requestMethod === RequestMethod.PATCH),
-    [props.requestMethod],
   )
 
   const createRequestBody = () => ({
@@ -194,10 +188,12 @@ export const TransactionForm: VFC<TransactionFormProps> = (
       <CustomButton
         disabled={amount.toString() === '' || description === ''}
         onClick={() =>
-          isEditMode ? patchTransactionOnSubmit() : postTransactionOnSubmit()
+          props.isEditMode
+            ? patchTransactionOnSubmit()
+            : postTransactionOnSubmit()
         }
       >
-        {isEditMode ? 'Save' : 'Add Transaction'}
+        {props.isEditMode ? 'Save' : 'Add Transaction'}
       </CustomButton>
     </TransactionFormWrapper>
   )

@@ -5,7 +5,6 @@ import {
   Currency,
   IconId,
   Person,
-  PopupType,
   Transaction,
 } from '../../models/types'
 import RoundPicture from '../common/RoundPicture'
@@ -18,29 +17,7 @@ import { deleteTransaction } from '../../api/transaction'
 interface HistoryListItemProps {
   transactionData: Transaction
   currency: Currency
-  showAddOrEditPopup: (
-    e: MouseEvent,
-    popupType: PopupType,
-    transactionId: string,
-  ) => void
-  fetchDashboardData: () => void
-}
-
-interface HistoryListItemLeftContainerProps {
-  personWhoPaid: Person
-  category: Category
-  description: string
-}
-
-interface HistoryListItemRightContainerProps {
-  transactionId: string
-  amount: number
-  currency: Currency
-  showAddOrEditPopup: (
-    e: MouseEvent,
-    popupType: PopupType,
-    transactionId: string,
-  ) => void
+  showEditPopup: (transactionId: string) => void
   fetchDashboardData: () => void
 }
 
@@ -68,11 +45,17 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
         amount={props.transactionData.amount}
         currency={props.currency}
         transactionId={props.transactionData._id!}
-        showAddOrEditPopup={props.showAddOrEditPopup}
+        showEditPopup={props.showEditPopup}
         fetchDashboardData={props.fetchDashboardData}
       />
     </HistoryListItemElement>
   )
+}
+
+interface HistoryListItemLeftContainerProps {
+  personWhoPaid: Person
+  category: Category
+  description: string
 }
 
 const HistoryListItemLeftContainer: VFC<HistoryListItemLeftContainerProps> = (
@@ -96,6 +79,14 @@ const HistoryListItemLeftContainer: VFC<HistoryListItemLeftContainerProps> = (
   )
 }
 
+interface HistoryListItemRightContainerProps {
+  transactionId: string
+  amount: number
+  currency: Currency
+  showEditPopup: (transactionId: string) => void
+  fetchDashboardData: () => void
+}
+
 const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
   props: HistoryListItemRightContainerProps,
 ) => {
@@ -117,9 +108,7 @@ const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
       </span>
       <IconButton
         id={props.transactionId}
-        onClick={(e: MouseEvent) =>
-          props.showAddOrEditPopup(e, PopupType.UPDATE, props.transactionId!)
-        }
+        onClick={() => props.showEditPopup(props.transactionId)}
       >
         <IconFactory iconId={IconId.EDIT} size={2} />
       </IconButton>
