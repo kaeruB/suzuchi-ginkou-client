@@ -1,4 +1,4 @@
-import { ChangeEvent, SyntheticEvent, useState, VFC } from 'react'
+import { ChangeEvent, useState, VFC } from 'react'
 import {
   convertDateToTimestamp,
   convertTimestampToDateString,
@@ -34,8 +34,8 @@ export const TransactionForm: VFC<TransactionFormProps> = (
   const [category, setCategory] = useState<Category>(
     props.defaultValues ? props.defaultValues.category : Category.SHOPPING,
   )
-  const [amountString, setAmountString] = useState<string>(
-    props.defaultValues ? props.defaultValues.amount.toString() : '0',
+  const [amount, setAmount] = useState<number>(
+    props.defaultValues ? props.defaultValues.amount : 0,
   )
   const [description, setDescription] = useState<string>(
     props.defaultValues ? props.defaultValues.description : '',
@@ -46,19 +46,13 @@ export const TransactionForm: VFC<TransactionFormProps> = (
       : getCurrentDate(),
   )
 
-  const createRequestBody = (event: SyntheticEvent) => {
-    event.preventDefault()
-
-    const timestamp = convertDateToTimestamp(date)
-    const amount = Number(amountString)
-    return {
-      amount,
-      borrowedBy,
-      category,
-      description,
-      timestamp,
-    }
-  }
+  const createRequestBody = () => ({
+    amount,
+    borrowedBy,
+    category,
+    description,
+    timestamp: convertDateToTimestamp(date),
+  })
 
   const afterSubmit = (result: Transaction) => {
     if (result) {
@@ -67,16 +61,16 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     }
   }
 
-  const patchTransactionOnSubmit = async (event: SyntheticEvent) => {
-    const body = createRequestBody(event)
+  const patchTransactionOnSubmit = async () => {
+    const body = createRequestBody()
     const transactionId = (props.defaultValues && props.defaultValues._id) || ''
     const url = URL_TRANSACTION_PATCH(transactionId)
     const result = await patchTransaction(url, body)
     afterSubmit(result)
   }
 
-  const postTransactionOnSubmit = async (event: SyntheticEvent) => {
-    const body = createRequestBody(event)
+  const postTransactionOnSubmit = async () => {
+    const body = createRequestBody()
     const result = await postTransaction(URL_TRANSACTION_POST, body)
     afterSubmit(result)
   }
@@ -110,109 +104,104 @@ export const TransactionForm: VFC<TransactionFormProps> = (
   }
 
   return (
-    <div
-      key={props.defaultValues ? props.defaultValues._id : 'transaction-input'}
-    >
-      <TransactionFormWrapper
-        onSubmit={
+    <TransactionFormWrapper>
+      <FormRow>
+        <Column>
+          <FormRowLabel htmlFor="borrowedBy">Borrowed By</FormRowLabel>
+        </Column>
+        <DoubleColumn>
+          <FlexRow>
+            {renderPersonButton(Person.AGATA)}
+            {renderPersonButton(Person.KAZU)}
+          </FlexRow>
+        </DoubleColumn>
+      </FormRow>
+
+      <FormRow>
+        <Column>
+          <FormRowLabel htmlFor="amount">Amount</FormRowLabel>
+        </Column>
+        <DoubleColumn>
+          <FormRowInput
+            type="number"
+            min="0"
+            id="amount"
+            autoComplete="amount"
+            name="amount"
+            required
+            defaultValue={amount}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setAmount(Number(e.target.value))
+            }
+          />
+        </DoubleColumn>
+      </FormRow>
+      <FormRow>
+        <Column>
+          <FormRowLabel htmlFor="category">Category</FormRowLabel>
+        </Column>
+        <DoubleColumn>
+          <FlexRow>
+            {renderCategoryButton(Category.SHOPPING)}
+            {renderCategoryButton(Category.HOME)}
+            {renderCategoryButton(Category.HEALTH)}
+            {renderCategoryButton(Category.ENTERTAINMENT)}
+            {renderCategoryButton(Category.OTHER)}
+          </FlexRow>
+        </DoubleColumn>
+      </FormRow>
+      <FormRow>
+        <Column>
+          <FormRowLabel htmlFor="description">Description</FormRowLabel>
+        </Column>
+        <DoubleColumn>
+          <FormRowInput
+            type="text"
+            id="description"
+            autoComplete="description"
+            name="description"
+            required
+            defaultValue={description}
+            onInput={(e: ChangeEvent<HTMLInputElement>) =>
+              setDescription(e.target.value)
+            }
+          />
+        </DoubleColumn>
+      </FormRow>
+      <FormRow>
+        <Column>
+          <FormRowLabel htmlFor="date">Date</FormRowLabel>
+        </Column>
+        <DoubleColumn>
+          <FormRowInput
+            type="date"
+            id="date"
+            name="date"
+            defaultValue={date}
+            autoComplete="date"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setDate(e.target.value)
+            }
+          />
+        </DoubleColumn>
+      </FormRow>
+      <CustomButton
+        disabled={amount.toString() === '' || description === ''}
+        onClick={() =>
           props.requestMethod === RequestMethod.PATCH
-            ? patchTransactionOnSubmit
-            : postTransactionOnSubmit
+            ? patchTransactionOnSubmit()
+            : postTransactionOnSubmit()
         }
       >
-        <FormRow>
-          <Column>
-            <FormRowLabel htmlFor="borrowedBy">Borrowed By</FormRowLabel>
-          </Column>
-          <DoubleColumn>
-            <FlexRow>
-              {renderPersonButton(Person.AGATA)}
-              {renderPersonButton(Person.KAZU)}
-            </FlexRow>
-          </DoubleColumn>
-        </FormRow>
-
-        <FormRow>
-          <Column>
-            <FormRowLabel htmlFor="amount">Amount</FormRowLabel>
-          </Column>
-          <DoubleColumn>
-            <FormRowInput
-              type="number"
-              id="amount"
-              autoComplete="amount"
-              name="amount"
-              required
-              defaultValue={amountString}
-              onInput={(e: ChangeEvent<HTMLInputElement>) =>
-                setAmountString(e.target.value)
-              }
-            />
-          </DoubleColumn>
-        </FormRow>
-        <FormRow>
-          <Column>
-            <FormRowLabel htmlFor="category">Category</FormRowLabel>
-          </Column>
-          <DoubleColumn>
-            <FlexRow>
-              {renderCategoryButton(Category.SHOPPING)}
-              {renderCategoryButton(Category.HOME)}
-              {renderCategoryButton(Category.HEALTH)}
-              {renderCategoryButton(Category.ENTERTAINMENT)}
-              {renderCategoryButton(Category.OTHER)}
-            </FlexRow>
-          </DoubleColumn>
-        </FormRow>
-        <FormRow>
-          <Column>
-            <FormRowLabel htmlFor="description">Description</FormRowLabel>
-          </Column>
-          <DoubleColumn>
-            <FormRowInput
-              type="text"
-              id="description"
-              autoComplete="description"
-              name="description"
-              required
-              defaultValue={description}
-              onInput={(e: ChangeEvent<HTMLInputElement>) =>
-                setDescription(e.target.value)
-              }
-            />
-          </DoubleColumn>
-        </FormRow>
-        <FormRow>
-          <Column>
-            <FormRowLabel htmlFor="date">Date</FormRowLabel>
-          </Column>
-          <DoubleColumn>
-            <FormRowInput
-              type="date"
-              id="date"
-              name="date"
-              defaultValue={date}
-              autoComplete="date"
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setDate(e.target.value)
-              }
-            />
-          </DoubleColumn>
-        </FormRow>
-        <CustomButton
-          disabled={amountString === '' || description === ''}
-          type="submit"
-        >
-          {props.requestMethod === RequestMethod.POST
-            ? 'Add Transaction'
-            : 'Save'}
-        </CustomButton>
-      </TransactionFormWrapper>
-    </div>
+        {props.requestMethod === RequestMethod.POST
+          ? 'Add Transaction'
+          : 'Save'}
+      </CustomButton>
+    </TransactionFormWrapper>
   )
 }
 
-const TransactionFormWrapper = styled.form`
+const TransactionFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   font-size: ${FONT_SIZE_PRIMARY};
