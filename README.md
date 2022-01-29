@@ -28,7 +28,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
+## Test
+```
+$ npm run test
+```
+
 ## TODO
-* write test code (JEST)
 * create _src_ folder, move files from _pages_ folder (correct imports - make them from src folder, not '.../...' etc.)
 * remove mock from Dashboard.ts (fetchDashboardData func) and add mocks like a pro
