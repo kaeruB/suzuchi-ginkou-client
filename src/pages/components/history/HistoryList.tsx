@@ -1,9 +1,9 @@
 import { VFC } from 'react'
 import styled from 'styled-components'
-import { Currency, Transaction } from '../../models/types'
+import { Currency, Transaction } from '../../../models/types'
 import HistoryListItem from './HistoryListItem'
-import { FONT_SIZE_PRIMARY } from '../../styles/constants/fontSizes'
-import { convertTimestampToDateString } from '../../utils/functions/commons'
+import { FONT_SIZE_PRIMARY } from '../../../styles/constants/fontSizes'
+import { convertTimestampToDateString } from '../../../utils/functions/commons'
 
 interface HistoryListProps {
   historyData: Array<Transaction>

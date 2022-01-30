@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
-import { Currency, Transaction } from '../../models/types'
+import { Currency, Transaction } from '../../../models/types'
 import HistoryList from './HistoryList'
-import { getDateTimestampToTransactionsArrayObject } from '../../utils/functions/commons'
+import { getDateTimestampToTransactionsArrayObject } from '../../../utils/functions/commons'
 
 interface HistoryProps {
   historyData: Array<Transaction>

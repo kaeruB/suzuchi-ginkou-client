@@ -1,15 +1,15 @@
 import { FC, useEffect, useState } from 'react'
-import { BankState, Currency, Transaction } from './models/types'
+import { BankState, Currency, Transaction } from '../models/types'
 import Header from './components/header/Header'
 import styled from 'styled-components'
-import { FONT_SIZE_HEADER_SECONDARY } from './styles/constants/fontSizes'
+import { FONT_SIZE_HEADER_SECONDARY } from '../styles/constants/fontSizes'
 import History from './components/history/History'
 import Modal from './components/common/Modal'
-import { CustomButton } from './styles/components/button'
-import { URL_TRANSACTION_SUMMARY } from './utils/constants/endpoints'
-import { fetchTransactions } from './api/transaction'
+import { CustomButton } from '../styles/components/button'
+import { URL_TRANSACTION_SUMMARY } from '../utils/constants/endpoints'
+import { fetchTransactions } from '../api/transaction'
 import TransactionForm from './components/TransactionForm'
-import { DEFAULT_HISTORY_ITEMS } from './api/env'
+import { DEFAULT_HISTORY_ITEMS } from '../api/env'
 
 export const Dashboard: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
