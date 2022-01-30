@@ -3,7 +3,6 @@ import {COLOR_DELICATE_GRAY} from "../constants/colors";
 
 export const CustomButton = styled.button`
   width: 100%;
-  margin-top: 10rem;
   border: none;
   background: pink;
   height: 3.5rem;

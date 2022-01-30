@@ -1,5 +1,5 @@
-# 🏦 鈴地銀行 - Client
-Track borrowed to your boyfriend money.
+# 🏦 Suzuchi Ginkou - Client
+Track money borrowed by your partner.
 
 ## 🖥 About
 * Next.js
