@@ -1,5 +1,4 @@
 import { DATE_PARTS_SEPARATOR } from '../constants/commons'
-import { Transaction } from '../../models/types'
 
 export const formatNumberWithSpaces = (n: number | null): string | null => {
   if (n == null) return null
@@ -22,18 +21,3 @@ export const convertDateToTimestamp = (date: string): number => Date.parse(date)
 export const convertTimestampToDateString = (timestamp: number) =>
   parseDateObjToDateString(new Date(timestamp))
 
-export const getDateTimestampToTransactionsArrayObject = (
-  historyData: Array<Transaction>,
-): { [timestamp: string]: Array<Transaction> } => {
-  const dateTimestampToTransactions: {
-    [timestamp: string]: Array<Transaction>
-  } = {}
-  historyData.forEach((t) => {
-    const timestampAsString = t.timestamp.toString()
-    if (!dateTimestampToTransactions[timestampAsString]) {
-      dateTimestampToTransactions[timestampAsString] = []
-    }
-    dateTimestampToTransactions[timestampAsString].push(t)
-  })
-  return dateTimestampToTransactions
-}

@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styled from 'styled-components'
-import Dashboard from './Dashboard'
-import {COLOR_FONT_PRIMARY} from "../styles/constants/colors";
+import Dashboard from '../layouts/dashboard/Dashboard'
+import {COLOR_FONT_PRIMARY} from "../../styles/constants/colors";
 
 const Home: NextPage = () => {
   return (

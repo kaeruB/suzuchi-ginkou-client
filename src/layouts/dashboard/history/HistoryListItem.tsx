@@ -7,9 +7,9 @@ import {
   Person,
   Transaction,
 } from '../../../models/types'
-import RoundPicture from '../common/RoundPicture'
+import RoundPicture from '../../commons/RoundPicture'
 import { IMG_PATHS } from '../../../utils/constants/commons'
-import { IconFactory } from '../IconFactory'
+import { IconFactory } from '../../commons/IconFactory'
 import { URL_TRANSACTION_PATCH } from '../../../utils/constants/endpoints'
 import { formatNumberWithSpaces } from '../../../utils/functions/commons'
 import { deleteTransaction } from '../../../api/transaction'

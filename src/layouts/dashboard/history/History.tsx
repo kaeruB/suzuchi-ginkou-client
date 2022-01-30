@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { Currency, Transaction } from '../../../models/types'
 import HistoryList from './HistoryList'
-import { getDateTimestampToTransactionsArrayObject } from '../../../utils/functions/commons'
+import {getDateTimestampToTransactionsArrayObject} from "../../../transformations/history";
 
 interface HistoryProps {
   historyData: Array<Transaction>
@@ -16,11 +16,7 @@ export const History: FC<HistoryProps> = (props: HistoryProps) => {
   } | null>(null)
 
   useEffect(() => {
-    const historyDataDescending = props.historyData
-    const dateTimestampToTransactionsObject: {
-      [timestamp: string]: Array<Transaction>
-    } = getDateTimestampToTransactionsArrayObject(historyDataDescending)
-
+    const dateTimestampToTransactionsObject = getDateTimestampToTransactionsArrayObject(props.historyData)
     setSplitByDateTransactions(dateTimestampToTransactionsObject)
   }, [props.historyData])
 

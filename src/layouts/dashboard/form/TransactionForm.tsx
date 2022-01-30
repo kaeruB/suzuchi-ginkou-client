@@ -3,20 +3,20 @@ import {
   convertDateToTimestamp,
   convertTimestampToDateString,
   getCurrentDate,
-} from '../../utils/functions/commons'
-import { Category, Person, Transaction } from '../../models/types'
+} from '../../../utils/functions/commons'
+import { Category, Person, Transaction } from '../../../models/types'
 import styled from 'styled-components'
-import { FONT_SIZE_PRIMARY } from '../../styles/constants/fontSizes'
-import { CustomButton } from '../../styles/components/button'
+import { FONT_SIZE_PRIMARY } from '../../../../styles/constants/fontSizes'
+import { CustomButton } from '../../../../styles/components/button'
 import {
   URL_TRANSACTION_PATCH,
   URL_TRANSACTION_POST,
-} from '../../utils/constants/endpoints'
-import RoundPicture from './common/RoundPicture'
-import { COLOR_MEDIUM } from '../../styles/constants/colors'
-import { IMG_PATHS } from '../../utils/constants/commons'
-import { IconFactory } from './IconFactory'
-import { patchTransaction, postTransaction } from '../../api/transaction'
+} from '../../../utils/constants/endpoints'
+import RoundPicture from '../../commons/RoundPicture'
+import { COLOR_MEDIUM } from '../../../../styles/constants/colors'
+import { IMG_PATHS } from '../../../utils/constants/commons'
+import { IconFactory } from '../../commons/IconFactory'
+import { patchTransaction, postTransaction } from '../../../api/transaction'
 
 interface TransactionFormProps {
   isEditMode: boolean

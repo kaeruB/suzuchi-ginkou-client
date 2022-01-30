@@ -1,6 +1,6 @@
 import { VFC } from 'react'
 import styled from 'styled-components'
-import {COLOR_FONT_PRIMARY} from "../../../styles/constants/colors";
+import {COLOR_FONT_PRIMARY} from "../../../../styles/constants/colors";
 
 export const Arrow: VFC = () => {
   return (
