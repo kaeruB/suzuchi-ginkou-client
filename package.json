@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest --env=jsdom --verbose"
   },
   "dependencies": {
     "axios": "^0.24.0",
@@ -18,12 +19,31 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^6.1.2",
+    "@testing-library/dom": "^8.11.3",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.4.0",
     "@types/react": "17.0.20",
     "@types/react-dom": "^17.0.11",
     "@types/styled-components": "^5.1.14",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
+    "jest": "^27.4.7",
+    "jest-css-modules": "^2.1.0",
+    "msw": "^0.36.7",
+    "next-page-tester": "^0.30.0",
     "prettier": "2.4.0",
     "typescript": "4.4.2"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/.next/",
+      "<rootDir>/node_modules/"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|scss)$": "<rootDir>/node_modules/jest-css-modules",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/fileTransformer.js"
+    }
   }
 }
