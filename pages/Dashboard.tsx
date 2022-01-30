@@ -58,7 +58,7 @@ export const Dashboard: FC = () => {
       <DashboardWrapper>
         <LeftPanel>
           <Header summary={dashboardData.summary} currency={currency} />
-          <CustomButton onClick={() => onShowCreateModal()}>
+          <CustomButton onClick={() => onShowCreateModal()} data-testid="btn-add-new-transaction">
             Add New Transaction
           </CustomButton>
         </LeftPanel>

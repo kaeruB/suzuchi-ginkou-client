@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect'
 // import { setupServer } from 'msw/node'
 import 'setimmediate'
 import { getPage } from 'next-page-tester'
+import userEvent from '@testing-library/user-event'
 // import { URL_TRANSACTION_SUMMARY } from '../pages/utils/constants/endpoints'
 
 // const server = setupServer(
@@ -37,6 +38,7 @@ import { getPage } from 'next-page-tester'
 // })
 // afterAll(() => server.close())
 
+// TODO: delete setTimeout()
 describe('Dashboard page', ()=> {
   it('Should render text Suzuchi Ginkou', async () => {
     const { page } = await getPage({
@@ -47,12 +49,19 @@ describe('Dashboard page', ()=> {
 
     // I think using seTimeout is not best way,
     // but if I did test without it, cors error would be appeared
-    setTimeout(async ()=> {
-      expect(await screen.findByText('Suzuchi Ginkou')).toBeInTheDocument()
+    setTimeout(()=> {
+      expect(screen.findByText('Suzuchi Ginkou')).toBeInTheDocument()
     }, 0)
   })
 
-  // it('Should render Error text when fetch failed', async () => {
+  it('Should open Add new Transaction after clicking button',() => {
+    setTimeout(()=> {
+      userEvent.click(screen.getByTestId('btn-add-new-transaction'))
+      expect(screen.findByText('Add Transaction')).toBeInTheDocument()
+    }, 0)
+  })
+
+  // it('should show 404 page when frontend gets 404 response', async () => {
   //   server.use(
   //     rest.get(
   //       URL_TRANSACTION_SUMMARY,
