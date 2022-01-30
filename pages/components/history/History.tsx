@@ -16,7 +16,7 @@ export const History: FC<HistoryProps> = (props: HistoryProps) => {
   } | null>(null)
 
   useEffect(() => {
-    const historyDataDescending = props.historyData.reverse()
+    const historyDataDescending = props.historyData
     const dateTimestampToTransactionsObject: {
       [timestamp: string]: Array<Transaction>
     } = getDateTimestampToTransactionsArrayObject(historyDataDescending)

@@ -47,6 +47,7 @@ const HistoryListItemsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 3rem;
+  max-width: 60rem;
 `
 
 export default HistoryList
