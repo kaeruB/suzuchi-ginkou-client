@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react'
 import { BankState, Currency, Transaction } from './models/types'
-import { BankStateTemporaryMock } from './mock/data'
 import Header from './components/header/Header'
 import styled from 'styled-components'
 import { FONT_SIZE_HEADER_SECONDARY } from './styles/constants/fontSizes'
@@ -29,9 +28,7 @@ export const Dashboard: FC = () => {
       URL_TRANSACTION_SUMMARY,
       historyListLength,
     )
-    responseData
-      ? setDashboardData(responseData)
-      : setDashboardData(BankStateTemporaryMock)
+    responseData && setDashboardData(responseData)
     setIsLoading(false)
   }
 
