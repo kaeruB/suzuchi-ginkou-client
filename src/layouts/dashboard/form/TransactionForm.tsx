@@ -4,7 +4,7 @@ import {
   convertTimestampToDateString,
   getCurrentDate,
 } from '../../../utils/functions/commons'
-import { Category, Person, Transaction } from '../../../models/types'
+import { Category, Person, Transaction } from '../../../types/bankState'
 import styled from 'styled-components'
 import { FONT_SIZE_PRIMARY } from '../../../../styles/constants/fontSizes'
 import { CustomButton } from '../../../../styles/components/button'

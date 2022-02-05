@@ -1,4 +1,4 @@
-import {Transaction} from "../models/types";
+import {Transaction} from "../types/bankState";
 
 export const getDateTimestampToTransactionsArrayObject = (
     historyData: Array<Transaction>,

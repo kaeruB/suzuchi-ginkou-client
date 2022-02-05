@@ -2,13 +2,12 @@ import { MouseEvent, SyntheticEvent, useEffect, useState, VFC } from 'react'
 import styled from 'styled-components'
 import {
   Category,
-  Currency,
   IconId,
   Person,
   Transaction,
-} from '../../../models/types'
+} from '../../../types/bankState'
 import RoundPicture from '../../commons/RoundPicture'
-import { IMG_PATHS } from '../../../utils/constants/commons'
+import {Currency, IMG_PATHS} from '../../../utils/constants/commons'
 import { IconFactory } from '../../commons/IconFactory'
 import { URL_TRANSACTION_PATCH } from '../../../utils/constants/endpoints'
 import { formatNumberWithSpaces } from '../../../utils/functions/commons'

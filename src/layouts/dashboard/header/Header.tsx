@@ -1,7 +1,7 @@
 import { useEffect, useState, VFC } from 'react'
 import styled from 'styled-components'
 import RoundPicture from '../../commons/RoundPicture'
-import { Person, Summary } from '../../../models/types'
+import { Person, Summary } from '../../../types/bankState'
 import Arrow from './Arrow'
 import { COLOR_STRONG } from '../../../../styles/constants/colors'
 import {

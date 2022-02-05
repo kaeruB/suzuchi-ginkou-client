@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { BankState, Currency, Transaction } from '../../models/types'
+import { BankState, Transaction } from '../../types/bankState'
 import Header from './header/Header'
 import styled from 'styled-components'
 import { FONT_SIZE_HEADER_SECONDARY } from '../../../styles/constants/fontSizes'
@@ -10,6 +10,7 @@ import { URL_TRANSACTION_SUMMARY } from '../../utils/constants/endpoints'
 import { fetchTransactions } from '../../api/transaction'
 import TransactionForm from './form/TransactionForm'
 import { DEFAULT_HISTORY_ITEMS } from '../../api/env'
+import {Currency} from "../../utils/constants/commons";
 
 export const Dashboard: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
