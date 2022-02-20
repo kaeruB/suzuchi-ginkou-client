@@ -8,7 +8,7 @@ export const getDateTimestampToTransactionsArrayObject = (
     const dateTimestampToTransactions: {
         [timestamp: string]: Array<Transaction>
     } = {}
-    historyDataDescending.forEach((t) => {
+    historyDataDescending.forEach((t: Transaction) => {
         const timestampAsString = t.timestamp.toString()
         if (!dateTimestampToTransactions[timestampAsString]) {
             dateTimestampToTransactions[timestampAsString] = []

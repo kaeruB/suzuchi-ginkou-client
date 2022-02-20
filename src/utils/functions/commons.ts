@@ -12,12 +12,8 @@ export const parseDateObjToDateString = (d: Date): string => {
   return yyyy + DATE_PARTS_SEPARATOR + mm + DATE_PARTS_SEPARATOR + dd
 }
 
-export const getCurrentDate = (): string => {
-  const today = new Date()
-  return parseDateObjToDateString(today)
-}
+export const getCurrentTimestamp = (): number => +new Date()
 
 export const convertDateToTimestamp = (date: string): number => Date.parse(date)
 export const convertTimestampToDateString = (timestamp: number) =>
   parseDateObjToDateString(new Date(timestamp))
-

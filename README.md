@@ -33,4 +33,8 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 ```
 $ npm run test
 ```
-- Please remember to add tests to ```/__test__``` folder if you add new component or function.
+⚠️ Please remember to add tests to ```/__test__``` folder if you add new component or function.
+
+## 🏗️ Project structure
+
+⚠️ please do not add anything that is not a page under `pages` folder (it will be built as an actual page).
