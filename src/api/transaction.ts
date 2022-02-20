@@ -1,5 +1,5 @@
 import { DataApi } from './dataApi'
-import { BankState, Transaction } from '../models/types'
+import { BankState, Transaction } from '../types/bankState'
 
 export const fetchTransactions = async (
   url: string,

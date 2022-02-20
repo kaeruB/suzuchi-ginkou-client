@@ -33,13 +33,3 @@ export type BankState = {
   history: Array<Transaction>
 }
 
-export enum Currency {
-  PLN = 'PLN',
-  YEN = 'YEN',
-}
-
-export enum RequestMethod {
-  PATCH = 'PATCH',
-  POST = 'POST',
-  DELETE = 'DELETE',
-}

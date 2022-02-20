@@ -2,17 +2,16 @@ import { MouseEvent, SyntheticEvent, useEffect, useState, VFC } from 'react'
 import styled from 'styled-components'
 import {
   Category,
-  Currency,
   IconId,
   Person,
   Transaction,
-} from '../../models/types'
-import RoundPicture from '../common/RoundPicture'
-import { IMG_PATHS } from '../../utils/constants/commons'
-import { IconFactory } from '../IconFactory'
-import { URL_TRANSACTION_PATCH } from '../../utils/constants/endpoints'
-import { formatNumberWithSpaces } from '../../utils/functions/commons'
-import { deleteTransaction } from '../../api/transaction'
+} from '../../../types/bankState'
+import RoundPicture from '../../commons/RoundPicture'
+import {Currency, IMG_PATHS} from '../../../utils/constants/commons'
+import { IconFactory } from '../../commons/IconFactory'
+import { URL_TRANSACTION_PATCH } from '../../../utils/constants/endpoints'
+import { formatNumberWithSpaces } from '../../../utils/functions/commons'
+import { deleteTransaction } from '../../../api/transaction'
 
 interface HistoryListItemProps {
   transactionData: Transaction

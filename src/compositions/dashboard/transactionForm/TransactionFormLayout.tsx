@@ -2,48 +2,37 @@ import { ChangeEvent, useState, VFC } from 'react'
 import {
   convertDateToTimestamp,
   convertTimestampToDateString,
-  getCurrentDate,
-} from '../utils/functions/commons'
-import { Category, Person, Transaction } from '../models/types'
+} from '../../../utils/functions/commons'
+import { Category, Person, Transaction } from '../../../types/bankState'
 import styled from 'styled-components'
-import { FONT_SIZE_PRIMARY } from '../styles/constants/fontSizes'
-import { CustomButton } from '../styles/components/button'
-import {
-  URL_TRANSACTION_PATCH,
-  URL_TRANSACTION_POST,
-} from '../utils/constants/endpoints'
-import RoundPicture from './common/RoundPicture'
-import { COLOR_MEDIUM } from '../styles/constants/colors'
-import { IMG_PATHS } from '../utils/constants/commons'
-import { IconFactory } from './IconFactory'
-import { patchTransaction, postTransaction } from '../api/transaction'
+import { FONT_SIZE_PRIMARY } from '../../../../styles/constants/fontSizes'
+import { CustomButton } from '../../../../styles/components/button'
+import RoundPicture from '../../commons/RoundPicture'
+import { COLOR_MEDIUM } from '../../../../styles/constants/colors'
+import { IMG_PATHS } from '../../../utils/constants/commons'
+import { IconFactory } from '../../commons/IconFactory'
 
-interface TransactionFormProps {
-  isEditMode: boolean
-  defaultValues: Transaction | null
-  fetchDashboardData: () => void
-  setShowModal: (show: boolean) => void
+interface TransactionFormLayoutProps {
+  onSubmit: (body: Transaction) => void
+  submitButtonName: string
+  defaultValues: Transaction
 }
 
-export const TransactionForm: VFC<TransactionFormProps> = (
-  props: TransactionFormProps,
+export const TransactionFormLayout: VFC<TransactionFormLayoutProps> = (
+  props: TransactionFormLayoutProps,
 ) => {
   const [borrowedBy, setBorrowedBy] = useState<Person>(
-    props.defaultValues ? props.defaultValues.borrowedBy : Person.AGATA,
+    props.defaultValues.borrowedBy,
   )
   const [category, setCategory] = useState<Category>(
-    props.defaultValues ? props.defaultValues.category : Category.SHOPPING,
+    props.defaultValues.category,
   )
-  const [amount, setAmount] = useState<number>(
-    props.defaultValues ? props.defaultValues.amount : 0,
-  )
+  const [amount, setAmount] = useState<number>(props.defaultValues.amount)
   const [description, setDescription] = useState<string>(
-    props.defaultValues ? props.defaultValues.description : '',
+    props.defaultValues.description,
   )
   const [date, setDate] = useState<string>(
-    props.defaultValues
-      ? convertTimestampToDateString(props.defaultValues.timestamp)
-      : getCurrentDate(),
+    convertTimestampToDateString(props.defaultValues.timestamp),
   )
 
   const createRequestBody = () => ({
@@ -53,27 +42,6 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     description,
     timestamp: convertDateToTimestamp(date),
   })
-
-  const afterSubmit = (result: Transaction) => {
-    if (result) {
-      props.fetchDashboardData()
-      props.setShowModal(false)
-    }
-  }
-
-  const patchTransactionOnSubmit = async () => {
-    const body = createRequestBody()
-    const transactionId = (props.defaultValues && props.defaultValues._id) || ''
-    const url = URL_TRANSACTION_PATCH(transactionId)
-    const result = await patchTransaction(url, body)
-    afterSubmit(result)
-  }
-
-  const postTransactionOnSubmit = async () => {
-    const body = createRequestBody()
-    const result = await postTransaction(URL_TRANSACTION_POST, body)
-    afterSubmit(result)
-  }
 
   const renderCategoryButton = (buttonCategory: Category) => {
     return (
@@ -187,13 +155,9 @@ export const TransactionForm: VFC<TransactionFormProps> = (
       </FormRow>
       <CustomButton
         disabled={amount.toString() === '' || description === ''}
-        onClick={() =>
-          props.isEditMode
-            ? patchTransactionOnSubmit()
-            : postTransactionOnSubmit()
-        }
+        onClick={() => props.onSubmit(createRequestBody())}
       >
-        {props.isEditMode ? 'Save' : 'Add Transaction'}
+        {props.submitButtonName}
       </CustomButton>
     </TransactionFormWrapper>
   )
@@ -259,4 +223,4 @@ const FormButton = styled.button<{ isActive: boolean }>`
   `}
 `
 
-export default TransactionForm
+export default TransactionFormLayout

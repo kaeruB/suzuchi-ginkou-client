@@ -33,8 +33,8 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 ```
 $ npm run test
 ```
-- When somebody adds new component, functions, add test code please. In ```/__test__``` folder
+⚠️ Please remember to add tests to ```/__test__``` folder if you add new component or function.
 
-## 📙 TODO
-* create _src_ folder, move files from _pages_ folder (correct imports - make them from src folder, not '.../...' etc.)
-* remove mock from Dashboard.ts (fetchDashboardData func) and add mocks like a pro
+## 🏗️ Project structure
+
+⚠️ please do not add anything that is not a page under `pages` folder (it will be built as an actual page).
