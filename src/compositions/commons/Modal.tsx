@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import { useEffect, useState, VFC } from 'react'
+import { useEffect, useRef, useState, VFC } from 'react'
 import ReactDOM from 'react-dom'
 import { COLOR_BACKGROUND } from '../../../styles/constants/colors'
 import { FONT_SIZE_HEADER_SECONDARY } from '../../../styles/constants/fontSizes'
+import { MODAL_ROOT_ID } from '../../utils/constants/elementIds'
 
 interface ModalProps {
   show: boolean
@@ -13,10 +14,26 @@ interface ModalProps {
 
 export const Modal: VFC<ModalProps> = (props: ModalProps) => {
   const [isBrowser, setIsBrowser] = useState(false)
+  const modal = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setIsBrowser(true)
   }, [])
+
+  useEffect(() => {
+    if (!props.show) return
+
+    function closeModalOnClickAway(event: MouseEvent) {
+      const eventTargetElement = event.target as HTMLElement
+      if (modal.current && !modal.current.contains(eventTargetElement)) {
+        props.onClose()
+      }
+    }
+
+    window.addEventListener('click', closeModalOnClickAway)
+
+    return () => window.removeEventListener('click', closeModalOnClickAway)
+  }, [props.show])
 
   const handleCloseClick = (e: any) => {
     e.preventDefault()
@@ -25,7 +42,7 @@ export const Modal: VFC<ModalProps> = (props: ModalProps) => {
 
   const modalContent = props.show && (
     <StyledModalOverlay>
-      <StyledModal>
+      <StyledModal ref={modal}>
         <StyledModalHeader>
           <StyledModalTitle>{props.title}</StyledModalTitle>
           <CloseIcon>
@@ -40,7 +57,7 @@ export const Modal: VFC<ModalProps> = (props: ModalProps) => {
   )
 
   if (isBrowser) {
-    const rootNode = document.getElementById('modal-root')
+    const rootNode = document.getElementById(MODAL_ROOT_ID)
     if (rootNode) {
       return ReactDOM.createPortal(modalContent, rootNode)
     } else {

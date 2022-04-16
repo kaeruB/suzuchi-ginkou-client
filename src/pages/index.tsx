@@ -1,8 +1,9 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styled from 'styled-components'
-import {COLOR_FONT_PRIMARY} from "../../styles/constants/colors";
-import Dashboard from "../compositions/dashboard";
+import { COLOR_FONT_PRIMARY } from '../../styles/constants/colors'
+import Dashboard from '../compositions/dashboard'
+import { MODAL_ROOT_ID } from '../utils/constants/elementIds'
 
 const Home: NextPage = () => {
   return (
@@ -19,7 +20,7 @@ const Home: NextPage = () => {
         />
       </Head>
 
-      <div id="modal-root" />
+      <div id={MODAL_ROOT_ID} />
       <Dashboard />
     </Wrapper>
   )
