@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import { COLOR_BACKGROUND } from '../../../styles/constants/colors'
 import { FONT_SIZE_HEADER_SECONDARY } from '../../../styles/constants/fontSizes'
 import { MODAL_ROOT_ID } from '../../utils/constants/elementIds'
+import { onClickOutsideElement } from '../../utils/functions/commons'
 
 interface ModalProps {
   show: boolean
@@ -22,17 +23,7 @@ export const Modal: VFC<ModalProps> = (props: ModalProps) => {
 
   useEffect(() => {
     if (!props.show) return
-
-    function closeModalOnClickAway(event: MouseEvent) {
-      const eventTargetElement = event.target as HTMLElement
-      if (modal.current && !modal.current.contains(eventTargetElement)) {
-        props.onClose()
-      }
-    }
-
-    window.addEventListener('click', closeModalOnClickAway)
-
-    return () => window.removeEventListener('click', closeModalOnClickAway)
+    return onClickOutsideElement(props.onClose, modal)
   }, [props.show])
 
   const handleCloseClick = (e: any) => {
