@@ -1,4 +1,6 @@
 import { DATE_PARTS_SEPARATOR } from '../constants/commons'
+import { RefObject } from 'react'
+import { CLICK_EVENT } from '../constants/events'
 
 export const formatNumberWithSpaces = (n: number | null): string | null => {
   if (n == null) return null
@@ -17,3 +19,19 @@ export const getCurrentTimestamp = (): number => +new Date()
 export const convertDateToTimestamp = (date: string): number => Date.parse(date)
 export const convertTimestampToDateString = (timestamp: number) =>
   parseDateObjToDateString(new Date(timestamp))
+
+export const onClickOutsideElement = (
+  onClickOutside: () => void,
+  element: RefObject<HTMLDivElement>,
+) => {
+  const listenForClickOutside = (event: MouseEvent) => {
+    const eventTargetElement = event.target as HTMLElement
+    const isClickOutsideElement =
+      element.current && !element.current.contains(eventTargetElement)
+    isClickOutsideElement && onClickOutside()
+  }
+
+  window.addEventListener(CLICK_EVENT, listenForClickOutside)
+
+  return () => window.removeEventListener(CLICK_EVENT, listenForClickOutside)
+}
