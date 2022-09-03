@@ -5,7 +5,8 @@ export const fetchTransactions = async (
   url: string,
   historyListLength: number,
 ): Promise<BankState> => {
-  const { data } = await DataApi.get(url, { params: { historyListLength } })
+  const response = await DataApi.get(url, { params: { historyListLength } })
+  const data = response ? response.data : null
   return data?.data
 }
 
