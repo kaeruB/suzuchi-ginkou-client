@@ -1,10 +1,12 @@
 import styled from 'styled-components'
 import { useEffect, useRef, useState, VFC } from 'react'
 import ReactDOM from 'react-dom'
-import { COLOR_BACKGROUND } from '../../../styles/constants/colors'
-import { FONT_SIZE_HEADER_SECONDARY } from '../../../styles/constants/fontSizes'
+import {COLOR_BACKGROUND, COLOR_WHITE} from '../../../styles/constants/colors'
+import {FONT_SIZE_HEADER_SECONDARY, FONT_SIZE_HEADER_TERTIARY} from '../../../styles/constants/fontSizes'
 import { MODAL_ROOT_ID } from '../../utils/constants/elementIds'
 import { onClickOutsideElement } from '../../utils/functions/commons'
+import {ColoredButton, CustomButton, SmallRoundButton} from "../../../styles/components/button";
+import {FlexCentered} from "../../../styles/utils/layout";
 
 interface ModalProps {
   show: boolean
@@ -92,7 +94,17 @@ const StyledModalTitle = styled.h1`
   font-weight: normal;
 `
 
-const CloseIcon = styled.div``
+const CloseIcon = styled(CustomButton)`
+  ${SmallRoundButton};
+  ${ColoredButton};
+  ${FlexCentered};
+  
+  a {
+    text-decoration: none;
+    font-size: ${FONT_SIZE_HEADER_TERTIARY};
+    color: ${COLOR_WHITE};
+  }
+`
 
 const StyledModalBody = styled.div`
   padding-top: 10px;

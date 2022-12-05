@@ -1,8 +1,8 @@
 export const COLOR_FONT_PRIMARY = '#333333'
 export const COLOR_FONT_SECONDARY = '#999999'
 
-export const COLOR_STRONG = '#ED8B8B'
-export const COLOR_MEDIUM = '#F5B2AD'
+export const COLOR_STRONG = '#b0b0b0'
+export const COLOR_MEDIUM = '#cecdcd'
 
 export const COLOR_BACKGROUND = '#FBF8F5'
 export const COLOR_BACKGROUND_SECONDARY = '#FFDFDF'

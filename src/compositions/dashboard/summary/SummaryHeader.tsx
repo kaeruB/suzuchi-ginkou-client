@@ -17,7 +17,7 @@ interface HeaderProps {
   currency: string
 }
 
-export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
+export const SummaryHeader: VFC<HeaderProps> = (props: HeaderProps) => {
   const [personWithDebt, setPersonWithDebt] = useState<string | null>(null)
   const [personWithoutDebt, setPersonWithoutDebt] = useState<string | null>(
     null,
@@ -90,18 +90,12 @@ export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
 
   return (
     <>
-      <Title>Suzuchi Ginkou</Title>
       {moneyAmountToReturn && moneyAmountToReturn > 0
         ? renderMoneyTransitionStatus()
         : renderNoMoneyToReturnMessage()}
     </>
   )
 }
-
-const Title = styled.h1`
-  font-size: ${FONT_SIZE_HEADER_PRIMARY};
-  padding: 5rem 0;
-`
 
 const GeneralState = styled.div`
   display: flex;
@@ -137,4 +131,4 @@ const HighlightedText = styled.span`
   color: ${COLOR_STRONG};
 `
 
-export default Header
+export default SummaryHeader

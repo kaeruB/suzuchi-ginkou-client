@@ -1,18 +1,36 @@
-import styled from 'styled-components'
-import {COLOR_DELICATE_GRAY} from "../constants/colors";
+import styled, { css } from 'styled-components'
+import { COLOR_DELICATE_GRAY, COLOR_STRONG } from '../constants/colors'
+import { BORDER_RADIUS } from '../constants/other'
 
 export const CustomButton = styled.button`
-  width: 100%;
   border: none;
-  background: pink;
-  height: 3.5rem;
-  border-radius: 4px;
-  color: white;
+  border-radius: ${BORDER_RADIUS};
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
+
   :disabled {
-    background: ${COLOR_DELICATE_GRAY};
     cursor: not-allowed;
     pointer-events: none;
   }
+`
+
+export const ColoredButton = css`
+  color: white;
+  background: ${COLOR_STRONG};
+
+  :disabled {
+    background: ${COLOR_DELICATE_GRAY};
+  }
+`
+
+export const BigButton = css`
+  width: 100%;
+  height: 3.5rem;
+`
+
+export const SmallRoundButton = css`
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 2rem;
+  border-radius: 50%;
 `

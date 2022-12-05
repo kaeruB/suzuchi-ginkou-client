@@ -2,7 +2,6 @@ import { MouseEvent, SyntheticEvent, useEffect, useState, VFC } from 'react'
 import styled from 'styled-components'
 import {
   Category,
-  IconId,
   Person,
   Transaction,
 } from '../../../types/bankState'
@@ -12,6 +11,7 @@ import { IconFactory } from '../../commons/IconFactory'
 import { URL_TRANSACTION_PATCH } from '../../../utils/constants/endpoints'
 import { formatNumberWithSpaces } from '../../../utils/functions/commons'
 import { deleteTransaction } from '../../../api/transaction'
+import {IconId} from "../../../types/icon";
 
 interface HistoryListItemProps {
   transactionData: Transaction
