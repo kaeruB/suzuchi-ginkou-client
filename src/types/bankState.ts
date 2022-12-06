@@ -3,12 +3,6 @@ export enum Person {
   AGATA = 'Agata',
 }
 
-export enum IconId {
-  DELETE = 'Delete',
-  EDIT = 'Edit',
-  CLOSE = 'Close',
-}
-
 export enum Category {
   SHOPPING = 'Shopping',
   HOME = 'Home',

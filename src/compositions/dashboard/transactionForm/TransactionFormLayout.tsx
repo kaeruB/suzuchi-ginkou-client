@@ -6,7 +6,11 @@ import {
 import { Category, Person, Transaction } from '../../../types/bankState'
 import styled from 'styled-components'
 import { FONT_SIZE_PRIMARY } from '../../../../styles/constants/fontSizes'
-import { CustomButton } from '../../../../styles/components/button'
+import {
+  BigButton,
+  ColoredButton,
+  CustomButton,
+} from '../../../../styles/components/button'
 import RoundPicture from '../../commons/RoundPicture'
 import { COLOR_MEDIUM } from '../../../../styles/constants/colors'
 import { IMG_PATHS } from '../../../utils/constants/commons'
@@ -153,12 +157,12 @@ export const TransactionFormLayout: VFC<TransactionFormLayoutProps> = (
           />
         </DoubleColumn>
       </FormRow>
-      <CustomButton
+      <SubmitButton
         disabled={amount.toString() === '' || description === ''}
         onClick={() => props.onSubmit(createRequestBody())}
       >
         {props.submitButtonName}
-      </CustomButton>
+      </SubmitButton>
     </TransactionFormWrapper>
   )
 }
@@ -221,6 +225,12 @@ const FormButton = styled.button<{ isActive: boolean }>`
     padding: 0;
     filter: none;
   `}
+`
+
+const SubmitButton = styled(CustomButton)`
+  ${ColoredButton};
+  ${BigButton};
+  margin-top: 2rem;
 `
 
 export default TransactionFormLayout

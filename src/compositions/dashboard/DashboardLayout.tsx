@@ -1,13 +1,26 @@
 import { FC, useState } from 'react'
 import { BankState, Transaction } from '../../types/bankState'
-import Header from './header/Header'
+import SummaryHeader from './summary/SummaryHeader'
 import styled from 'styled-components'
 import { FONT_SIZE_HEADER_SECONDARY } from '../../../styles/constants/fontSizes'
 import History from './history/History'
 import Modal from '../commons/Modal'
-import { CustomButton } from '../../../styles/components/button'
+import {
+  BigButton,
+  ColoredButton,
+  CustomButton,
+  SmallRoundButton,
+} from '../../../styles/components/button'
 import { Currency } from '../../utils/constants/commons'
-import TransactionForm from "./transactionForm";
+import TransactionForm from './transactionForm'
+import Header from './header'
+import Footer from './footer'
+import {
+  FlexCentered,
+  FlexPageLayout,
+  PageSizing,
+  StyledWidget,
+} from '../../../styles/utils/layout'
 
 interface DashboardLayoutProps {
   dashboardData: BankState
@@ -42,33 +55,52 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
 
     setShowModal(true)
   }
-  
+
   return (
     <>
-      <DashboardWrapper>
-        <LeftPanel>
-          <Header summary={props.dashboardData.summary} currency={currency} />
-          <CreateButton
-            onClick={() => onShowCreateModal()}
-            data-testid="btn-add-new-transaction"
-          >
-            Add New Transaction
-          </CreateButton>
-        </LeftPanel>
+      <Header />
+      <PageSizing>
+        <FlexPage>
+          <LeftPanel>
+            <StyledWidget>
+              <SummaryHeader
+                summary={props.dashboardData.summary}
+                currency={currency}
+              />
+            </StyledWidget>
 
-        <RightPanel>
-          <SubHeader>Transaction History</SubHeader>
-          <History
-            historyData={props.dashboardData.history}
-            currency={currency}
-            onShowEditModal={onShowEditModal}
-            fetchDashboardData={props.fetchDashboardData}
-          />
-          <LoadMoreButton onClick={() => props.loadMoreData()}>
-            Load More Data
-          </LoadMoreButton>
-        </RightPanel>
-      </DashboardWrapper>
+            <StyledWidget>
+              <SubHeader>
+                <span>Transactions</span>
+                <CreateButton
+                  onClick={() => onShowCreateModal()}
+                  data-testid="btn-add-new-transaction"
+                >
+                  +
+                </CreateButton>
+              </SubHeader>
+              <History
+                historyData={props.dashboardData.history}
+                currency={currency}
+                onShowEditModal={onShowEditModal}
+                fetchDashboardData={props.fetchDashboardData}
+              />
+              <LoadMoreButton onClick={() => props.loadMoreData()}>
+                Load More Data
+              </LoadMoreButton>
+            </StyledWidget>
+          </LeftPanel>
+
+          <RightPanel>
+            <StyledWidget>
+              <SubHeader>Statistics</SubHeader>
+              <div>Here will be a chart.</div>
+            </StyledWidget>
+          </RightPanel>
+        </FlexPage>
+      </PageSizing>
+
+      <Footer />
 
       <Modal
         show={showModal}
@@ -86,31 +118,37 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
   )
 }
 
-const DashboardWrapper = styled.div`
+const LeftPanel = styled.div`
   width: 100%;
 `
 
-const LeftPanel = styled.div`
-  width: 33%;
-  float: left;
-`
-
 const RightPanel = styled.div`
-  width: 64%;
-  float: right;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 `
 
 const SubHeader = styled.h2`
   font-size: ${FONT_SIZE_HEADER_SECONDARY};
+  display: flex;
+  justify-content: space-between;
 `
 
 const CreateButton = styled(CustomButton)`
-  margin-top: 10rem;
+  ${ColoredButton};
+  ${SmallRoundButton};
+  ${FlexCentered};
 `
 
 const LoadMoreButton = styled(CustomButton)`
+  ${ColoredButton};
+  ${BigButton};
   max-width: 60rem;
-  margin: 3rem;
+`
+
+const FlexPage = styled.div`
+  ${FlexPageLayout};
+  margin: 5rem 0;
 `
 
 export default DashboardLayout

@@ -7,7 +7,9 @@ import ShoppingIcon from '/public/icons/shopping.svg'
 import OtherIcon from '/public/icons/other.svg'
 import DeleteIcon from '/public/icons/trashbin.svg'
 import EditIcon from '/public/icons/edit.svg'
-import { Category, IconId } from '../../types/bankState'
+import LogoIcon from '/public/icons/edit.svg' // TODO add logo icon
+import { Category} from '../../types/bankState'
+import {IconId} from "../../types/icon";
 
 type IconFactoryProps = {
   iconId: Category | IconId
@@ -30,6 +32,8 @@ export const IconFactory: VFC<IconFactoryProps> = (props: IconFactoryProps) => {
         return <DeleteIcon />
       case IconId.EDIT:
         return <EditIcon />
+      case IconId.LOGO:
+        return <LogoIcon />
     }
   }
   return <div style={{ width: `${props.size}rem` }}>{renderIcon()}</div>
