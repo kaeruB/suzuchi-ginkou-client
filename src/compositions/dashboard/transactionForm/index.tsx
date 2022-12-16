@@ -7,6 +7,9 @@ import {
 } from '../../../utils/constants/endpoints'
 import { patchTransaction, postTransaction } from '../../../api/transaction'
 import TransactionFormLayout from './TransactionFormLayout'
+import { RequestResult } from '../../../types/request'
+import { UNAUTHORIZED } from '../../../utils/constants/responseStatuses'
+import { useAuthContext } from '../../../context/AuthContextWrapper'
 
 interface TransactionFormProps {
   isEditMode: boolean
@@ -18,8 +21,12 @@ interface TransactionFormProps {
 export const TransactionForm: VFC<TransactionFormProps> = (
   props: TransactionFormProps,
 ) => {
-  const afterSubmit = (result: Transaction) => {
-    if (result) {
+  const { setIsAuthenticated } = useAuthContext()
+
+  const afterResponseReceived = (result: RequestResult<Transaction>) => {
+    if (result.error && result.error?.status === UNAUTHORIZED) {
+      setIsAuthenticated(false)
+    } else if (result.response) {
       props.fetchDashboardData()
       props.setShowModal(false)
     }
@@ -28,13 +35,13 @@ export const TransactionForm: VFC<TransactionFormProps> = (
   const patchTransactionOnSubmit = async (body: Transaction) => {
     const transactionId = (props.defaultValues && props.defaultValues._id) || ''
     const url = URL_TRANSACTION_PATCH(transactionId)
-    const result = await patchTransaction(url, body)
-    afterSubmit(result)
+    const result: RequestResult<Transaction> = await patchTransaction(url, body)
+    afterResponseReceived(result)
   }
 
   const postTransactionOnSubmit = async (body: Transaction) => {
     const result = await postTransaction(URL_TRANSACTION_POST, body)
-    afterSubmit(result)
+    afterResponseReceived(result)
   }
 
   const transactionFormInitialValues = (): Transaction => ({

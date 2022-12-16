@@ -4,17 +4,20 @@ import {
   convertTimestampToDateString,
 } from '../../../utils/functions/commons'
 import { Category, Person, Transaction } from '../../../types/bankState'
-import styled from 'styled-components'
-import { FONT_SIZE_PRIMARY } from '../../../../styles/constants/fontSizes'
-import {
-  BigButton,
-  ColoredButton,
-  CustomButton,
-} from '../../../../styles/components/button'
 import RoundPicture from '../../commons/RoundPicture'
-import { COLOR_MEDIUM } from '../../../../styles/constants/colors'
 import { IMG_PATHS } from '../../../utils/constants/commons'
 import { IconFactory } from '../../commons/IconFactory'
+import {
+  FormButton,
+  FormColumn,
+  FormDoubleColumn,
+  FormFlexRow,
+  FormRow,
+  FormRowInput,
+  FormRowLabel,
+  FormSubmitButton,
+  FormWrapper,
+} from '../../../../styles/components/form'
 
 interface TransactionFormLayoutProps {
   onSubmit: (body: Transaction) => void
@@ -76,24 +79,24 @@ export const TransactionFormLayout: VFC<TransactionFormLayoutProps> = (
   }
 
   return (
-    <TransactionFormWrapper>
+    <FormWrapper>
       <FormRow>
-        <Column>
+        <FormColumn>
           <FormRowLabel htmlFor="borrowedBy">Borrowed By</FormRowLabel>
-        </Column>
-        <DoubleColumn>
-          <FlexRow>
+        </FormColumn>
+        <FormDoubleColumn>
+          <FormFlexRow>
             {renderPersonButton(Person.AGATA)}
             {renderPersonButton(Person.KAZU)}
-          </FlexRow>
-        </DoubleColumn>
+          </FormFlexRow>
+        </FormDoubleColumn>
       </FormRow>
 
       <FormRow>
-        <Column>
+        <FormColumn>
           <FormRowLabel htmlFor="amount">Amount</FormRowLabel>
-        </Column>
-        <DoubleColumn>
+        </FormColumn>
+        <FormDoubleColumn>
           <FormRowInput
             type="number"
             min="0"
@@ -106,27 +109,27 @@ export const TransactionFormLayout: VFC<TransactionFormLayoutProps> = (
               setAmount(Number(e.target.value))
             }
           />
-        </DoubleColumn>
+        </FormDoubleColumn>
       </FormRow>
       <FormRow>
-        <Column>
+        <FormColumn>
           <FormRowLabel htmlFor="category">Category</FormRowLabel>
-        </Column>
-        <DoubleColumn>
-          <FlexRow>
+        </FormColumn>
+        <FormDoubleColumn>
+          <FormFlexRow>
             {renderCategoryButton(Category.SHOPPING)}
             {renderCategoryButton(Category.HOME)}
             {renderCategoryButton(Category.HEALTH)}
             {renderCategoryButton(Category.ENTERTAINMENT)}
             {renderCategoryButton(Category.OTHER)}
-          </FlexRow>
-        </DoubleColumn>
+          </FormFlexRow>
+        </FormDoubleColumn>
       </FormRow>
       <FormRow>
-        <Column>
+        <FormColumn>
           <FormRowLabel htmlFor="description">Description</FormRowLabel>
-        </Column>
-        <DoubleColumn>
+        </FormColumn>
+        <FormDoubleColumn>
           <FormRowInput
             type="text"
             id="description"
@@ -138,13 +141,13 @@ export const TransactionFormLayout: VFC<TransactionFormLayoutProps> = (
               setDescription(e.target.value)
             }
           />
-        </DoubleColumn>
+        </FormDoubleColumn>
       </FormRow>
       <FormRow>
-        <Column>
+        <FormColumn>
           <FormRowLabel htmlFor="date">Date</FormRowLabel>
-        </Column>
-        <DoubleColumn>
+        </FormColumn>
+        <FormDoubleColumn>
           <FormRowInput
             type="date"
             id="date"
@@ -155,82 +158,16 @@ export const TransactionFormLayout: VFC<TransactionFormLayoutProps> = (
               setDate(e.target.value)
             }
           />
-        </DoubleColumn>
+        </FormDoubleColumn>
       </FormRow>
-      <SubmitButton
+      <FormSubmitButton
         disabled={amount.toString() === '' || description === ''}
         onClick={() => props.onSubmit(createRequestBody())}
       >
         {props.submitButtonName}
-      </SubmitButton>
-    </TransactionFormWrapper>
+      </FormSubmitButton>
+    </FormWrapper>
   )
 }
-
-const TransactionFormWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  font-size: ${FONT_SIZE_PRIMARY};
-`
-
-const FormRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  align-items: center;
-  margin: 1rem 0 1rem;
-`
-
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  height: 100%;
-`
-
-const DoubleColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 2;
-`
-
-const FormRowLabel = styled.label`
-  width: 100%;
-`
-
-const FormRowInput = styled.input`
-  width: 100%;
-  border: none;
-  border-radius: 6px;
-  height: 3rem;
-  padding: 5px;
-`
-
-const FlexRow = styled.div`
-  display: flex;
-`
-
-const FormButton = styled.button<{ isActive: boolean }>`
-  border: none;
-  background: none;
-  border-radius: 50%;
-  padding: 3px;
-  cursor: pointer;
-  filter: brightness(80%);
-
-  ${(props) =>
-    props.isActive &&
-    `
-    border: 3px solid ${COLOR_MEDIUM};
-    padding: 0;
-    filter: none;
-  `}
-`
-
-const SubmitButton = styled(CustomButton)`
-  ${ColoredButton};
-  ${BigButton};
-  margin-top: 2rem;
-`
 
 export default TransactionFormLayout

@@ -1,17 +1,19 @@
 import { MouseEvent, SyntheticEvent, useEffect, useState, VFC } from 'react'
 import styled from 'styled-components'
-import {
-  Category,
-  Person,
-  Transaction,
-} from '../../../types/bankState'
+import { Category, Person, Transaction } from '../../../types/bankState'
 import RoundPicture from '../../commons/RoundPicture'
-import {Currency, IMG_PATHS} from '../../../utils/constants/commons'
+import { Currency, IMG_PATHS } from '../../../utils/constants/commons'
 import { IconFactory } from '../../commons/IconFactory'
 import { URL_TRANSACTION_PATCH } from '../../../utils/constants/endpoints'
 import { formatNumberWithSpaces } from '../../../utils/functions/commons'
 import { deleteTransaction } from '../../../api/transaction'
-import {IconId} from "../../../types/icon";
+import { IconId } from '../../../types/icon'
+import { RequestResult } from '../../../types/request'
+import {
+  SUCCESS,
+  UNAUTHORIZED,
+} from '../../../utils/constants/responseStatuses'
+import { useAuthContext } from '../../../context/AuthContextWrapper'
 
 interface HistoryListItemProps {
   transactionData: Transaction
@@ -89,15 +91,25 @@ interface HistoryListItemRightContainerProps {
 const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
   props: HistoryListItemRightContainerProps,
 ) => {
+  const { setIsAuthenticated } = useAuthContext()
+
+  const afterResponseReceived = (result: RequestResult<boolean>) => {
+    if (result.error && result.error?.status === UNAUTHORIZED) {
+      setIsAuthenticated(false)
+    } else if (result.response && result.response.status === SUCCESS) {
+      props.fetchDashboardData()
+    }
+  }
+
   const deleteTransactionOnClick = async (
     event: SyntheticEvent,
     transactionId: string,
   ) => {
     event.preventDefault()
-    const result = await deleteTransaction(URL_TRANSACTION_PATCH(transactionId))
-    if (result) {
-      props.fetchDashboardData()
-    }
+    const result: RequestResult<boolean> = await deleteTransaction(
+      URL_TRANSACTION_PATCH(transactionId),
+    )
+    afterResponseReceived(result)
   }
 
   return (

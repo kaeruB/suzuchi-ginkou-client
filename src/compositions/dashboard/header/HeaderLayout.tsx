@@ -1,12 +1,18 @@
 import { VFC } from 'react'
 import styled from 'styled-components'
-import { COLOR_STRONG, COLOR_WHITE } from '../../../../styles/constants/colors'
 import { IconFactory } from '../../commons/IconFactory'
 import { FlexPageLayout, PageSizing } from '../../../../styles/utils/layout'
 import { IconId } from '../../../types/icon'
 import { FONT_SIZE_HEADER_TERTIARY } from '../../../../styles/constants/fontSizes'
+import {
+  CustomButton,
+  DelicateButton,
+} from '../../../../styles/components/button'
+import { COLOR_FONT_SECONDARY } from '../../../../styles/constants/colors'
 
-interface HeaderLayoutProps {}
+interface HeaderLayoutProps {
+  logOut: () => void
+}
 
 export const HeaderLayout: VFC<HeaderLayoutProps> = (
   props: HeaderLayoutProps,
@@ -14,15 +20,17 @@ export const HeaderLayout: VFC<HeaderLayoutProps> = (
   return (
     <HeaderWrapper>
       <HeaderInside>
-        <LeftPanel>
+        <div>
           {/* TODO: logo icon */}
           {/*<IconFactory iconId={IconId.LOGO} size={2} />*/}
           Suzuchi Ginkou
-        </LeftPanel>
-        <RightPanel>
+        </div>
+        <div>
           {/* TODO Currency and logout buttons functionality*/}
-          YEN PLN Logout
-        </RightPanel>
+          <MenuButton>YEN</MenuButton>
+          <MenuButton>PLN</MenuButton>
+          <MenuButton onClick={() => props.logOut()}>LOGOUT</MenuButton>
+        </div>
       </HeaderInside>
     </HeaderWrapper>
   )
@@ -35,7 +43,6 @@ const HeaderWrapper = styled.div`
   left: 0;
   top: 0;
   width: 100%;
-  background: ${COLOR_STRONG};
   cursor: default;
   z-index: 1;
 `
@@ -43,9 +50,10 @@ const HeaderInside = styled(PageSizing)`
   ${FlexPageLayout};
   height: 5rem;
   align-items: center;
-  color: ${COLOR_WHITE};
+  color: ${COLOR_FONT_SECONDARY};
   font-size: ${FONT_SIZE_HEADER_TERTIARY};
 `
 
-const LeftPanel = styled.div``
-const RightPanel = styled.div``
+const MenuButton = styled(CustomButton)`
+  ${DelicateButton};
+`

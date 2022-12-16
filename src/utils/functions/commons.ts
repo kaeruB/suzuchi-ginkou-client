@@ -35,3 +35,6 @@ export const onClickOutsideElement = (
 
   return () => window.removeEventListener(CLICK_EVENT, listenForClickOutside)
 }
+
+export const convertDecimalCodeToHtmlSymbol = (decimalCode: number): string =>
+  String.fromCharCode(decimalCode)

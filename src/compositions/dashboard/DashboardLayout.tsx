@@ -21,6 +21,8 @@ import {
   PageSizing,
   StyledWidget,
 } from '../../../styles/utils/layout'
+import { convertDecimalCodeToHtmlSymbol } from '../../utils/functions/commons'
+import { ARROW_DOWN_DEC_CODE } from '../../utils/constants/htmlCodes'
 
 interface DashboardLayoutProps {
   dashboardData: BankState
@@ -85,9 +87,11 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
                 onShowEditModal={onShowEditModal}
                 fetchDashboardData={props.fetchDashboardData}
               />
-              <LoadMoreButton onClick={() => props.loadMoreData()}>
-                Load More Data
-              </LoadMoreButton>
+              <LoadMoreButtonWrapper>
+                <LoadMoreButton onClick={() => props.loadMoreData()}>
+                  {convertDecimalCodeToHtmlSymbol(ARROW_DOWN_DEC_CODE)}
+                </LoadMoreButton>
+              </LoadMoreButtonWrapper>
             </StyledWidget>
           </LeftPanel>
 
@@ -140,10 +144,15 @@ const CreateButton = styled(CustomButton)`
   ${FlexCentered};
 `
 
+const LoadMoreButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`
+
 const LoadMoreButton = styled(CustomButton)`
-  ${ColoredButton};
   ${BigButton};
-  max-width: 60rem;
+  padding: 0 2rem;
 `
 
 const FlexPage = styled.div`
