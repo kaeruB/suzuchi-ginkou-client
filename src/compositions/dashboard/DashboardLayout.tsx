@@ -23,6 +23,7 @@ import {
 } from '../../../styles/utils/layout'
 import { convertDecimalCodeToHtmlSymbol } from '../../utils/functions/commons'
 import { ARROW_DOWN_DEC_CODE } from '../../utils/constants/htmlCodes'
+import { DEFAULT_HISTORY_ITEMS } from '../../api/env'
 
 interface DashboardLayoutProps {
   dashboardData: BankState
@@ -58,6 +59,17 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
     setShowModal(true)
   }
 
+  const renderShowMoreButton = () =>
+    props.dashboardData &&
+    props.dashboardData.history &&
+    props.dashboardData.history.length > DEFAULT_HISTORY_ITEMS && (
+      <LoadMoreButtonWrapper>
+        <LoadMoreButton onClick={() => props.loadMoreData()}>
+          {convertDecimalCodeToHtmlSymbol(ARROW_DOWN_DEC_CODE)}
+        </LoadMoreButton>
+      </LoadMoreButtonWrapper>
+    )
+
   return (
     <>
       <Header />
@@ -87,11 +99,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
                 onShowEditModal={onShowEditModal}
                 fetchDashboardData={props.fetchDashboardData}
               />
-              <LoadMoreButtonWrapper>
-                <LoadMoreButton onClick={() => props.loadMoreData()}>
-                  {convertDecimalCodeToHtmlSymbol(ARROW_DOWN_DEC_CODE)}
-                </LoadMoreButton>
-              </LoadMoreButtonWrapper>
+              {renderShowMoreButton()}
             </StyledWidget>
           </LeftPanel>
 

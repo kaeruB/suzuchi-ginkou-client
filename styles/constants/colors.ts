@@ -11,3 +11,5 @@ export const COLOR_WHITE = '#FFFFFF'
 export const COLOR_DELICATE_GRAY = '#D3D4D8'
 
 export const COLOR_BOX_SHADOW = '#e6e6e6'
+
+export const COLOR_WARNING = '#ff3737'

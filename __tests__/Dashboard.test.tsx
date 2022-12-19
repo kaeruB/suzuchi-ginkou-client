@@ -5,6 +5,7 @@ import '@testing-library/jest-dom/extend-expect'
 import 'setimmediate'
 import { getPage } from 'next-page-tester'
 import userEvent from '@testing-library/user-event'
+import {HOME_PATH} from "../src/utils/constants/routerPaths";
 // import { URL_TRANSACTION_SUMMARY } from '../pages/utils/constants/endpoints'
 
 // const server = setupServer(
@@ -42,7 +43,7 @@ import userEvent from '@testing-library/user-event'
 describe('Dashboard page', ()=> {
   it('Should render text Suzuchi Ginkou', async () => {
     const { page } = await getPage({
-      route: '/',
+      route: HOME_PATH,
     })
     render(page)
     expect(screen.queryByText('Loading...')).toBeInTheDocument();// before rendering

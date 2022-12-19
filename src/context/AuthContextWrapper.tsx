@@ -1,9 +1,16 @@
 import { createContext, useContext, useEffect, useState, VFC } from 'react'
 import { useRouter } from 'next/router'
+import {
+  HOME_PATH,
+  LOGIN_PATH,
+  SIGNUP_PATH,
+} from '../utils/constants/routerPaths'
 
 const AuthContext = createContext({
   isAuthenticated: false,
   setIsAuthenticated: (isAuthenticated: boolean) => {},
+  isSignUp: false,
+  setIsSignUp: (isSignUp: boolean) => {},
 })
 
 interface AuthContextWrapperProps {
@@ -14,18 +21,33 @@ export const AuthContextWrapper: VFC<AuthContextWrapperProps> = (
   props: AuthContextWrapperProps,
 ) => {
   const router = useRouter()
-  const [isAuthenticated, setIsAuthenticated] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isSignUp, setIsSignUp] = useState<boolean>(false)
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push('/login')
+      if (isSignUp) {
+        router.push(SIGNUP_PATH)
+      } else {
+        router.push(LOGIN_PATH)
+      }
     } else {
-      router.push('/')
+      router.push(HOME_PATH)
     }
   }, [isAuthenticated])
 
+  useEffect(() => {
+    if (isSignUp) {
+      router.push(SIGNUP_PATH)
+    } else {
+      router.push(LOGIN_PATH)
+    }
+  }, [isSignUp])
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, setIsAuthenticated, isSignUp, setIsSignUp }}
+    >
       {props.children}
     </AuthContext.Provider>
   )

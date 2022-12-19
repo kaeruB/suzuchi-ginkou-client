@@ -1,1 +1,2 @@
 export const ARROW_DOWN_DEC_CODE = 9660
+export const ARROW_RIGHT_DEC_CODE = 9654
