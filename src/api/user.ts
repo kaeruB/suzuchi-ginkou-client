@@ -1,10 +1,10 @@
-import { UserCredits } from '../types/user'
+import { User } from '../types/user'
 import { DataApi } from './dataApi'
 import { RequestResult } from '../types/request'
 
-export const postUserCredits = async (
+export const postUser = async (
   url: string,
-  body: UserCredits,
+  body: User,
 ): Promise<RequestResult> => await DataApi.post(url, body)
 
 export const postUserLogout = async (url: string): Promise<RequestResult> =>

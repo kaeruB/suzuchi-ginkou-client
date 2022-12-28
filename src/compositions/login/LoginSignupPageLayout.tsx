@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react'
+import { ChangeEvent, FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {
   COLOR_FONT_PRIMARY,
@@ -23,21 +23,42 @@ import { PageSizing } from '../../../styles/utils/layout'
 import { CustomButton } from '../../../styles/components/button'
 import { convertDecimalCodeToHtmlSymbol } from '../../utils/functions/commons'
 import { ARROW_RIGHT_DEC_CODE } from '../../utils/constants/htmlCodes'
+import {
+  getPasswordValidationError,
+  getUsernameValidationError,
+  isEmptyString,
+} from '../../utils/functions/validators'
 
-interface LoginPageLayoutProps {
+interface LoginSignupPageLayoutProps {
   onSubmit: (body: { username: string; password: string }) => void
-  errorMessage: string | null
+  serverErrorMsg: string | null
   subtitle: 'Login' | 'Signup'
   setFormMode: () => void
   isSignUp: boolean
 }
 
-// todo change name to loginSignup
-export const LoginPageLayout: FC<LoginPageLayoutProps> = (
-  props: LoginPageLayoutProps,
+export const LoginSignupPageLayout: FC<LoginSignupPageLayoutProps> = (
+  props: LoginSignupPageLayoutProps,
 ) => {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+
+  const [usernameErrorMsg, setUsernameErrorMsg] = useState<null | string>(null)
+  const [passwordErrorMsg, setPasswordErrorMsg] = useState<null | string>(null)
+
+  useEffect(() => {
+    if (props.isSignUp) {
+      const passwordError = getPasswordValidationError({ password, username })
+      setPasswordErrorMsg(passwordError)
+    }
+  }, [password, username])
+
+  useEffect(() => {
+    if (props.isSignUp) {
+      const usernameError = getUsernameValidationError(username)
+      setUsernameErrorMsg(usernameError)
+    }
+  }, [username])
 
   const createRequestBody = () => ({
     username,
@@ -56,10 +77,10 @@ export const LoginPageLayout: FC<LoginPageLayoutProps> = (
           </LoginSignUpSwitchButton>
         </FormHeaderRow>
         <Subtitle>{props.subtitle}</Subtitle>
-        <ErrorMessage>{props.errorMessage}</ErrorMessage>
+        <ErrorMessage>{props.serverErrorMsg}</ErrorMessage>
         <FormRow>
           <FormColumn>
-            <FormRowLabel>User name</FormRowLabel>
+            <FormRowLabel>Username</FormRowLabel>
           </FormColumn>
           <FormDoubleColumn>
             <LoginPageInput
@@ -74,6 +95,7 @@ export const LoginPageLayout: FC<LoginPageLayoutProps> = (
               }
             />
           </FormDoubleColumn>
+          <ErrorMessage>{usernameErrorMsg}</ErrorMessage>
         </FormRow>
 
         <FormRow>
@@ -93,11 +115,17 @@ export const LoginPageLayout: FC<LoginPageLayoutProps> = (
               }
             />
           </FormDoubleColumn>
+          <ErrorMessage>{passwordErrorMsg}</ErrorMessage>
         </FormRow>
 
         <FormSubmitButton
           onClick={() => props.onSubmit(createRequestBody())}
-          disabled={username === '' || password === ''}
+          disabled={
+            isEmptyString(username) ||
+            isEmptyString(password) ||
+            usernameErrorMsg !== null ||
+            passwordErrorMsg !== null
+          }
         >
           Submit
         </FormSubmitButton>
@@ -138,7 +166,7 @@ const Logo = styled.span`
 `
 
 const ErrorMessage = styled(FormRow)`
-  height: 1rem;
+  height: 8px;
   color: ${COLOR_WARNING};
 `
 
@@ -148,4 +176,4 @@ const Subtitle = styled(FormRow)`
   margin-bottom: 3rem;
 `
 
-export default LoginPageLayout
+export default LoginSignupPageLayout
