@@ -3,7 +3,6 @@ import {
   convertDateToTimestamp,
   convertTimestampToDateString,
 } from '../../../utils/functions/commons'
-import { Category, Person, Transaction } from '../../../types/bankState'
 import RoundPicture from '../../commons/RoundPicture'
 import { IMG_PATHS } from '../../../utils/constants/commons'
 import { IconFactory } from '../../commons/IconFactory'
@@ -18,17 +17,23 @@ import {
   FormSubmitButton,
   FormWrapper,
 } from '../../../../styles/components/form'
+import { usePairContext } from '../../../context/PairContextWrapper'
+import { UserIdToDetails } from '../../../types/user'
+import { Category, Transaction } from '../../../types/transaction'
 
 interface TransactionFormLayoutProps {
   onSubmit: (body: Transaction) => void
   submitButtonName: string
   defaultValues: Transaction
+  userIdToDetails: UserIdToDetails
 }
 
 export const TransactionFormLayout: VFC<TransactionFormLayoutProps> = (
   props: TransactionFormLayoutProps,
 ) => {
-  const [borrowedBy, setBorrowedBy] = useState<Person>(
+  const { pairUsersIds } = usePairContext()
+
+  const [borrowedBy, setBorrowedBy] = useState<string>(
     props.defaultValues.borrowedBy,
   )
   const [category, setCategory] = useState<Category>(
@@ -62,21 +67,19 @@ export const TransactionFormLayout: VFC<TransactionFormLayoutProps> = (
     )
   }
 
-  const renderPersonButton = (buttonPerson: Person) => {
-    return (
-      <FormButton
-        onClick={() => setBorrowedBy(buttonPerson)}
-        isActive={borrowedBy === buttonPerson}
-        type={'button'}
-      >
-        <RoundPicture
-          size={5}
-          src={IMG_PATHS[buttonPerson]}
-          alt={buttonPerson}
-        />
-      </FormButton>
-    )
-  }
+  const renderPersonButton = (buttonPerson: string) => (
+    <FormButton
+      onClick={() => setBorrowedBy(buttonPerson)}
+      isActive={borrowedBy === buttonPerson}
+      type={'button'}
+    >
+      <RoundPicture
+        size={5}
+        src={IMG_PATHS(props.userIdToDetails[buttonPerson].avatar)}
+        alt={props.userIdToDetails[buttonPerson].name}
+      />
+    </FormButton>
+  )
 
   return (
     <FormWrapper>
@@ -86,8 +89,8 @@ export const TransactionFormLayout: VFC<TransactionFormLayoutProps> = (
         </FormColumn>
         <FormDoubleColumn>
           <FormFlexRow>
-            {renderPersonButton(Person.AGATA)}
-            {renderPersonButton(Person.KAZU)}
+            {renderPersonButton(pairUsersIds[0])}
+            {renderPersonButton(pairUsersIds[1])}
           </FormFlexRow>
         </FormDoubleColumn>
       </FormRow>

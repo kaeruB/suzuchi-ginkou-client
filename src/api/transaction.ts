@@ -1,11 +1,11 @@
 import { DataApi } from './dataApi'
-import { BankState, Transaction } from '../types/bankState'
 import { RequestResult } from '../types/request'
+import { Transaction, TransactionsWithUsersDetails } from '../types/transaction'
 
 export const fetchTransactions = async (
   url: string,
   historyListLength: number,
-): Promise<RequestResult<BankState>> =>
+): Promise<RequestResult<TransactionsWithUsersDetails>> =>
   await DataApi.get(url, {
     params: { historyListLength },
   })

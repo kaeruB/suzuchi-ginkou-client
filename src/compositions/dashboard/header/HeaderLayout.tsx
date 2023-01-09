@@ -12,6 +12,7 @@ import { COLOR_FONT_SECONDARY } from '../../../../styles/constants/colors'
 
 interface HeaderLayoutProps {
   logOut: () => void
+  redirectToSummaryPage: () => void
 }
 
 export const HeaderLayout: VFC<HeaderLayoutProps> = (
@@ -20,7 +21,7 @@ export const HeaderLayout: VFC<HeaderLayoutProps> = (
   return (
     <HeaderWrapper>
       <HeaderInside>
-        <div>
+        <div onClick={props.redirectToSummaryPage}>
           {/* TODO: logo icon */}
           {/*<IconFactory iconId={IconId.LOGO} size={2} />*/}
           Suzuchi Ginkou

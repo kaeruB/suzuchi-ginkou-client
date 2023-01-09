@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState, VFC } from 'react'
 import { useRouter } from 'next/router'
 import {
-  HOME_PATH,
   LOGIN_PATH,
   SIGNUP_PATH,
+  SUMMARY_PATH,
 } from '../utils/constants/routerPaths'
 
 const AuthContext = createContext({
@@ -21,7 +21,7 @@ export const AuthContextWrapper: VFC<AuthContextWrapperProps> = (
   props: AuthContextWrapperProps,
 ) => {
   const router = useRouter()
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [isSignUp, setIsSignUp] = useState<boolean>(false)
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export const AuthContextWrapper: VFC<AuthContextWrapperProps> = (
         router.push(LOGIN_PATH)
       }
     } else {
-      router.push(HOME_PATH)
+      router.push(SUMMARY_PATH)
     }
   }, [isAuthenticated])
 

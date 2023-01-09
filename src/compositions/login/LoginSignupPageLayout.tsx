@@ -24,13 +24,15 @@ import { CustomButton } from '../../../styles/components/button'
 import { convertDecimalCodeToHtmlSymbol } from '../../utils/functions/commons'
 import { ARROW_RIGHT_DEC_CODE } from '../../utils/constants/htmlCodes'
 import {
+  getNameValidationError,
   getPasswordValidationError,
-  getUsernameValidationError,
+  getUserIdValidationError,
   isEmptyString,
 } from '../../utils/functions/validators'
+import { User } from '../../types/user'
 
 interface LoginSignupPageLayoutProps {
-  onSubmit: (body: { username: string; password: string }) => void
+  onSubmit: (body: User) => void
   serverErrorMsg: string | null
   subtitle: 'Login' | 'Signup'
   setFormMode: () => void
@@ -40,30 +42,65 @@ interface LoginSignupPageLayoutProps {
 export const LoginSignupPageLayout: FC<LoginSignupPageLayoutProps> = (
   props: LoginSignupPageLayoutProps,
 ) => {
-  const [username, setUsername] = useState<string>('')
+  const [userId, setUserId] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [name, setName] = useState<string>('')
+  const [avatar, setAvatar] = useState<string>('')
 
-  const [usernameErrorMsg, setUsernameErrorMsg] = useState<null | string>(null)
+  const [userIdErrorMsg, setUserIdErrorMsg] = useState<null | string>(null)
   const [passwordErrorMsg, setPasswordErrorMsg] = useState<null | string>(null)
+  const [nameErrorMsg, setNameErrorMsg] = useState<null | string>(null)
 
   useEffect(() => {
     if (props.isSignUp) {
-      const passwordError = getPasswordValidationError({ password, username })
+      const passwordError = getPasswordValidationError({ password, userId })
       setPasswordErrorMsg(passwordError)
     }
-  }, [password, username])
+  }, [password, userId])
 
   useEffect(() => {
     if (props.isSignUp) {
-      const usernameError = getUsernameValidationError(username)
-      setUsernameErrorMsg(usernameError)
+      const userIdError = getUserIdValidationError(userId)
+      setUserIdErrorMsg(userIdError)
     }
-  }, [username])
+  }, [userId])
 
-  const createRequestBody = () => ({
-    username,
+  useEffect(() => {
+    if (props.isSignUp) {
+      const nameError = getNameValidationError(name)
+      setNameErrorMsg(nameError)
+    }
+  }, [name])
+
+  const createRequestBody = (): User => ({
+    userId,
     password,
+    name,
+    avatar,
   })
+
+  const renderSignUpSpecificFields = () =>
+    props.isSignUp && (
+      <FormRow>
+        <FormColumn>
+          <FormRowLabel>Name</FormRowLabel>
+        </FormColumn>
+        <FormDoubleColumn>
+          <LoginPageInput
+            type="text"
+            id="name"
+            autoComplete="name"
+            name="name"
+            required
+            defaultValue={name}
+            onInput={(e: ChangeEvent<HTMLInputElement>) =>
+              setName(e.target.value)
+            }
+          />
+        </FormDoubleColumn>
+        <ErrorMessage>{nameErrorMsg}</ErrorMessage>
+      </FormRow>
+    )
 
   return (
     <LoginPageWrapper>
@@ -80,22 +117,22 @@ export const LoginSignupPageLayout: FC<LoginSignupPageLayoutProps> = (
         <ErrorMessage>{props.serverErrorMsg}</ErrorMessage>
         <FormRow>
           <FormColumn>
-            <FormRowLabel>Username</FormRowLabel>
+            <FormRowLabel>User ID</FormRowLabel>
           </FormColumn>
           <FormDoubleColumn>
             <LoginPageInput
               type="text"
-              id="username"
-              autoComplete="username"
-              name="username"
+              id="userId"
+              autoComplete="userId"
+              name="userId"
               required
-              defaultValue={username}
+              defaultValue={userId}
               onInput={(e: ChangeEvent<HTMLInputElement>) =>
-                setUsername(e.target.value)
+                setUserId(e.target.value)
               }
             />
           </FormDoubleColumn>
-          <ErrorMessage>{usernameErrorMsg}</ErrorMessage>
+          <ErrorMessage>{userIdErrorMsg}</ErrorMessage>
         </FormRow>
 
         <FormRow>
@@ -118,13 +155,17 @@ export const LoginSignupPageLayout: FC<LoginSignupPageLayoutProps> = (
           <ErrorMessage>{passwordErrorMsg}</ErrorMessage>
         </FormRow>
 
+        {renderSignUpSpecificFields()}
+
         <FormSubmitButton
           onClick={() => props.onSubmit(createRequestBody())}
           disabled={
-            isEmptyString(username) ||
+            isEmptyString(userId) ||
             isEmptyString(password) ||
-            usernameErrorMsg !== null ||
-            passwordErrorMsg !== null
+            (props.isSignUp && isEmptyString(name)) ||
+            userIdErrorMsg !== null ||
+            passwordErrorMsg !== null ||
+            nameErrorMsg !== null
           }
         >
           Submit

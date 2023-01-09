@@ -1,14 +1,21 @@
 import { VFC } from 'react'
 import styled from 'styled-components'
-import {COLOR_FONT_PRIMARY} from "../../../../styles/constants/colors";
+import { COLOR_FONT_PRIMARY } from '../../../../styles/constants/colors'
 
-export const Arrow: VFC = () => {
+interface ArrowProps {
+  withArrowhead: boolean
+}
+
+export const Arrow: VFC<ArrowProps> = (props: ArrowProps) => {
+  const renderArrowLeft = () => props.withArrowhead && <ArrowLeft />
+  const renderArrowRight = () => props.withArrowhead && <ArrowRight />
+
   return (
     <ArrowContainer>
       <ArrowPartsWrapper>
-        <ArrowLeft />
+        {renderArrowLeft()}
         <Line />
-        <ArrowRight />
+        {renderArrowRight()}
       </ArrowPartsWrapper>
     </ArrowContainer>
   )

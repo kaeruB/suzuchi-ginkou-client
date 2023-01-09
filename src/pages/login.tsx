@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { User } from '../types/user'
+import { UserCredits } from '../types/user'
 import { URL_USER_LOGIN_POST } from '../utils/constants/endpoints'
 import { postUser } from '../api/user'
 import { RequestResult } from '../types/request'
@@ -18,7 +18,7 @@ export const LoginPage: FC<LoginPageProps> = (props: LoginPageProps) => {
     null,
   )
 
-  const login = async (body: User) => {
+  const login = async (body: UserCredits) => {
     const res: RequestResult = await postUser(URL_USER_LOGIN_POST, body)
 
     if (res.response?.status === SUCCESS) {

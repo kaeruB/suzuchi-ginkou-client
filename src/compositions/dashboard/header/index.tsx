@@ -5,11 +5,13 @@ import { RequestResult } from '../../../types/request'
 import { postUserLogout } from '../../../api/user'
 import { URL_USER_LOGOUT_POST } from '../../../utils/constants/endpoints'
 import { SUCCESS } from '../../../utils/constants/responseStatuses'
+import { usePairContext } from '../../../context/PairContextWrapper'
 
 interface HeaderProps {}
 
 export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
-  const { setIsAuthenticated } = useAuthContext()
+  const { setIsAuthenticated, isAuthenticated } = useAuthContext()
+  const { setPairId } = usePairContext()
 
   const handleLogOut = async () => {
     const res: RequestResult = await postUserLogout(URL_USER_LOGOUT_POST)
@@ -19,7 +21,19 @@ export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
     }
   }
 
-  return <HeaderLayout logOut={handleLogOut} />
+  const redirectToSummaryPage = (): void => {
+    if (isAuthenticated) {
+      // todo must be a better solution
+      setPairId('')
+    }
+  }
+
+  return (
+    <HeaderLayout
+      logOut={handleLogOut}
+      redirectToSummaryPage={redirectToSummaryPage}
+    />
+  )
 }
 
 export default Header

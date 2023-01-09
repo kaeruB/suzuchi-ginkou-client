@@ -1,7 +1,4 @@
-export enum Person {
-  KAZU = 'Kazu',
-  AGATA = 'Agata',
-}
+import { UserIdToDetails } from './user'
 
 export enum Category {
   SHOPPING = 'Shopping',
@@ -13,17 +10,17 @@ export enum Category {
 
 export type Transaction = {
   amount: number
-  borrowedBy: Person
+  borrowedBy: string
   category: Category
   description: string
   timestamp: number
   _id?: string
+  pairId?: string
 }
-
 export type Summary = { [borrowedBy: string]: number }
 
-export type BankState = {
+export type TransactionsWithUsersDetails = {
+  transactions: Array<Transaction>
   summary: Summary
-  history: Array<Transaction>
+  usersDetails: UserIdToDetails
 }
-

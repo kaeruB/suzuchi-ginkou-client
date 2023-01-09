@@ -1,4 +1,4 @@
-import { SUCCESS, FAIL } from '../utils/constants/responseStatuses'
+import { FAIL, SUCCESS } from '../utils/constants/responseStatuses'
 
 export type ResponseFromServer<T = any> = {
   status: typeof SUCCESS | typeof FAIL

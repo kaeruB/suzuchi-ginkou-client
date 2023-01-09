@@ -1,10 +1,9 @@
 import { MouseEvent, SyntheticEvent, useEffect, useState, VFC } from 'react'
 import styled from 'styled-components'
-import { Category, Person, Transaction } from '../../../types/bankState'
 import RoundPicture from '../../commons/RoundPicture'
 import { Currency, IMG_PATHS } from '../../../utils/constants/commons'
 import { IconFactory } from '../../commons/IconFactory'
-import { URL_TRANSACTION_PATCH } from '../../../utils/constants/endpoints'
+import { URL_TRANSACTION_PATCH_OR_DELETE } from '../../../utils/constants/endpoints'
 import { formatNumberWithSpaces } from '../../../utils/functions/commons'
 import { deleteTransaction } from '../../../api/transaction'
 import { IconId } from '../../../types/icon'
@@ -14,47 +13,54 @@ import {
   UNAUTHORIZED,
 } from '../../../utils/constants/responseStatuses'
 import { useAuthContext } from '../../../context/AuthContextWrapper'
+import { UserDetails, UserIdToDetails } from '../../../types/user'
+import { Category, Transaction } from '../../../types/transaction'
 
 interface HistoryListItemProps {
   transactionData: Transaction
   currency: Currency
   onShowEditModal: (transactionId: string) => void
   fetchDashboardData: () => void
+  userIdToDetails: UserIdToDetails
+  pairId: string
 }
 
 export const HistoryListItem: VFC<HistoryListItemProps> = (
   props: HistoryListItemProps,
 ) => {
-  const [personWhoPaid, setPersonWhoPaid] = useState<Person>(Person.KAZU)
+  const [personWhoBorrowed, setPersonWhoBorrowed] =
+    useState<UserDetails | null>(null)
 
   useEffect(() => {
-    setPersonWhoPaid(
-      props.transactionData.borrowedBy === Person.KAZU
-        ? Person.KAZU
-        : Person.AGATA,
-    )
+    const personWhoBorrowed: UserDetails =
+      props.userIdToDetails[props.transactionData.borrowedBy]
+
+    setPersonWhoBorrowed(personWhoBorrowed)
   }, [props.transactionData])
 
   return (
-    <HistoryListItemElement>
-      <HistoryListItemLeftContainer
-        personWhoPaid={personWhoPaid}
-        category={props.transactionData.category}
-        description={props.transactionData.description}
-      />
-      <HistoryListItemRightContainer
-        amount={props.transactionData.amount}
-        currency={props.currency}
-        transactionId={props.transactionData._id!}
-        onShowEditModal={props.onShowEditModal}
-        fetchDashboardData={props.fetchDashboardData}
-      />
-    </HistoryListItemElement>
+    personWhoBorrowed && (
+      <HistoryListItemElement>
+        <HistoryListItemLeftContainer
+          personWhoBorrowed={personWhoBorrowed}
+          category={props.transactionData.category}
+          description={props.transactionData.description}
+        />
+        <HistoryListItemRightContainer
+          amount={props.transactionData.amount}
+          currency={props.currency}
+          transactionId={props.transactionData._id!}
+          onShowEditModal={props.onShowEditModal}
+          fetchDashboardData={props.fetchDashboardData}
+          pairId={props.pairId}
+        />
+      </HistoryListItemElement>
+    )
   )
 }
 
 interface HistoryListItemLeftContainerProps {
-  personWhoPaid: Person
+  personWhoBorrowed: UserDetails
   category: Category
   description: string
 }
@@ -67,8 +73,8 @@ const HistoryListItemLeftContainer: VFC<HistoryListItemLeftContainerProps> = (
       <PhotoAndCategoryWrapper>
         <RoundPicture
           size={4}
-          src={IMG_PATHS[props.personWhoPaid]}
-          alt={props.personWhoPaid}
+          src={IMG_PATHS(props.personWhoBorrowed.avatar)}
+          alt={props.personWhoBorrowed.name}
         />
         <CategoryWrapper>
           <IconFactory size={2} iconId={props.category} />
@@ -86,6 +92,7 @@ interface HistoryListItemRightContainerProps {
   currency: Currency
   onShowEditModal: (transactionId: string) => void
   fetchDashboardData: () => void
+  pairId: string
 }
 
 const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
@@ -107,7 +114,7 @@ const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
   ) => {
     event.preventDefault()
     const result: RequestResult<boolean> = await deleteTransaction(
-      URL_TRANSACTION_PATCH(transactionId),
+      URL_TRANSACTION_PATCH_OR_DELETE(props.pairId, transactionId),
     )
     afterResponseReceived(result)
   }

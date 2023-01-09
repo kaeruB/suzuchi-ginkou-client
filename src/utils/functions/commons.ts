@@ -1,4 +1,4 @@
-import { DATE_PARTS_SEPARATOR } from '../constants/commons'
+import { DATE_PARTS_SEPARATOR, PAIR_ID_SEPARATOR } from '../constants/commons'
 import { RefObject } from 'react'
 import { CLICK_EVENT } from '../constants/events'
 
@@ -38,3 +38,6 @@ export const onClickOutsideElement = (
 
 export const convertDecimalCodeToHtmlSymbol = (decimalCode: number): string =>
   String.fromCharCode(decimalCode)
+
+export const retrieveUsersIdsFromPairId = (pairId: string): Array<string> =>
+  pairId.split(PAIR_ID_SEPARATOR)

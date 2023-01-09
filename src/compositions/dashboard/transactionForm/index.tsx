@@ -1,8 +1,7 @@
 import { VFC } from 'react'
 import { getCurrentTimestamp } from '../../../utils/functions/commons'
-import { Category, Person, Transaction } from '../../../types/bankState'
 import {
-  URL_TRANSACTION_PATCH,
+  URL_TRANSACTION_PATCH_OR_DELETE,
   URL_TRANSACTION_POST,
 } from '../../../utils/constants/endpoints'
 import { patchTransaction, postTransaction } from '../../../api/transaction'
@@ -10,18 +9,23 @@ import TransactionFormLayout from './TransactionFormLayout'
 import { RequestResult } from '../../../types/request'
 import { UNAUTHORIZED } from '../../../utils/constants/responseStatuses'
 import { useAuthContext } from '../../../context/AuthContextWrapper'
+import { usePairContext } from '../../../context/PairContextWrapper'
+import { UserIdToDetails } from '../../../types/user'
+import { Category, Transaction } from '../../../types/transaction'
 
 interface TransactionFormProps {
   isEditMode: boolean
   defaultValues: Transaction | null
   fetchDashboardData: () => void
   setShowModal: (show: boolean) => void
+  userIdToDetails: UserIdToDetails
 }
 
 export const TransactionForm: VFC<TransactionFormProps> = (
   props: TransactionFormProps,
 ) => {
   const { setIsAuthenticated } = useAuthContext()
+  const { pairUsersIds, pairId } = usePairContext()
 
   const afterResponseReceived = (result: RequestResult<Transaction>) => {
     if (result.error && result.error?.status === UNAUTHORIZED) {
@@ -34,20 +38,22 @@ export const TransactionForm: VFC<TransactionFormProps> = (
 
   const patchTransactionOnSubmit = async (body: Transaction) => {
     const transactionId = (props.defaultValues && props.defaultValues._id) || ''
-    const url = URL_TRANSACTION_PATCH(transactionId)
+    const url = URL_TRANSACTION_PATCH_OR_DELETE(pairId, transactionId)
     const result: RequestResult<Transaction> = await patchTransaction(url, body)
     afterResponseReceived(result)
   }
 
   const postTransactionOnSubmit = async (body: Transaction) => {
-    const result = await postTransaction(URL_TRANSACTION_POST, body)
+    const result = await postTransaction(URL_TRANSACTION_POST(pairId), body)
     afterResponseReceived(result)
   }
 
   const transactionFormInitialValues = (): Transaction => ({
     borrowedBy: props.defaultValues
       ? props.defaultValues.borrowedBy
-      : Person.AGATA,
+      : pairUsersIds
+      ? pairUsersIds[0]
+      : '',
     category: props.defaultValues
       ? props.defaultValues.category
       : Category.SHOPPING,
@@ -65,6 +71,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
       }
       submitButtonName={props.isEditMode ? 'Save' : 'Add Transaction'}
       defaultValues={transactionFormInitialValues()}
+      userIdToDetails={props.userIdToDetails}
     />
   )
 }

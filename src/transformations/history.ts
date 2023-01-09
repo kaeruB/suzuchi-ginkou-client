@@ -1,19 +1,16 @@
-import {Transaction} from "../types/bankState";
+import { Transaction } from '../types/transaction'
 
-export const getDateTimestampToTransactionsArrayObject = (
-    historyData: Array<Transaction>,
-): { [timestamp: string]: Array<Transaction> } => {
-    const historyDataDescending = historyData
-
-    const dateTimestampToTransactions: {
-        [timestamp: string]: Array<Transaction>
-    } = {}
-    historyDataDescending.forEach((t: Transaction) => {
-        const timestampAsString = t.timestamp.toString()
-        if (!dateTimestampToTransactions[timestampAsString]) {
-            dateTimestampToTransactions[timestampAsString] = []
-        }
-        dateTimestampToTransactions[timestampAsString].push(t)
-    })
-    return dateTimestampToTransactions
-}
+export const createTimestampToTransactionsMapping = (
+  historyDataDescending: Array<Transaction>,
+): { [timestamp: string]: Array<Transaction> } =>
+  historyDataDescending.reduce(
+    (acc: { [timestamp: string]: Array<Transaction> }, t: Transaction) => {
+      const timestampAsString = t.timestamp.toString()
+      if (!acc[timestampAsString]) {
+        acc[timestampAsString] = []
+      }
+      acc[timestampAsString].push(t)
+      return acc
+    },
+    {},
+  )

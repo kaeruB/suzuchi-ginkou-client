@@ -8,8 +8,8 @@ import OtherIcon from '/public/icons/other.svg'
 import DeleteIcon from '/public/icons/trashbin.svg'
 import EditIcon from '/public/icons/edit.svg'
 import LogoIcon from '/public/icons/edit.svg' // TODO add logo icon
-import { Category} from '../../types/bankState'
-import {IconId} from "../../types/icon";
+import { IconId } from '../../types/icon'
+import { Category } from '../../types/transaction'
 
 type IconFactoryProps = {
   iconId: Category | IconId

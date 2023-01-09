@@ -1,16 +1,19 @@
 import { VFC } from 'react'
 import styled from 'styled-components'
-import { Transaction } from '../../../types/bankState'
 import HistoryListItem from './HistoryListItem'
 import { FONT_SIZE_PRIMARY } from '../../../../styles/constants/fontSizes'
 import { convertTimestampToDateString } from '../../../utils/functions/commons'
-import {Currency} from "../../../utils/constants/commons";
+import { Currency } from '../../../utils/constants/commons'
+import { UserIdToDetails } from '../../../types/user'
+import { Transaction } from '../../../types/transaction'
 
 interface HistoryListProps {
   historyData: Array<Transaction>
   currency: Currency
   onShowEditModal: (transactionId: string) => void
   fetchDashboardData: () => void
+  userIdToDetails: UserIdToDetails
+  pairId: string
 }
 
 export const HistoryList: VFC<HistoryListProps> = (props: HistoryListProps) => {
@@ -22,6 +25,8 @@ export const HistoryList: VFC<HistoryListProps> = (props: HistoryListProps) => {
         currency={props.currency}
         onShowEditModal={props.onShowEditModal}
         fetchDashboardData={props.fetchDashboardData}
+        pairId={props.pairId}
+        userIdToDetails={props.userIdToDetails}
       />
     )
   }

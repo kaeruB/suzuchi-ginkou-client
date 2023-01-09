@@ -1,6 +1,5 @@
 import { FC, useState } from 'react'
-import { BankState, Transaction } from '../../types/bankState'
-import SummaryHeader from './summary/SummaryHeader'
+import SummaryHeader from './summary/index'
 import styled from 'styled-components'
 import { FONT_SIZE_HEADER_SECONDARY } from '../../../styles/constants/fontSizes'
 import History from './history/History'
@@ -24,11 +23,16 @@ import {
 import { convertDecimalCodeToHtmlSymbol } from '../../utils/functions/commons'
 import { ARROW_DOWN_DEC_CODE } from '../../utils/constants/htmlCodes'
 import { DEFAULT_HISTORY_ITEMS } from '../../api/env'
+import {
+  Transaction,
+  TransactionsWithUsersDetails,
+} from '../../types/transaction'
 
 interface DashboardLayoutProps {
-  dashboardData: BankState
+  dashboardData: TransactionsWithUsersDetails
   fetchDashboardData: () => void
   loadMoreData: () => void
+  pairId: string
 }
 
 export const DashboardLayout: FC<DashboardLayoutProps> = (
@@ -51,7 +55,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
 
     const transaction =
       props.dashboardData &&
-      props.dashboardData.history.find(
+      props.dashboardData.transactions.find(
         (t: Transaction) => t._id === transactionId,
       )
     transaction ? setHistoryItemToEdit(transaction) : setHistoryItemToEdit(null)
@@ -61,8 +65,8 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
 
   const renderShowMoreButton = () =>
     props.dashboardData &&
-    props.dashboardData.history &&
-    props.dashboardData.history.length > DEFAULT_HISTORY_ITEMS && (
+    props.dashboardData.transactions &&
+    props.dashboardData.transactions.length > DEFAULT_HISTORY_ITEMS && (
       <LoadMoreButtonWrapper>
         <LoadMoreButton onClick={() => props.loadMoreData()}>
           {convertDecimalCodeToHtmlSymbol(ARROW_DOWN_DEC_CODE)}
@@ -79,6 +83,8 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
             <StyledWidget>
               <SummaryHeader
                 summary={props.dashboardData.summary}
+                userIdToDetails={props.dashboardData.usersDetails}
+                pairId={props.pairId}
                 currency={currency}
               />
             </StyledWidget>
@@ -94,10 +100,12 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
                 </CreateButton>
               </SubHeader>
               <History
-                historyData={props.dashboardData.history}
+                historyData={props.dashboardData.transactions}
                 currency={currency}
                 onShowEditModal={onShowEditModal}
                 fetchDashboardData={props.fetchDashboardData}
+                userIdToDetails={props.dashboardData.usersDetails}
+                pairId={props.pairId}
               />
               {renderShowMoreButton()}
             </StyledWidget>
@@ -124,6 +132,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
           defaultValues={historyItemToEdit}
           fetchDashboardData={props.fetchDashboardData}
           setShowModal={setShowModal}
+          userIdToDetails={props.dashboardData.usersDetails}
         />
       </Modal>
     </>
