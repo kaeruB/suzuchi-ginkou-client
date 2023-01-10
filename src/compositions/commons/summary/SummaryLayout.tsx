@@ -1,6 +1,6 @@
 import { VFC } from 'react'
 import styled from 'styled-components'
-import RoundPicture from '../../commons/RoundPicture'
+import RoundPicture from '../RoundPicture'
 import Arrow from './Arrow'
 import { COLOR_STRONG } from '../../../../styles/constants/colors'
 import {
@@ -11,7 +11,7 @@ import { formatNumberWithSpaces } from '../../../utils/functions/commons'
 import { IMG_PATHS } from '../../../utils/constants/commons'
 import { UserDetails } from '../../../types/user'
 
-interface SummaryHeaderLayoutProps {
+interface SummaryLayoutProps {
   currency: string
   personWithDebt: UserDetails
   personWithoutDebt: UserDetails
@@ -19,8 +19,8 @@ interface SummaryHeaderLayoutProps {
   goToPairDashboard: () => void
 }
 
-export const SummaryHeaderLayout: VFC<SummaryHeaderLayoutProps> = (
-  props: SummaryHeaderLayoutProps,
+export const SummaryLayout: VFC<SummaryLayoutProps> = (
+  props: SummaryLayoutProps,
 ) => {
   const renderMoneyToReturnMsg = () => (
     <GeneralStateSentence>
@@ -105,4 +105,4 @@ const HighlightedText = styled.span`
   color: ${COLOR_STRONG};
 `
 
-export default SummaryHeaderLayout
+export default SummaryLayout

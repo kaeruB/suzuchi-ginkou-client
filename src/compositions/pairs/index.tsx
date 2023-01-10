@@ -1,16 +1,16 @@
 import { FC, useEffect, useState } from 'react'
-import SummaryPageLayout from '../compositions/summary/SummaryPageLayout'
-import { useAuthContext } from '../context/AuthContextWrapper'
-import LoadingPage from '../compositions/loading/LoadingPage'
-import { RequestResult } from '../types/request'
-import { fetchPairsSummary } from '../api/pair'
-import { URL_PAIRS_GET } from '../utils/constants/endpoints'
-import { UNAUTHORIZED } from '../utils/constants/responseStatuses'
-import { PairsSummariesWithUsersDetails } from '../types/pair'
+import PairsLayout from "./PairsLayout";
+import Loading from "../commons/loading/Loading";
+import {useAuthContext} from "../../context/AuthContextWrapper";
+import {PairsSummariesWithUsersDetails} from "../../types/pair";
+import {RequestResult} from "../../types/request";
+import {fetchPairsSummary} from "../../api/pair";
+import {URL_PAIRS_GET} from "../../utils/constants/endpoints";
+import {UNAUTHORIZED} from "../../utils/constants/responseStatuses";
 
-interface SummaryPageProps {}
+interface PairsProps {}
 
-export const SummaryPage: FC<SummaryPageProps> = (props: SummaryPageProps) => {
+export const Pairs: FC<PairsProps> = (props: PairsProps) => {
   const { isAuthenticated, setIsAuthenticated } = useAuthContext()
   const [pairsSummariesWithUserDetails, setPairsSummaries] =
     useState<PairsSummariesWithUsersDetails | null>(null)
@@ -29,19 +29,18 @@ export const SummaryPage: FC<SummaryPageProps> = (props: SummaryPageProps) => {
     }
   }
 
-  useEffect((): void => {
+  useEffect(() => {
     fetchPairsSummaryData()
   }, [])
 
-  // todo isAuthenticated &&
-  return pairsSummariesWithUserDetails && pairsIdsList ? (
-    <SummaryPageLayout
+  return isAuthenticated && pairsSummariesWithUserDetails && pairsIdsList ? (
+    <PairsLayout
       pairsSummariesWithUserDetails={pairsSummariesWithUserDetails}
       pairsIdsList={pairsIdsList}
     />
   ) : (
-    <LoadingPage />
+    <Loading />
   )
 }
 
-export default SummaryPage
+export default Pairs

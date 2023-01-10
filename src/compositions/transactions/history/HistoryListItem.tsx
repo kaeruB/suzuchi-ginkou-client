@@ -20,7 +20,7 @@ interface HistoryListItemProps {
   transactionData: Transaction
   currency: Currency
   onShowEditModal: (transactionId: string) => void
-  fetchDashboardData: () => void
+  fetchTransactionsAndUserDetails: () => void
   userIdToDetails: UserIdToDetails
   pairId: string
 }
@@ -51,7 +51,7 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
           currency={props.currency}
           transactionId={props.transactionData._id!}
           onShowEditModal={props.onShowEditModal}
-          fetchDashboardData={props.fetchDashboardData}
+          fetchTransactionsAndUserDetails={props.fetchTransactionsAndUserDetails}
           pairId={props.pairId}
         />
       </HistoryListItemElement>
@@ -91,7 +91,7 @@ interface HistoryListItemRightContainerProps {
   amount: number
   currency: Currency
   onShowEditModal: (transactionId: string) => void
-  fetchDashboardData: () => void
+  fetchTransactionsAndUserDetails: () => void
   pairId: string
 }
 
@@ -104,7 +104,7 @@ const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
     if (result.error && result.error?.status === UNAUTHORIZED) {
       setIsAuthenticated(false)
     } else if (result.response && result.response.status === SUCCESS) {
-      props.fetchDashboardData()
+      props.fetchTransactionsAndUserDetails()
     }
   }
 

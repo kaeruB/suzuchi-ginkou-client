@@ -1,18 +1,14 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { UserCredits } from '../types/user'
 import { URL_USER_LOGIN_POST } from '../utils/constants/endpoints'
 import { postUser } from '../api/user'
 import { RequestResult } from '../types/request'
-import LoginSignupPageLayout from '../compositions/login/LoginSignupPageLayout'
 import { useAuthContext } from '../context/AuthContextWrapper'
 import { SUCCESS } from '../utils/constants/responseStatuses'
+import { NextPage } from 'next'
+import Auth from '../compositions/auth'
 
-interface LoginPageProps {}
-
-// todo implement automatic logout
-// https://stackoverflow.com/questions/667555/how-to-detect-idle-time-in-javascript
-
-export const LoginPage: FC<LoginPageProps> = (props: LoginPageProps) => {
+export const LoginPage: NextPage = () => {
   const { setIsAuthenticated, isSignUp, setIsSignUp } = useAuthContext()
   const [serverErrorMessage, setServerErrorMessage] = useState<string | null>(
     null,
@@ -31,7 +27,7 @@ export const LoginPage: FC<LoginPageProps> = (props: LoginPageProps) => {
   const setFormMode = () => setIsSignUp(true)
 
   return (
-    <LoginSignupPageLayout
+    <Auth
       onSubmit={login}
       serverErrorMsg={serverErrorMessage}
       subtitle={'Login'}

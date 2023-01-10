@@ -1,4 +1,4 @@
 export const SIGNUP_PATH = '/signup'
 export const LOGIN_PATH = '/login'
-export const HOME_PATH = '/'
-export const SUMMARY_PATH = '/summary'
+export const TRANSACTIONS_PATH = '/transactions'
+export const PAIRS_PATH = '/pairs'

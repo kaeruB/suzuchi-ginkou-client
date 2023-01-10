@@ -16,7 +16,7 @@ import { Category, Transaction } from '../../../types/transaction'
 interface TransactionFormProps {
   isEditMode: boolean
   defaultValues: Transaction | null
-  fetchDashboardData: () => void
+  fetchTransactionsAndUserDetails: () => void
   setShowModal: (show: boolean) => void
   userIdToDetails: UserIdToDetails
 }
@@ -31,7 +31,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
     if (result.error && result.error?.status === UNAUTHORIZED) {
       setIsAuthenticated(false)
     } else if (result.response) {
-      props.fetchDashboardData()
+      props.fetchTransactionsAndUserDetails()
       props.setShowModal(false)
     }
   }

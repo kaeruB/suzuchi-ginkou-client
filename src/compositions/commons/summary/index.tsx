@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState, VFC } from 'react'
 import { usePairContext } from '../../../context/PairContextWrapper'
 import { UserDetails, UserIdToDetails } from '../../../types/user'
-import SummaryHeaderLayout from './SummaryHeaderLayout'
-import LoadingPage from '../../loading/LoadingPage'
+import SummaryLayout from './SummaryLayout'
+import Loading from '../loading/Loading'
 import { Summary } from '../../../types/transaction'
 
 interface SummaryHeaderProps {
@@ -51,9 +51,9 @@ export const SummaryHeader: VFC<SummaryHeaderProps> = (
   return personWithDebt == null ||
     personWithoutDebt == null ||
     moneyAmountToReturn == null ? (
-    <LoadingPage />
+    <Loading />
   ) : (
-    <SummaryHeaderLayout
+    <SummaryLayout
       currency={props.currency}
       personWithDebt={personWithDebt}
       personWithoutDebt={personWithoutDebt}

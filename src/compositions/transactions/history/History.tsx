@@ -9,7 +9,7 @@ interface HistoryProps {
   historyData: Array<Transaction>
   currency: Currency
   onShowEditModal: (transactionId: string) => void
-  fetchDashboardData: () => void
+  fetchTransactionsAndUserDetails: () => void
   userIdToDetails: UserIdToDetails
   pairId: string
 }
@@ -34,7 +34,7 @@ export const History: FC<HistoryProps> = (props: HistoryProps) => {
           historyData={transactionsSplitByDate[timestamp]}
           currency={props.currency}
           onShowEditModal={props.onShowEditModal}
-          fetchDashboardData={props.fetchDashboardData}
+          fetchTransactionsAndUserDetails={props.fetchTransactionsAndUserDetails}
           pairId={props.pairId}
           userIdToDetails={props.userIdToDetails}
         />

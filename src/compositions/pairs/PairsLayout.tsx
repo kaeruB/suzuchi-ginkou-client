@@ -1,25 +1,23 @@
 import { FC } from 'react'
-import SummaryHeader from '../dashboard/summary/index'
-import Header from '../dashboard/header'
 import {
   FlexPageLayout,
   PageSizing,
   StyledWidget,
 } from '../../../styles/utils/layout'
 import styled from 'styled-components'
-import Footer from '../dashboard/footer'
 import NewPairPanel from './newPairPanel'
 import { PairsSummariesWithUsersDetails } from '../../types/pair'
 import { Summary } from '../../types/transaction'
+import SummaryHeader from '../commons/summary'
+import Header from '../commons/header'
+import Footer from '../commons/footer'
 
-interface SummaryPageLayoutProps {
+interface PairsLayoutProps {
   pairsSummariesWithUserDetails: PairsSummariesWithUsersDetails
   pairsIdsList: Array<string>
 }
 
-export const SummaryPageLayout: FC<SummaryPageLayoutProps> = (
-  props: SummaryPageLayoutProps,
-) => {
+export const PairsLayout: FC<PairsLayoutProps> = (props: PairsLayoutProps) => {
   const noPairsFoundForUser = () => props.pairsIdsList.length === 0
 
   const renderPairSummary = (summary: Summary, pairId: string) => (
@@ -83,4 +81,4 @@ const RightPanel = styled.div`
   width: 100%;
 `
 
-export default SummaryPageLayout
+export default PairsLayout

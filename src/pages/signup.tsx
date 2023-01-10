@@ -1,15 +1,14 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { User } from '../types/user'
 import { URL_USER_SIGNUP_POST } from '../utils/constants/endpoints'
 import { postUser } from '../api/user'
 import { RequestResult } from '../types/request'
 import { useAuthContext } from '../context/AuthContextWrapper'
-import LoginSignupPageLayout from '../compositions/login/LoginSignupPageLayout'
 import { SUCCESS } from '../utils/constants/responseStatuses'
+import { NextPage } from 'next'
+import Auth from '../compositions/auth'
 
-interface SignupPageProps {}
-
-export const SignupPage: FC<SignupPageProps> = (props: SignupPageProps) => {
+export const SignupPage: NextPage = () => {
   const { setIsAuthenticated, isSignUp, setIsSignUp } = useAuthContext()
   const [serverErrorMessage, setServerErrorMessage] = useState<string | null>(
     null,
@@ -28,7 +27,7 @@ export const SignupPage: FC<SignupPageProps> = (props: SignupPageProps) => {
   const setFormMode = () => setIsSignUp(false)
 
   return (
-    <LoginSignupPageLayout
+    <Auth
       onSubmit={signup}
       serverErrorMsg={serverErrorMessage}
       subtitle={'Signup'}

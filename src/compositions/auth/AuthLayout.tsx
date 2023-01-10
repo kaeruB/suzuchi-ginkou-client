@@ -31,7 +31,7 @@ import {
 } from '../../utils/functions/validators'
 import { User } from '../../types/user'
 
-interface LoginSignupPageLayoutProps {
+interface AuthLayoutProps {
   onSubmit: (body: User) => void
   serverErrorMsg: string | null
   subtitle: 'Login' | 'Signup'
@@ -39,8 +39,8 @@ interface LoginSignupPageLayoutProps {
   isSignUp: boolean
 }
 
-export const LoginSignupPageLayout: FC<LoginSignupPageLayoutProps> = (
-  props: LoginSignupPageLayoutProps,
+export const AuthLayout: FC<AuthLayoutProps> = (
+  props: AuthLayoutProps,
 ) => {
   const [userId, setUserId] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -217,4 +217,4 @@ const Subtitle = styled(FormRow)`
   margin-bottom: 3rem;
 `
 
-export default LoginSignupPageLayout
+export default AuthLayout

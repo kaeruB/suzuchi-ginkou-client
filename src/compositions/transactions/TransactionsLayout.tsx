@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import SummaryHeader from './summary/index'
+import SummaryHeader from '../commons/summary/index'
 import styled from 'styled-components'
 import { FONT_SIZE_HEADER_SECONDARY } from '../../../styles/constants/fontSizes'
 import History from './history/History'
@@ -12,8 +12,8 @@ import {
 } from '../../../styles/components/button'
 import { Currency } from '../../utils/constants/commons'
 import TransactionForm from './transactionForm'
-import Header from './header'
-import Footer from './footer'
+import Header from '../commons/header'
+import Footer from '../commons/footer'
 import {
   FlexCentered,
   FlexPageLayout,
@@ -28,15 +28,15 @@ import {
   TransactionsWithUsersDetails,
 } from '../../types/transaction'
 
-interface DashboardLayoutProps {
-  dashboardData: TransactionsWithUsersDetails
-  fetchDashboardData: () => void
+interface TransactionsLayoutProps {
+  transactionsAndUserDetails: TransactionsWithUsersDetails
+  fetchTransactionsAndUserDetails: () => void
   loadMoreData: () => void
   pairId: string
 }
 
-export const DashboardLayout: FC<DashboardLayoutProps> = (
-  props: DashboardLayoutProps,
+export const TransactionsLayout: FC<TransactionsLayoutProps> = (
+  props: TransactionsLayoutProps,
 ) => {
   const [currency, setCurrency] = useState<Currency>(Currency.PLN)
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -54,8 +54,8 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
     setIsEditMode(true)
 
     const transaction =
-      props.dashboardData &&
-      props.dashboardData.transactions.find(
+      props.transactionsAndUserDetails &&
+      props.transactionsAndUserDetails.transactions.find(
         (t: Transaction) => t._id === transactionId,
       )
     transaction ? setHistoryItemToEdit(transaction) : setHistoryItemToEdit(null)
@@ -64,9 +64,9 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
   }
 
   const renderShowMoreButton = () =>
-    props.dashboardData &&
-    props.dashboardData.transactions &&
-    props.dashboardData.transactions.length > DEFAULT_HISTORY_ITEMS && (
+    props.transactionsAndUserDetails &&
+    props.transactionsAndUserDetails.transactions &&
+    props.transactionsAndUserDetails.transactions.length > DEFAULT_HISTORY_ITEMS && (
       <LoadMoreButtonWrapper>
         <LoadMoreButton onClick={() => props.loadMoreData()}>
           {convertDecimalCodeToHtmlSymbol(ARROW_DOWN_DEC_CODE)}
@@ -82,8 +82,8 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
           <LeftPanel>
             <StyledWidget>
               <SummaryHeader
-                summary={props.dashboardData.summary}
-                userIdToDetails={props.dashboardData.usersDetails}
+                summary={props.transactionsAndUserDetails.summary}
+                userIdToDetails={props.transactionsAndUserDetails.usersDetails}
                 pairId={props.pairId}
                 currency={currency}
               />
@@ -100,11 +100,11 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
                 </CreateButton>
               </SubHeader>
               <History
-                historyData={props.dashboardData.transactions}
+                historyData={props.transactionsAndUserDetails.transactions}
                 currency={currency}
                 onShowEditModal={onShowEditModal}
-                fetchDashboardData={props.fetchDashboardData}
-                userIdToDetails={props.dashboardData.usersDetails}
+                fetchTransactionsAndUserDetails={props.fetchTransactionsAndUserDetails}
+                userIdToDetails={props.transactionsAndUserDetails.usersDetails}
                 pairId={props.pairId}
               />
               {renderShowMoreButton()}
@@ -130,9 +130,9 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
         <TransactionForm
           isEditMode={isEditMode}
           defaultValues={historyItemToEdit}
-          fetchDashboardData={props.fetchDashboardData}
+          fetchTransactionsAndUserDetails={props.fetchTransactionsAndUserDetails}
           setShowModal={setShowModal}
-          userIdToDetails={props.dashboardData.usersDetails}
+          userIdToDetails={props.transactionsAndUserDetails.usersDetails}
         />
       </Modal>
     </>
@@ -177,4 +177,4 @@ const FlexPage = styled.div`
   margin: 5rem 0;
 `
 
-export default DashboardLayout
+export default TransactionsLayout

@@ -1,6 +1,6 @@
 import { VFC } from 'react'
 import styled from 'styled-components'
-import { IconFactory } from '../../commons/IconFactory'
+import { IconFactory } from '../IconFactory'
 import { FlexPageLayout, PageSizing } from '../../../../styles/utils/layout'
 import { IconId } from '../../../types/icon'
 import { FONT_SIZE_HEADER_TERTIARY } from '../../../../styles/constants/fontSizes'
