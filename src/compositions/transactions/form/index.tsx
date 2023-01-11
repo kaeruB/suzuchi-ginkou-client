@@ -5,13 +5,13 @@ import {
   URL_TRANSACTION_POST,
 } from '../../../utils/constants/endpoints'
 import { patchTransaction, postTransaction } from '../../../api/transaction'
-import TransactionFormLayout from './TransactionFormLayout'
 import { RequestResult } from '../../../types/request'
 import { UNAUTHORIZED } from '../../../utils/constants/responseStatuses'
 import { useAuthContext } from '../../../context/AuthContextWrapper'
 import { usePairContext } from '../../../context/PairContextWrapper'
 import { UserIdToDetails } from '../../../types/user'
 import { Category, Transaction } from '../../../types/transaction'
+import FormLayout from "./FormLayout";
 
 interface TransactionFormProps {
   isEditMode: boolean
@@ -65,7 +65,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
   })
 
   return (
-    <TransactionFormLayout
+    <FormLayout
       onSubmit={
         props.isEditMode ? patchTransactionOnSubmit : postTransactionOnSubmit
       }

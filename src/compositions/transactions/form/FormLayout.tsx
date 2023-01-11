@@ -21,15 +21,15 @@ import { usePairContext } from '../../../context/PairContextWrapper'
 import { UserIdToDetails } from '../../../types/user'
 import { Category, Transaction } from '../../../types/transaction'
 
-interface TransactionFormLayoutProps {
+interface FormLayoutProps {
   onSubmit: (body: Transaction) => void
   submitButtonName: string
   defaultValues: Transaction
   userIdToDetails: UserIdToDetails
 }
 
-export const TransactionFormLayout: VFC<TransactionFormLayoutProps> = (
-  props: TransactionFormLayoutProps,
+export const FormLayout: VFC<FormLayoutProps> = (
+  props: FormLayoutProps,
 ) => {
   const { pairUsersIds } = usePairContext()
 
@@ -173,4 +173,4 @@ export const TransactionFormLayout: VFC<TransactionFormLayoutProps> = (
   )
 }
 
-export default TransactionFormLayout
+export default FormLayout

@@ -11,6 +11,10 @@ import { Summary } from '../../types/transaction'
 import SummaryHeader from '../commons/summary'
 import Header from '../commons/header'
 import Footer from '../commons/footer'
+import { FONT_SIZE_HEADER_TERTIARY } from '../../../styles/constants/fontSizes'
+import { COLOR_FONT_PRIMARY } from '../../../styles/constants/colors'
+import { convertDecimalCodeToHtmlSymbol } from '../../utils/functions/commons'
+import {ARROW_RIGHT_DOTTED_DEC_CODE, SPACE_DEC_CODE} from '../../utils/constants/htmlCodes'
 
 interface PairsLayoutProps {
   pairsSummariesWithUserDetails: PairsSummariesWithUsersDetails
@@ -39,7 +43,13 @@ export const PairsLayout: FC<PairsLayoutProps> = (props: PairsLayoutProps) => {
       ),
     )
 
-  const renderNoPairsMsg = () => <>Add a new pair to get started.</>
+  const renderNoPairsMsg = () => (
+    <NoPairMessage>
+      Add a new pair to get started
+      {convertDecimalCodeToHtmlSymbol(SPACE_DEC_CODE)}
+      {convertDecimalCodeToHtmlSymbol(ARROW_RIGHT_DOTTED_DEC_CODE)}
+    </NoPairMessage>
+  )
 
   return (
     props.pairsSummariesWithUserDetails &&
@@ -71,6 +81,7 @@ export const PairsLayout: FC<PairsLayoutProps> = (props: PairsLayoutProps) => {
 const FlexPage = styled.div`
   ${FlexPageLayout};
   margin: 5rem 0;
+  color: ${COLOR_FONT_PRIMARY};
 `
 
 const LeftPanel = styled.div`
@@ -79,6 +90,10 @@ const LeftPanel = styled.div`
 
 const RightPanel = styled.div`
   width: 100%;
+`
+
+const NoPairMessage = styled.span`
+  font-size: ${FONT_SIZE_HEADER_TERTIARY};
 `
 
 export default PairsLayout

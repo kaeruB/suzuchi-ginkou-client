@@ -78,3 +78,11 @@ export const getNameValidationError = (name: string): string | null => {
   }
   return null
 }
+
+export const getRepeatedPasswordValidationError = (
+  password: string,
+  repeatedPassword: string
+): string | null => {
+  if (password === repeatedPassword) return null
+  return 'The passwords are not the same.'
+}

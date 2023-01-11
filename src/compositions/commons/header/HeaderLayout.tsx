@@ -8,7 +8,7 @@ import {
   CustomButton,
   DelicateButton,
 } from '../../../../styles/components/button'
-import { COLOR_FONT_SECONDARY } from '../../../../styles/constants/colors'
+import {COLOR_BACKGROUND, COLOR_FONT_SECONDARY} from '../../../../styles/constants/colors'
 
 interface HeaderLayoutProps {
   logOut: () => void
@@ -21,11 +21,11 @@ export const HeaderLayout: VFC<HeaderLayoutProps> = (
   return (
     <HeaderWrapper>
       <HeaderInside>
-        <div onClick={props.redirectToSummaryPage}>
+        <Logo onClick={props.redirectToSummaryPage}>
           {/* TODO: logo icon */}
           {/*<IconFactory iconId={IconId.LOGO} size={2} />*/}
           Suzuchi Ginkou
-        </div>
+        </Logo>
         <div>
           {/* TODO Currency and logout buttons functionality*/}
           <MenuButton>YEN</MenuButton>
@@ -46,6 +46,7 @@ const HeaderWrapper = styled.div`
   width: 100%;
   cursor: default;
   z-index: 1;
+  background: ${COLOR_BACKGROUND};
 `
 const HeaderInside = styled(PageSizing)`
   ${FlexPageLayout};
@@ -53,6 +54,10 @@ const HeaderInside = styled(PageSizing)`
   align-items: center;
   color: ${COLOR_FONT_SECONDARY};
   font-size: ${FONT_SIZE_HEADER_TERTIARY};
+`
+
+const Logo = styled.div`
+  cursor: pointer;
 `
 
 const MenuButton = styled(CustomButton)`

@@ -46,7 +46,7 @@ export const SummaryHeader: VFC<SummaryHeaderProps> = (
     setMoneyAmountToReturn(difference)
   }, [props.summary, props.userIdToDetails])
 
-  const goToPairDashboard = () => props.pairId && setPairId(props.pairId)
+  const goToPairsPage = () => props.pairId && setPairId(props.pairId)
 
   return personWithDebt == null ||
     personWithoutDebt == null ||
@@ -58,7 +58,7 @@ export const SummaryHeader: VFC<SummaryHeaderProps> = (
       personWithDebt={personWithDebt}
       personWithoutDebt={personWithoutDebt}
       moneyAmountToReturn={moneyAmountToReturn}
-      goToPairDashboard={goToPairDashboard}
+      goToPairsPage={goToPairsPage}
     />
   )
 }

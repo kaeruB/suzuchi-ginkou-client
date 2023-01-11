@@ -6,16 +6,14 @@ import History from './history/History'
 import Modal from '../commons/Modal'
 import {
   BigButton,
-  ColoredButton,
+  CreateButton,
   CustomButton,
-  SmallRoundButton,
 } from '../../../styles/components/button'
 import { Currency } from '../../utils/constants/commons'
-import TransactionForm from './transactionForm'
+import TransactionForm from './form'
 import Header from '../commons/header'
 import Footer from '../commons/footer'
 import {
-  FlexCentered,
   FlexPageLayout,
   PageSizing,
   StyledWidget,
@@ -66,7 +64,8 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
   const renderShowMoreButton = () =>
     props.transactionsAndUserDetails &&
     props.transactionsAndUserDetails.transactions &&
-    props.transactionsAndUserDetails.transactions.length > DEFAULT_HISTORY_ITEMS && (
+    props.transactionsAndUserDetails.transactions.length >
+      DEFAULT_HISTORY_ITEMS && (
       <LoadMoreButtonWrapper>
         <LoadMoreButton onClick={() => props.loadMoreData()}>
           {convertDecimalCodeToHtmlSymbol(ARROW_DOWN_DEC_CODE)}
@@ -103,7 +102,9 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
                 historyData={props.transactionsAndUserDetails.transactions}
                 currency={currency}
                 onShowEditModal={onShowEditModal}
-                fetchTransactionsAndUserDetails={props.fetchTransactionsAndUserDetails}
+                fetchTransactionsAndUserDetails={
+                  props.fetchTransactionsAndUserDetails
+                }
                 userIdToDetails={props.transactionsAndUserDetails.usersDetails}
                 pairId={props.pairId}
               />
@@ -130,7 +131,9 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
         <TransactionForm
           isEditMode={isEditMode}
           defaultValues={historyItemToEdit}
-          fetchTransactionsAndUserDetails={props.fetchTransactionsAndUserDetails}
+          fetchTransactionsAndUserDetails={
+            props.fetchTransactionsAndUserDetails
+          }
           setShowModal={setShowModal}
           userIdToDetails={props.transactionsAndUserDetails.usersDetails}
         />
@@ -153,12 +156,6 @@ const SubHeader = styled.h2`
   font-size: ${FONT_SIZE_HEADER_SECONDARY};
   display: flex;
   justify-content: space-between;
-`
-
-const CreateButton = styled(CustomButton)`
-  ${ColoredButton};
-  ${SmallRoundButton};
-  ${FlexCentered};
 `
 
 const LoadMoreButtonWrapper = styled.div`

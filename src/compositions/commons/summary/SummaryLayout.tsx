@@ -16,7 +16,7 @@ interface SummaryLayoutProps {
   personWithDebt: UserDetails
   personWithoutDebt: UserDetails
   moneyAmountToReturn: number
-  goToPairDashboard: () => void
+  goToPairsPage: () => void
 }
 
 export const SummaryLayout: VFC<SummaryLayoutProps> = (
@@ -42,7 +42,7 @@ export const SummaryLayout: VFC<SummaryLayoutProps> = (
   )
 
   return (
-    <GeneralState onClick={props.goToPairDashboard}>
+    <GeneralState onClick={props.goToPairsPage}>
       <GeneralStateIllustration>
         <RoundPicture
           size={10}

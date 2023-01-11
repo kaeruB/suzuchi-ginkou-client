@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useContext, useState } from 'react'
 import NewPairPanelLayout from './NewPairPanelLayout'
 import { postNewPair } from '../../../api/pair'
 import { RequestResult } from '../../../types/request'
@@ -14,20 +14,25 @@ export const NewPairPanel: FC<NewPairPanelProps> = (
 ) => {
   const { setIsAuthenticated } = useAuthContext()
   const { setPairId } = usePairContext()
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   const addNewPair = async (body: { partnerId: string }) => {
     const result: RequestResult<{ pairId: string }> = await postNewPair(
       URL_PAIRS_POST,
       body,
     )
-    if (result.error && result.error.status === UNAUTHORIZED) {
-      setIsAuthenticated(false)
+    if (result.error) {
+      if (result.error.status === UNAUTHORIZED) {
+        setIsAuthenticated(false)
+      } else {
+        setErrorMsg(result.error.message)
+      }
     } else if (result.response) {
       setPairId(result.response.data.pairId)
     }
   }
 
-  return <NewPairPanelLayout onSubmit={addNewPair} />
+  return <NewPairPanelLayout onSubmit={addNewPair} errorMsg={errorMsg} />
 }
 
 export default NewPairPanel

@@ -5,6 +5,7 @@ import {
   COLOR_STRONG,
 } from '../constants/colors'
 import { BORDER_RADIUS } from '../constants/other'
+import {FlexCentered} from "../utils/layout";
 
 export const CustomButton = styled.button`
   border: none;
@@ -42,4 +43,10 @@ export const DelicateButton = css`
   background: none;
   color: ${COLOR_FONT_SECONDARY};
   padding: 0 4px;
+`
+
+export const CreateButton = styled(CustomButton)`
+  ${ColoredButton};
+  ${SmallRoundButton};
+  ${FlexCentered};
 `
