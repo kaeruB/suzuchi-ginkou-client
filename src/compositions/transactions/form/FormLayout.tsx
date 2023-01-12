@@ -17,7 +17,6 @@ import {
   FormSubmitButton,
   FormWrapper,
 } from '../../../../styles/components/form'
-import { usePairContext } from '../../../context/PairContextWrapper'
 import { UserIdToDetails } from '../../../types/user'
 import { Category, Transaction } from '../../../types/transaction'
 
@@ -26,13 +25,12 @@ interface FormLayoutProps {
   submitButtonName: string
   defaultValues: Transaction
   userIdToDetails: UserIdToDetails
+  pairUsersIds: [string, string]
 }
 
 export const FormLayout: VFC<FormLayoutProps> = (
   props: FormLayoutProps,
 ) => {
-  const { pairUsersIds } = usePairContext()
-
   const [borrowedBy, setBorrowedBy] = useState<string>(
     props.defaultValues.borrowedBy,
   )
@@ -89,8 +87,8 @@ export const FormLayout: VFC<FormLayoutProps> = (
         </FormColumn>
         <FormDoubleColumn>
           <FormFlexRow>
-            {renderPersonButton(pairUsersIds[0])}
-            {renderPersonButton(pairUsersIds[1])}
+            {renderPersonButton(props.pairUsersIds[0])}
+            {renderPersonButton(props.pairUsersIds[1])}
           </FormFlexRow>
         </FormDoubleColumn>
       </FormRow>

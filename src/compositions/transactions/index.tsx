@@ -7,12 +7,16 @@ import Loading from '../commons/loading/Loading'
 import { useAuthContext } from '../../context/AuthContextWrapper'
 import { RequestResult } from '../../types/request'
 import { UNAUTHORIZED } from '../../utils/constants/responseStatuses'
-import { usePairContext } from '../../context/PairContextWrapper'
 import { TransactionsWithUsersDetails } from '../../types/transaction'
 
-export const Transactions: VFC = () => {
+interface TransactionsProps {
+  pairId: string
+}
+
+export const Transactions: VFC<TransactionsProps> = (
+  props: TransactionsProps,
+) => {
   const { isAuthenticated, setIsAuthenticated } = useAuthContext()
-  const { pairId } = usePairContext()
   const [transactionsAndUserDetails, setTransactionsAndUserDetails] =
     useState<TransactionsWithUsersDetails | null>(null)
   const [historyListLength, setHistoryListLength] = useState<number>(
@@ -22,7 +26,7 @@ export const Transactions: VFC = () => {
   const fetchTransactionsAndUserDetails = async () => {
     const result: RequestResult<TransactionsWithUsersDetails> =
       await fetchTransactions(
-        URL_TRANSACTION_SUMMARY(pairId),
+        URL_TRANSACTION_SUMMARY(props.pairId),
         historyListLength,
       )
 
@@ -47,7 +51,7 @@ export const Transactions: VFC = () => {
       transactionsAndUserDetails={transactionsAndUserDetails}
       fetchTransactionsAndUserDetails={fetchTransactionsAndUserDetails}
       loadMoreData={loadMoreData}
-      pairId={pairId}
+      pairId={props.pairId}
     />
   ) : (
     <Loading />

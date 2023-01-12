@@ -136,6 +136,7 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
           }
           setShowModal={setShowModal}
           userIdToDetails={props.transactionsAndUserDetails.usersDetails}
+          pairId={props.pairId}
         />
       </Modal>
     </>

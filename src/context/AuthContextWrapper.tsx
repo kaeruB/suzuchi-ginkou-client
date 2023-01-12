@@ -5,12 +5,24 @@ import {
   SIGNUP_PATH,
   PAIRS_PATH,
 } from '../utils/constants/routerPaths'
+import { UserDetails } from '../types/user'
 
-const AuthContext = createContext({
+interface AuthContextProps {
+  isAuthenticated: boolean
+  setIsAuthenticated: (isAuthenticated: boolean) => void
+  isSignUp: boolean
+  setIsSignUp: (isSignUp: boolean) => void
+  loggedInUserDetails: UserDetails | null
+  setLoggedInUserDetails: (loggedInUserDetails: UserDetails | null) => void
+}
+
+const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
   setIsAuthenticated: (isAuthenticated: boolean) => {},
   isSignUp: false,
   setIsSignUp: (isSignUp: boolean) => {},
+  loggedInUserDetails: null,
+  setLoggedInUserDetails: (loggedInUserDetails: UserDetails | null) => {},
 })
 
 interface AuthContextWrapperProps {
@@ -22,7 +34,31 @@ export const AuthContextWrapper: VFC<AuthContextWrapperProps> = (
 ) => {
   const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true)
+  const [loggedInUserDetails, setLoggedInUserDetails] =
+    useState<UserDetails | null>(null)
   const [isSignUp, setIsSignUp] = useState<boolean>(false)
+
+  const saveRetrieveUserDetailsToStore = (): void => {
+    const USER_DETAILS_STORAGE_KEY = 'userDetails'
+    if (loggedInUserDetails) {
+      localStorage.setItem(
+        USER_DETAILS_STORAGE_KEY,
+        JSON.stringify(loggedInUserDetails),
+      )
+    } else {
+      const savedUserDetails: string | null = localStorage.getItem(
+        USER_DETAILS_STORAGE_KEY,
+      )
+      if (savedUserDetails) {
+        const userDetails: UserDetails = JSON.parse(savedUserDetails)
+        setLoggedInUserDetails(userDetails)
+      }
+    }
+  }
+
+  useEffect(() => {
+    saveRetrieveUserDetailsToStore()
+  }, [loggedInUserDetails])
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -48,7 +84,14 @@ export const AuthContextWrapper: VFC<AuthContextWrapperProps> = (
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, setIsAuthenticated, isSignUp, setIsSignUp }}
+      value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        isSignUp,
+        setIsSignUp,
+        loggedInUserDetails,
+        setLoggedInUserDetails,
+      }}
     >
       {props.children}
     </AuthContext.Provider>

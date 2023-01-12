@@ -11,7 +11,8 @@ import { useAuthContext } from '../../../context/AuthContextWrapper'
 import { usePairContext } from '../../../context/PairContextWrapper'
 import { UserIdToDetails } from '../../../types/user'
 import { Category, Transaction } from '../../../types/transaction'
-import FormLayout from "./FormLayout";
+import FormLayout from './FormLayout'
+import Loading from "../../commons/loading/Loading";
 
 interface TransactionFormProps {
   isEditMode: boolean
@@ -19,13 +20,14 @@ interface TransactionFormProps {
   fetchTransactionsAndUserDetails: () => void
   setShowModal: (show: boolean) => void
   userIdToDetails: UserIdToDetails
+  pairId: string
 }
 
 export const TransactionForm: VFC<TransactionFormProps> = (
   props: TransactionFormProps,
 ) => {
   const { setIsAuthenticated } = useAuthContext()
-  const { pairUsersIds, pairId } = usePairContext()
+  const { pairUsersIds } = usePairContext()
 
   const afterResponseReceived = (result: RequestResult<Transaction>) => {
     if (result.error && result.error?.status === UNAUTHORIZED) {
@@ -38,13 +40,13 @@ export const TransactionForm: VFC<TransactionFormProps> = (
 
   const patchTransactionOnSubmit = async (body: Transaction) => {
     const transactionId = (props.defaultValues && props.defaultValues._id) || ''
-    const url = URL_TRANSACTION_PATCH_OR_DELETE(pairId, transactionId)
+    const url = URL_TRANSACTION_PATCH_OR_DELETE(props.pairId, transactionId)
     const result: RequestResult<Transaction> = await patchTransaction(url, body)
     afterResponseReceived(result)
   }
 
   const postTransactionOnSubmit = async (body: Transaction) => {
-    const result = await postTransaction(URL_TRANSACTION_POST(pairId), body)
+    const result = await postTransaction(URL_TRANSACTION_POST(props.pairId), body)
     afterResponseReceived(result)
   }
 
@@ -64,7 +66,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
       : getCurrentTimestamp(),
   })
 
-  return (
+  return pairUsersIds ? (
     <FormLayout
       onSubmit={
         props.isEditMode ? patchTransactionOnSubmit : postTransactionOnSubmit
@@ -72,8 +74,9 @@ export const TransactionForm: VFC<TransactionFormProps> = (
       submitButtonName={props.isEditMode ? 'Save' : 'Add Transaction'}
       defaultValues={transactionFormInitialValues()}
       userIdToDetails={props.userIdToDetails}
+      pairUsersIds={pairUsersIds}
     />
-  )
+  ) : <Loading/>
 }
 
 export default TransactionForm

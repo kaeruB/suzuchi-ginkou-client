@@ -2,12 +2,18 @@ import { createContext, useContext, useEffect, useState, VFC } from 'react'
 import { useRouter } from 'next/router'
 import { TRANSACTIONS_PATH, PAIRS_PATH } from '../utils/constants/routerPaths'
 import { retrieveUsersIdsFromPairId } from '../utils/functions/commons'
-import {useAuthContext} from "./AuthContextWrapper";
+import { useAuthContext } from './AuthContextWrapper'
 
-const PairContext = createContext({
-  pairId: '',
+interface PairContextProps {
+  pairId: string | null
+  setPairId: (pairId: string) => void
+  pairUsersIds: [string, string] | null
+}
+
+const PairContext = createContext<PairContextProps>({
+  pairId: null,
   setPairId: (pairId: string) => {},
-  pairUsersIds: ['', ''],
+  pairUsersIds: null,
 })
 
 interface PairContextWrapperProps {
@@ -18,8 +24,10 @@ export const PairContextWrapper: VFC<PairContextWrapperProps> = (
   props: PairContextWrapperProps,
 ) => {
   const router = useRouter()
-  const [pairId, setPairId] = useState<string>('')
-  const [pairUsersIds, setPairUsersIds] = useState<Array<string>>(['', ''])
+  const [pairId, setPairId] = useState<string | null>(null)
+  const [pairUsersIds, setPairUsersIds] = useState<[string, string] | null>(
+    null,
+  )
   const { isAuthenticated } = useAuthContext()
 
   useEffect(() => {
