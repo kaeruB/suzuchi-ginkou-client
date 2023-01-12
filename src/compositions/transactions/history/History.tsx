@@ -4,6 +4,9 @@ import { createTimestampToTransactionsMapping } from '../../../transformations/h
 import { Currency } from '../../../utils/constants/commons'
 import { UserIdToDetails } from '../../../types/user'
 import { Transaction } from '../../../types/transaction'
+import styled from "styled-components";
+import {FONT_SIZE_HEADER_TERTIARY} from "../../../../styles/constants/fontSizes";
+import {COLOR_FONT_SECONDARY} from "../../../../styles/constants/colors";
 
 interface HistoryProps {
   historyData: Array<Transaction>
@@ -40,10 +43,16 @@ export const History: FC<HistoryProps> = (props: HistoryProps) => {
         />
       ))
     ) : (
-      <span>No Transactions</span>
+      <NoTransactionsInfo>No transactions found</NoTransactionsInfo>
     )
 
   return <> {historyLists()} </>
 }
+
+const NoTransactionsInfo = styled.div`
+  font-size: ${FONT_SIZE_HEADER_TERTIARY};
+  color: ${COLOR_FONT_SECONDARY};
+  margin-top: 3rem;
+`
 
 export default History

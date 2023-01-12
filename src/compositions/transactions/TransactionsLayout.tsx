@@ -1,7 +1,10 @@
 import { FC, useState } from 'react'
 import SummaryHeader from '../commons/summary/index'
 import styled from 'styled-components'
-import { FONT_SIZE_HEADER_SECONDARY } from '../../../styles/constants/fontSizes'
+import {
+  FONT_SIZE_HEADER_SECONDARY,
+  FONT_SIZE_HEADER_TERTIARY,
+} from '../../../styles/constants/fontSizes'
 import History from './history/History'
 import Modal from '../commons/Modal'
 import {
@@ -25,6 +28,7 @@ import {
   Transaction,
   TransactionsWithUsersDetails,
 } from '../../types/transaction'
+import { COLOR_FONT_SECONDARY } from '../../../styles/constants/colors'
 
 interface TransactionsLayoutProps {
   transactionsAndUserDetails: TransactionsWithUsersDetails
@@ -115,7 +119,7 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
           <RightPanel>
             <StyledWidget>
               <SubHeader>Statistics</SubHeader>
-              <div>Here will be a chart.</div>
+              <NoStatisticsInfo>No statistics to display</NoStatisticsInfo>
             </StyledWidget>
           </RightPanel>
         </FlexPage>
@@ -173,6 +177,12 @@ const LoadMoreButton = styled(CustomButton)`
 const FlexPage = styled.div`
   ${FlexPageLayout};
   margin: 5rem 0;
+`
+
+const NoStatisticsInfo = styled.div`
+  font-size: ${FONT_SIZE_HEADER_TERTIARY};
+  color: ${COLOR_FONT_SECONDARY};
+  margin-top: 3rem;
 `
 
 export default TransactionsLayout
