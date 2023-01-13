@@ -18,13 +18,13 @@ export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
 
     if (res.response?.status === SUCCESS) {
       setIsAuthenticated(false)
+      setPairId(null)
     }
   }
 
   const redirectToSummaryPage = (): void => {
     if (isAuthenticated) {
-      // todo must be a better solution
-      setPairId('')
+      setPairId(null)
     }
   }
 

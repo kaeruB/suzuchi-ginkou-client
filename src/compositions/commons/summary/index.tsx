@@ -25,16 +25,18 @@ export const SummaryHeader: VFC<SummaryHeaderProps> = (
   const usersIds = useMemo(() => Object.keys(props.summary), [props.summary])
 
   useEffect(() => {
-    const borrowedMoneyByUser1 = props.summary[usersIds[0]]
+    const moneyPayedByFirstUser: number = props.summary[usersIds[0]]
       ? props.summary[usersIds[0]]
       : 0
-    const borrowedMoneyByUser2 = props.summary[usersIds[1]]
+    const moneyPayedBySecondUser: number = props.summary[usersIds[1]]
       ? props.summary[usersIds[1]]
       : 0
-    const difference = Math.abs(borrowedMoneyByUser1 - borrowedMoneyByUser2)
+    const difference: number = Math.abs(
+      moneyPayedBySecondUser - moneyPayedByFirstUser,
+    )
 
     const personWithDebt =
-      borrowedMoneyByUser1 < borrowedMoneyByUser2 ? usersIds[1] : usersIds[0]
+      moneyPayedByFirstUser < moneyPayedBySecondUser ? usersIds[0] : usersIds[1]
     const personWithoutDebt =
       personWithDebt === usersIds[0] ? usersIds[1] : usersIds[0]
 

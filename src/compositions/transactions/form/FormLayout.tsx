@@ -28,11 +28,9 @@ interface FormLayoutProps {
   pairUsersIds: [string, string]
 }
 
-export const FormLayout: VFC<FormLayoutProps> = (
-  props: FormLayoutProps,
-) => {
-  const [borrowedBy, setBorrowedBy] = useState<string>(
-    props.defaultValues.borrowedBy,
+export const FormLayout: VFC<FormLayoutProps> = (props: FormLayoutProps) => {
+  const [userWhoPaid, setUserWhoPaid] = useState<string>(
+    props.defaultValues.userWhoPaid,
   )
   const [category, setCategory] = useState<Category>(
     props.defaultValues.category,
@@ -47,7 +45,7 @@ export const FormLayout: VFC<FormLayoutProps> = (
 
   const createRequestBody = () => ({
     amount,
-    borrowedBy,
+    userWhoPaid,
     category,
     description,
     timestamp: convertDateToTimestamp(date),
@@ -67,8 +65,8 @@ export const FormLayout: VFC<FormLayoutProps> = (
 
   const renderPersonButton = (buttonPerson: string) => (
     <FormButton
-      onClick={() => setBorrowedBy(buttonPerson)}
-      isActive={borrowedBy === buttonPerson}
+      onClick={() => setUserWhoPaid(buttonPerson)}
+      isActive={userWhoPaid === buttonPerson}
       type={'button'}
     >
       <RoundPicture
@@ -83,7 +81,7 @@ export const FormLayout: VFC<FormLayoutProps> = (
     <FormWrapper>
       <FormRow>
         <FormColumn>
-          <FormRowLabel htmlFor="borrowedBy">Borrowed By</FormRowLabel>
+          <FormRowLabel htmlFor="userWhoPaid">Paid by</FormRowLabel>
         </FormColumn>
         <FormDoubleColumn>
           <FormFlexRow>

@@ -51,8 +51,8 @@ export const TransactionForm: VFC<TransactionFormProps> = (
   }
 
   const transactionFormInitialValues = (): Transaction => ({
-    borrowedBy: props.defaultValues
-      ? props.defaultValues.borrowedBy
+    userWhoPaid: props.defaultValues
+      ? props.defaultValues.userWhoPaid
       : pairUsersIds
       ? pairUsersIds[0]
       : '',

@@ -1,5 +1,5 @@
 # 🏦 Suzuchi Ginkou - Client
-Track money borrowed by your partner.
+Track money with your partner or friend.
 
 ## 🖥 About
 * Next.js

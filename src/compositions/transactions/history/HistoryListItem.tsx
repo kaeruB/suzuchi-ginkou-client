@@ -28,21 +28,20 @@ interface HistoryListItemProps {
 export const HistoryListItem: VFC<HistoryListItemProps> = (
   props: HistoryListItemProps,
 ) => {
-  const [personWhoBorrowed, setPersonWhoBorrowed] =
-    useState<UserDetails | null>(null)
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null)
 
   useEffect(() => {
-    const personWhoBorrowed: UserDetails =
-      props.userIdToDetails[props.transactionData.borrowedBy]
+    const userDetails: UserDetails =
+      props.userIdToDetails[props.transactionData.userWhoPaid]
 
-    setPersonWhoBorrowed(personWhoBorrowed)
+    setUserDetails(userDetails)
   }, [props.transactionData])
 
   return (
-    personWhoBorrowed && (
+    userDetails && (
       <HistoryListItemElement>
         <HistoryListItemLeftContainer
-          personWhoBorrowed={personWhoBorrowed}
+          userDetails={userDetails}
           category={props.transactionData.category}
           description={props.transactionData.description}
         />
@@ -51,7 +50,9 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
           currency={props.currency}
           transactionId={props.transactionData._id!}
           onShowEditModal={props.onShowEditModal}
-          fetchTransactionsAndUserDetails={props.fetchTransactionsAndUserDetails}
+          fetchTransactionsAndUserDetails={
+            props.fetchTransactionsAndUserDetails
+          }
           pairId={props.pairId}
         />
       </HistoryListItemElement>
@@ -60,7 +61,7 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
 }
 
 interface HistoryListItemLeftContainerProps {
-  personWhoBorrowed: UserDetails
+  userDetails: UserDetails
   category: Category
   description: string
 }
@@ -73,8 +74,8 @@ const HistoryListItemLeftContainer: VFC<HistoryListItemLeftContainerProps> = (
       <PhotoAndCategoryWrapper>
         <RoundPicture
           size={4}
-          src={IMG_PATHS(props.personWhoBorrowed.avatar)}
-          alt={props.personWhoBorrowed.name}
+          src={IMG_PATHS(props.userDetails.avatar)}
+          alt={props.userDetails.name}
         />
         <CategoryWrapper>
           <IconFactory size={2} iconId={props.category} />

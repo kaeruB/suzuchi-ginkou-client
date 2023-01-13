@@ -6,13 +6,13 @@ import { useAuthContext } from './AuthContextWrapper'
 
 interface PairContextProps {
   pairId: string | null
-  setPairId: (pairId: string) => void
+  setPairId: (pairId: string | null) => void
   pairUsersIds: [string, string] | null
 }
 
 const PairContext = createContext<PairContextProps>({
   pairId: null,
-  setPairId: (pairId: string) => {},
+  setPairId: (pairId: string | null) => {},
   pairUsersIds: null,
 })
 

@@ -20,7 +20,7 @@ import {TRANSACTIONS_PATH} from "../src/utils/constants/routerPaths";
 //               summary: 1000,
 //               history: {
 //                 amount: 100,
-//                 borrowedBy: 'kazu',
+//                 userWhoPaid: 'kazu',
 //                 category: 'Home',
 //                 description: 'this is desc desu',
 //                 timestamp: 2020-12-15,
