@@ -17,14 +17,14 @@ import {
   FormSubmitButton,
   FormWrapper,
 } from '../../../../styles/components/form'
-import { UserIdToDetails } from '../../../types/user'
+import { UserEmailToDetails } from '../../../types/user'
 import { Category, Transaction } from '../../../types/transaction'
 
 interface FormLayoutProps {
   onSubmit: (body: Transaction) => void
   submitButtonName: string
   defaultValues: Transaction
-  userIdToDetails: UserIdToDetails
+  userEmailToDetails: UserEmailToDetails
   pairUsersIds: [string, string]
 }
 
@@ -71,8 +71,8 @@ export const FormLayout: VFC<FormLayoutProps> = (props: FormLayoutProps) => {
     >
       <RoundPicture
         size={5}
-        src={IMG_PATHS(props.userIdToDetails[buttonPerson].avatar)}
-        alt={props.userIdToDetails[buttonPerson].name}
+        src={IMG_PATHS(props.userEmailToDetails[buttonPerson].avatar)}
+        alt={props.userEmailToDetails[buttonPerson].name}
       />
     </FormButton>
   )

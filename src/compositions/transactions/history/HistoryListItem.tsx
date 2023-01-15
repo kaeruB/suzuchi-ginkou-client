@@ -13,7 +13,7 @@ import {
   UNAUTHORIZED,
 } from '../../../utils/constants/responseStatuses'
 import { useAuthContext } from '../../../context/AuthContextWrapper'
-import { UserDetails, UserIdToDetails } from '../../../types/user'
+import { UserDetails, UserEmailToDetails } from '../../../types/user'
 import { Category, Transaction } from '../../../types/transaction'
 
 interface HistoryListItemProps {
@@ -21,7 +21,7 @@ interface HistoryListItemProps {
   currency: Currency
   onShowEditModal: (transactionId: string) => void
   fetchTransactionsAndUserDetails: () => void
-  userIdToDetails: UserIdToDetails
+  userEmailToDetails: UserEmailToDetails
   pairId: string
 }
 
@@ -32,7 +32,7 @@ export const HistoryListItem: VFC<HistoryListItemProps> = (
 
   useEffect(() => {
     const userDetails: UserDetails =
-      props.userIdToDetails[props.transactionData.userWhoPaid]
+      props.userEmailToDetails[props.transactionData.userWhoPaid]
 
     setUserDetails(userDetails)
   }, [props.transactionData])

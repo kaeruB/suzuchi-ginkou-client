@@ -14,39 +14,39 @@ import styled from 'styled-components'
 import { FONT_SIZE_HEADER_SECONDARY } from '../../../../styles/constants/fontSizes'
 
 interface NewPairPanelLayoutProps {
-  onSubmit: (body: { partnerId: string }) => void
+  onSubmit: (body: { partnerEmail: string }) => void
   errorMsg: string | null
 }
 
 export const NewPairPanelLayout: FC<NewPairPanelLayoutProps> = (
   props: NewPairPanelLayoutProps,
 ) => {
-  const [partnerId, setPartnerId] = useState<string>('')
+  const [partnerEmail, setPartnerEmail] = useState<string>('')
 
   return (
     <FormWrapper>
       <TitleRow>Create New Transaction Dashboard</TitleRow>
       <FormRow>
         <FormColumn>
-          <FormRowLabel htmlFor="amount">User ID</FormRowLabel>
+          <FormRowLabel htmlFor="amount">Email address</FormRowLabel>
         </FormColumn>
         <FormDoubleColumn>
           <FormFlexRow>
             <FormRowInput
               type="text"
               min="0"
-              id="partnerId"
-              autoComplete="partnerId"
-              name="partnerId"
+              id="partnerEmail"
+              autoComplete="partnerEmail"
+              name="partnerEmail"
               required
-              defaultValue={partnerId}
+              defaultValue={partnerEmail}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setPartnerId(e.target.value)
+                setPartnerEmail(e.target.value)
               }
             />
             <SubmitButton
-              disabled={partnerId === ''}
-              onClick={() => props.onSubmit({ partnerId })}
+              disabled={partnerEmail === ''}
+              onClick={() => props.onSubmit({ partnerEmail })}
             >
               +
             </SubmitButton>

@@ -28,7 +28,7 @@ export const PairsLayout: FC<PairsLayoutProps> = (props: PairsLayoutProps) => {
     <SummaryHeader
       key={pairId}
       summary={summary}
-      userIdToDetails={props.pairsSummariesWithUserDetails.usersDetails}
+      userEmailToDetails={props.pairsSummariesWithUserDetails.usersDetails}
       // todo currency
       currency={'PLN'}
       pairId={pairId}

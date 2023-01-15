@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState, VFC } from 'react'
 import { usePairContext } from '../../../context/PairContextWrapper'
-import { UserDetails, UserIdToDetails } from '../../../types/user'
+import { UserDetails, UserEmailToDetails } from '../../../types/user'
 import SummaryLayout from './SummaryLayout'
 import Loading from '../loading/Loading'
 import { Summary } from '../../../types/transaction'
 
 interface SummaryHeaderProps {
   summary: Summary
-  userIdToDetails: UserIdToDetails
+  userEmailToDetails: UserEmailToDetails
   currency: string
   pairId: string
 }
@@ -40,13 +40,13 @@ export const SummaryHeader: VFC<SummaryHeaderProps> = (
     const personWithoutDebt =
       personWithDebt === usersIds[0] ? usersIds[1] : usersIds[0]
 
-    const personWithDebtDetails = props.userIdToDetails[personWithDebt]
-    const personWithoutDebtDetails = props.userIdToDetails[personWithoutDebt]
+    const personWithDebtDetails = props.userEmailToDetails[personWithDebt]
+    const personWithoutDebtDetails = props.userEmailToDetails[personWithoutDebt]
 
     setPersonWithDebt(personWithDebtDetails)
     setPersonWithoutDebt(personWithoutDebtDetails)
     setMoneyAmountToReturn(difference)
-  }, [props.summary, props.userIdToDetails])
+  }, [props.summary, props.userEmailToDetails])
 
   const goToPairsPage = () => props.pairId && setPairId(props.pairId)
 

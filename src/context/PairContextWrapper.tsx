@@ -33,8 +33,8 @@ export const PairContextWrapper: VFC<PairContextWrapperProps> = (
   useEffect(() => {
     if (isAuthenticated) {
       if (pairId) {
-        const userIds = retrieveUsersIdsFromPairId(pairId)
-        setPairUsersIds(userIds)
+        const userEmails = retrieveUsersIdsFromPairId(pairId)
+        setPairUsersIds(userEmails)
         router.push(TRANSACTIONS_PATH)
       } else {
         router.push(PAIRS_PATH)

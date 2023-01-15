@@ -1,5 +1,5 @@
 export type UserCredits = {
-  userId: string
+  userEmail: string
   password: string
 }
 
@@ -9,4 +9,4 @@ export type UserDetails = {
 }
 
 export type User = UserCredits & UserDetails
-export type UserIdToDetails = { [userId: string]: UserDetails }
+export type UserEmailToDetails = { [userEmail: string]: UserDetails }

@@ -9,7 +9,7 @@ import { RequestResult } from '../../../types/request'
 import { UNAUTHORIZED } from '../../../utils/constants/responseStatuses'
 import { useAuthContext } from '../../../context/AuthContextWrapper'
 import { usePairContext } from '../../../context/PairContextWrapper'
-import { UserIdToDetails } from '../../../types/user'
+import { UserEmailToDetails } from '../../../types/user'
 import { Category, Transaction } from '../../../types/transaction'
 import FormLayout from './FormLayout'
 import Loading from "../../commons/loading/Loading";
@@ -19,7 +19,7 @@ interface TransactionFormProps {
   defaultValues: Transaction | null
   fetchTransactionsAndUserDetails: () => void
   setShowModal: (show: boolean) => void
-  userIdToDetails: UserIdToDetails
+  userEmailToDetails: UserEmailToDetails
   pairId: string
 }
 
@@ -73,7 +73,7 @@ export const TransactionForm: VFC<TransactionFormProps> = (
       }
       submitButtonName={props.isEditMode ? 'Save' : 'Add Transaction'}
       defaultValues={transactionFormInitialValues()}
-      userIdToDetails={props.userIdToDetails}
+      userEmailToDetails={props.userEmailToDetails}
       pairUsersIds={pairUsersIds}
     />
   ) : <Loading/>

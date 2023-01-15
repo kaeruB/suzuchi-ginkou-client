@@ -86,7 +86,7 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
             <StyledWidget>
               <SummaryHeader
                 summary={props.transactionsAndUserDetails.summary}
-                userIdToDetails={props.transactionsAndUserDetails.usersDetails}
+                userEmailToDetails={props.transactionsAndUserDetails.usersDetails}
                 pairId={props.pairId}
                 currency={currency}
               />
@@ -109,7 +109,7 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
                 fetchTransactionsAndUserDetails={
                   props.fetchTransactionsAndUserDetails
                 }
-                userIdToDetails={props.transactionsAndUserDetails.usersDetails}
+                userEmailToDetails={props.transactionsAndUserDetails.usersDetails}
                 pairId={props.pairId}
               />
               {renderShowMoreButton()}
@@ -139,7 +139,7 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
             props.fetchTransactionsAndUserDetails
           }
           setShowModal={setShowModal}
-          userIdToDetails={props.transactionsAndUserDetails.usersDetails}
+          userEmailToDetails={props.transactionsAndUserDetails.usersDetails}
           pairId={props.pairId}
         />
       </Modal>

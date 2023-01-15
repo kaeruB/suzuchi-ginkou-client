@@ -33,7 +33,7 @@ import {
   getNameValidationError,
   getPasswordValidationError,
   getRepeatedPasswordValidationError,
-  getUserIdValidationError,
+  getUserEmailValidationError,
   isEmptyString,
 } from '../../utils/functions/validators'
 import { User } from '../../types/user'
@@ -49,13 +49,13 @@ interface AuthLayoutProps {
 }
 
 export const AuthLayout: FC<AuthLayoutProps> = (props: AuthLayoutProps) => {
-  const [userId, setUserId] = useState<string>('')
+  const [userEmail, setUserEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [repeatedPassword, setRepeatedPassword] = useState<string>('')
   const [name, setName] = useState<string>('')
   const [avatar, setAvatar] = useState<string>(DEFAULT_AVATARS[0])
 
-  const [userIdErrorMsg, setUserIdErrorMsg] = useState<null | string>(null)
+  const [userEmailErrorMsg, setUserEmailErrorMsg] = useState<null | string>(null)
   const [passwordErrorMsg, setPasswordErrorMsg] = useState<null | string>(null)
   const [repeatedPasswordErrorMsg, setRepeatedPasswordErrorMsg] = useState<
     null | string
@@ -64,10 +64,10 @@ export const AuthLayout: FC<AuthLayoutProps> = (props: AuthLayoutProps) => {
 
   useEffect(() => {
     if (props.isSignUp) {
-      const passwordError = getPasswordValidationError({ password, userId })
+      const passwordError = getPasswordValidationError({ password, userEmail })
       setPasswordErrorMsg(passwordError)
     }
-  }, [password, userId])
+  }, [password, userEmail])
 
   useEffect(() => {
     if (props.isSignUp) {
@@ -81,10 +81,10 @@ export const AuthLayout: FC<AuthLayoutProps> = (props: AuthLayoutProps) => {
 
   useEffect(() => {
     if (props.isSignUp) {
-      const userIdError = getUserIdValidationError(userId)
-      setUserIdErrorMsg(userIdError)
+      const userEmailError = getUserEmailValidationError(userEmail)
+      setUserEmailErrorMsg(userEmailError)
     }
-  }, [userId])
+  }, [userEmail])
 
   useEffect(() => {
     if (props.isSignUp) {
@@ -94,7 +94,7 @@ export const AuthLayout: FC<AuthLayoutProps> = (props: AuthLayoutProps) => {
   }, [name])
 
   const createRequestBody = (): User => ({
-    userId,
+    userEmail,
     password,
     name,
     avatar,
@@ -189,22 +189,22 @@ export const AuthLayout: FC<AuthLayoutProps> = (props: AuthLayoutProps) => {
         <FormErrorMessage>{props.serverErrorMsg}</FormErrorMessage>
         <FormRow>
           <FormColumn>
-            <FormRowLabel>User ID</FormRowLabel>
+            <FormRowLabel>Email address</FormRowLabel>
           </FormColumn>
           <FormDoubleColumn>
             <LoginPageInput
               type="text"
-              id="userId"
-              autoComplete="userId"
-              name="userId"
+              id="userEmail"
+              autoComplete="userEmail"
+              name="userEmail"
               required
-              defaultValue={userId}
+              defaultValue={userEmail}
               onInput={(e: ChangeEvent<HTMLInputElement>) =>
-                setUserId(e.target.value)
+                setUserEmail(e.target.value)
               }
             />
           </FormDoubleColumn>
-          <FormErrorMessage>{userIdErrorMsg}</FormErrorMessage>
+          <FormErrorMessage>{userEmailErrorMsg}</FormErrorMessage>
         </FormRow>
 
         <FormRow>
@@ -232,11 +232,11 @@ export const AuthLayout: FC<AuthLayoutProps> = (props: AuthLayoutProps) => {
         <FormSubmitButton
           onClick={() => props.onSubmit(createRequestBody())}
           disabled={
-            isEmptyString(userId) ||
+            isEmptyString(userEmail) ||
             isEmptyString(password) ||
             (props.isSignUp && isEmptyString(repeatedPassword)) ||
             (props.isSignUp && isEmptyString(name)) ||
-            userIdErrorMsg !== null ||
+            userEmailErrorMsg !== null ||
             passwordErrorMsg !== null ||
             repeatedPasswordErrorMsg !== null ||
             nameErrorMsg !== null

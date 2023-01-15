@@ -16,8 +16,8 @@ export const isStringNotTooLong = (
   maxStringLength: number,
 ): boolean => str.length <= maxStringLength
 
-export const isPasswordDifferentThanUsername = (user: UserCredits): boolean =>
-  user.password !== user.userId
+export const isPasswordDifferentThanUserEmail = (user: UserCredits): boolean =>
+  user.password !== user.userEmail
 
 export const hasPasswordNumber = (password: string): boolean => {
   const NUMBERS_REGEX = /\d/
@@ -39,8 +39,8 @@ export const getPasswordValidationError = (
   if (!isStringLongEnough(user.password, MIN_PASSWORD_LENGTH)) {
     return `Password should have at least ${MIN_PASSWORD_LENGTH} characters.`
   }
-  if (!isPasswordDifferentThanUsername(user)) {
-    return "Password shouldn't be the same as user id"
+  if (!isPasswordDifferentThanUserEmail(user)) {
+    return "Password shouldn't be the same as email address"
   }
   if (!hasPasswordNumber(user.password)) {
     return 'Password should contain at least one number'
@@ -51,16 +51,16 @@ export const getPasswordValidationError = (
   return null
 }
 
-export const getUserIdValidationError = (userId: string): string | null => {
-  if (isEmptyString(userId)) {
+export const getUserEmailValidationError = (userEmail: string): string | null => {
+  if (isEmptyString(userEmail)) {
     return null
   }
 
-  if (!isStringLongEnough(userId, MIN_USERNAME_LENGTH)) {
-    return `User ID should have at least ${MIN_USERNAME_LENGTH} characters.`
+  if (!isStringLongEnough(userEmail, MIN_USERNAME_LENGTH)) {
+    return `Email address should have at least ${MIN_USERNAME_LENGTH} characters.`
   }
-  if (!isStringNotTooLong(userId, MAX_USERNAME_LENGTH)) {
-    return `User ID can have maximum ${MAX_USERNAME_LENGTH} characters.`
+  if (!isStringNotTooLong(userEmail, MAX_USERNAME_LENGTH)) {
+    return `Email address can have maximum ${MAX_USERNAME_LENGTH} characters.`
   }
   return null
 }

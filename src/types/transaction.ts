@@ -1,4 +1,4 @@
-import { UserIdToDetails } from './user'
+import { UserEmailToDetails } from './user'
 
 export enum Category {
   SHOPPING = 'Shopping',
@@ -22,5 +22,5 @@ export type Summary = { [userWhoPaid: string]: number }
 export type TransactionsWithUsersDetails = {
   transactions: Array<Transaction>
   summary: Summary
-  usersDetails: UserIdToDetails
+  usersDetails: UserEmailToDetails
 }

@@ -4,7 +4,7 @@ import HistoryListItem from './HistoryListItem'
 import { FONT_SIZE_PRIMARY } from '../../../../styles/constants/fontSizes'
 import { convertTimestampToDateString } from '../../../utils/functions/commons'
 import { Currency } from '../../../utils/constants/commons'
-import { UserIdToDetails } from '../../../types/user'
+import { UserEmailToDetails } from '../../../types/user'
 import { Transaction } from '../../../types/transaction'
 
 interface HistoryListProps {
@@ -12,7 +12,7 @@ interface HistoryListProps {
   currency: Currency
   onShowEditModal: (transactionId: string) => void
   fetchTransactionsAndUserDetails: () => void
-  userIdToDetails: UserIdToDetails
+  userEmailToDetails: UserEmailToDetails
   pairId: string
 }
 
@@ -26,7 +26,7 @@ export const HistoryList: VFC<HistoryListProps> = (props: HistoryListProps) => {
         onShowEditModal={props.onShowEditModal}
         fetchTransactionsAndUserDetails={props.fetchTransactionsAndUserDetails}
         pairId={props.pairId}
-        userIdToDetails={props.userIdToDetails}
+        userEmailToDetails={props.userEmailToDetails}
       />
     )
   }

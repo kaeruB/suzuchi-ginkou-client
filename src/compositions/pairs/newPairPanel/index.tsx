@@ -16,7 +16,7 @@ export const NewPairPanel: FC<NewPairPanelProps> = (
   const { setPairId } = usePairContext()
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
-  const addNewPair = async (body: { partnerId: string }) => {
+  const addNewPair = async (body: { partnerEmail: string }) => {
     const result: RequestResult<{ pairId: string }> = await postNewPair(
       URL_PAIRS_POST,
       body,
