@@ -82,6 +82,10 @@ const FlexPage = styled.div`
   ${FlexPageLayout};
   margin: 5rem 0;
   color: ${COLOR_FONT_PRIMARY};
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `
 
 const LeftPanel = styled.div`

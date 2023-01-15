@@ -153,8 +153,6 @@ const LeftPanel = styled.div`
 
 const RightPanel = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: flex-end;
 `
 
 const SubHeader = styled.h2`
@@ -177,6 +175,10 @@ const LoadMoreButton = styled(CustomButton)`
 const FlexPage = styled.div`
   ${FlexPageLayout};
   margin: 5rem 0;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `
 
 const NoStatisticsInfo = styled.div`
