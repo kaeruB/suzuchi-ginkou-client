@@ -1,11 +1,11 @@
-import '../../styles/globals.scss'
+import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { AuthContextWrapper } from '../context/AuthContextWrapper'
-import { PairContextWrapper } from '../context/PairContextWrapper'
+import { AuthContextWrapper } from '../src/context/AuthContextWrapper'
+import { PairContextWrapper } from '../src/context/PairContextWrapper'
 import Head from 'next/head'
-import { MODAL_ROOT_ID } from '../utils/constants/elementIds'
+import { MODAL_ROOT_ID } from '../src/utils/constants/elementIds'
 import styled from 'styled-components'
-import { COLOR_FONT_PRIMARY } from '../../styles/constants/colors'
+import { COLOR_FONT_PRIMARY } from '../styles/constants/colors'
 
 const SuzuchiGinkouClient = ({ Component, pageProps }: AppProps) => {
   return (

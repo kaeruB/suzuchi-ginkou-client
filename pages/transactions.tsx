@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
-import Transactions from '../compositions/transactions'
-import { usePairContext } from '../context/PairContextWrapper'
-import Loading from '../compositions/commons/loading/Loading'
+import Transactions from '../src/compositions/transactions'
+import { usePairContext } from '../src/context/PairContextWrapper'
+import Loading from '../src/compositions/commons/loading/Loading'
 
 const TransactionsPage: NextPage = () => {
   const { pairId } = usePairContext()

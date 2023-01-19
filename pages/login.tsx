@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { UserCredits, UserDetails } from '../types/user'
-import { URL_USER_LOGIN_POST } from '../utils/constants/endpoints'
-import { postUser } from '../api/user'
-import { RequestResult } from '../types/request'
-import { useAuthContext } from '../context/AuthContextWrapper'
-import { SUCCESS } from '../utils/constants/responseStatuses'
+import { UserCredits, UserDetails } from '../src/types/user'
+import { URL_USER_LOGIN_POST } from '../src/utils/constants/endpoints'
+import { postUser } from '../src/api/user'
+import { RequestResult } from '../src/types/request'
+import { useAuthContext } from '../src/context/AuthContextWrapper'
+import { SUCCESS } from '../src/utils/constants/responseStatuses'
 import { NextPage } from 'next'
-import Auth from '../compositions/auth'
+import Auth from '../src/compositions/auth'
 
 export const LoginPage: NextPage = () => {
   const { setIsAuthenticated, isSignUp, setIsSignUp, setLoggedInUserDetails } =
@@ -16,7 +16,7 @@ export const LoginPage: NextPage = () => {
   )
 
   const login = async (body: UserCredits) => {
-    const res: RequestResult<{user: UserDetails}> = await postUser(
+    const res: RequestResult<{ user: UserDetails }> = await postUser(
       URL_USER_LOGIN_POST,
       body,
     )

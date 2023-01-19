@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { User, UserDetails } from '../types/user'
-import { URL_USER_SIGNUP_POST } from '../utils/constants/endpoints'
-import { postUser } from '../api/user'
-import { RequestResult } from '../types/request'
-import { useAuthContext } from '../context/AuthContextWrapper'
-import { SUCCESS } from '../utils/constants/responseStatuses'
+import { User, UserDetails } from '../src/types/user'
+import { URL_USER_SIGNUP_POST } from '../src/utils/constants/endpoints'
+import { postUser } from '../src/api/user'
+import { RequestResult } from '../src/types/request'
+import { useAuthContext } from '../src/context/AuthContextWrapper'
+import { SUCCESS } from '../src/utils/constants/responseStatuses'
 import { NextPage } from 'next'
-import Auth from '../compositions/auth'
+import Auth from '../src/compositions/auth'
 
 export const SignupPage: NextPage = () => {
   const { setIsAuthenticated, isSignUp, setIsSignUp, setLoggedInUserDetails } =

@@ -1,12 +1,19 @@
 import styled from 'styled-components'
-import { useEffect, useRef, useState, VFC } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
-import {COLOR_BACKGROUND, COLOR_WHITE} from '../../../styles/constants/colors'
-import {FONT_SIZE_HEADER_SECONDARY, FONT_SIZE_HEADER_TERTIARY} from '../../../styles/constants/fontSizes'
+import { COLOR_BACKGROUND, COLOR_WHITE } from '../../../styles/constants/colors'
+import {
+  FONT_SIZE_HEADER_SECONDARY,
+  FONT_SIZE_HEADER_TERTIARY,
+} from '../../../styles/constants/fontSizes'
 import { MODAL_ROOT_ID } from '../../utils/constants/elementIds'
 import { onClickOutsideElement } from '../../utils/functions/commons'
-import {ColoredButton, CustomButton, SmallRoundButton} from "../../../styles/components/button";
-import {FlexCentered} from "../../../styles/utils/layout";
+import {
+  ColoredButton,
+  CustomButton,
+  SmallRoundButton,
+} from '../../../styles/components/button'
+import { FlexCentered } from '../../../styles/utils/layout'
 
 interface ModalProps {
   show: boolean
@@ -15,7 +22,7 @@ interface ModalProps {
   title: string
 }
 
-export const Modal: VFC<ModalProps> = (props: ModalProps) => {
+export const Modal = (props: ModalProps) => {
   const [isBrowser, setIsBrowser] = useState(false)
   const modal = useRef<HTMLDivElement>(null)
 
@@ -25,7 +32,8 @@ export const Modal: VFC<ModalProps> = (props: ModalProps) => {
 
   useEffect(() => {
     if (!props.show) return
-    return onClickOutsideElement(props.onClose, modal)
+    // todo after upgrade it stopped working - uncomment and fix the issue
+    // return onClickOutsideElement(props.onClose, modal)
   }, [props.show])
 
   const handleCloseClick = (e: any) => {
