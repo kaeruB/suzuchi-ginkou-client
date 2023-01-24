@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, VFC } from 'react'
+import { ChangeEvent, useState } from 'react'
 import {
   convertDateToTimestamp,
   convertTimestampToDateString,
@@ -28,7 +28,7 @@ interface FormLayoutProps {
   pairUsersIds: [string, string]
 }
 
-export const FormLayout: VFC<FormLayoutProps> = (props: FormLayoutProps) => {
+export const FormLayout = (props: FormLayoutProps) => {
   const [userWhoPaid, setUserWhoPaid] = useState<string>(
     props.defaultValues.userWhoPaid,
   )

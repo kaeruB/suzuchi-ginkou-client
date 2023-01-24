@@ -1,4 +1,3 @@
-import { VFC } from 'react'
 import styled from 'styled-components'
 import { COLOR_FONT_PRIMARY } from '../../../../styles/constants/colors'
 
@@ -6,7 +5,7 @@ interface ArrowProps {
   withArrowhead: boolean
 }
 
-export const Arrow: VFC<ArrowProps> = (props: ArrowProps) => {
+export const Arrow = (props: ArrowProps) => {
   const renderArrowLeft = () => props.withArrowhead && <ArrowLeft />
   const renderArrowRight = () => props.withArrowhead && <ArrowRight />
 

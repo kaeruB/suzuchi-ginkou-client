@@ -1,4 +1,4 @@
-import { MouseEvent, SyntheticEvent, useEffect, useState, VFC } from 'react'
+import { MouseEvent, SyntheticEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import RoundPicture from '../../commons/RoundPicture'
 import { Currency, IMG_PATHS } from '../../../utils/constants/commons'
@@ -25,9 +25,7 @@ interface HistoryListItemProps {
   pairId: string
 }
 
-export const HistoryListItem: VFC<HistoryListItemProps> = (
-  props: HistoryListItemProps,
-) => {
+export const HistoryListItem = (props: HistoryListItemProps) => {
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null)
 
   useEffect(() => {
@@ -66,7 +64,7 @@ interface HistoryListItemLeftContainerProps {
   description: string
 }
 
-const HistoryListItemLeftContainer: VFC<HistoryListItemLeftContainerProps> = (
+const HistoryListItemLeftContainer = (
   props: HistoryListItemLeftContainerProps,
 ) => {
   return (
@@ -96,7 +94,7 @@ interface HistoryListItemRightContainerProps {
   pairId: string
 }
 
-const HistoryListItemRightContainer: VFC<HistoryListItemRightContainerProps> = (
+const HistoryListItemRightContainer = (
   props: HistoryListItemRightContainerProps,
 ) => {
   const { setIsAuthenticated } = useAuthContext()

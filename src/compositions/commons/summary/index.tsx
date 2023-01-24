@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, VFC } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { usePairContext } from '../../../context/PairContextWrapper'
 import { UserDetails, UserEmailToDetails } from '../../../types/user'
 import SummaryLayout from './SummaryLayout'
@@ -12,9 +12,7 @@ interface SummaryHeaderProps {
   pairId: string
 }
 
-export const SummaryHeader: VFC<SummaryHeaderProps> = (
-  props: SummaryHeaderProps,
-) => {
+export const SummaryHeader = (props: SummaryHeaderProps) => {
   const { setPairId } = usePairContext()
   const [personWithDebt, setPersonWithDebt] = useState<UserDetails | null>(null)
   const [personWithoutDebt, setPersonWithoutDebt] =

@@ -1,4 +1,3 @@
-import { VFC } from 'react'
 import { getCurrentTimestamp } from '../../../utils/functions/commons'
 import {
   URL_TRANSACTION_PATCH_OR_DELETE,
@@ -12,7 +11,7 @@ import { usePairContext } from '../../../context/PairContextWrapper'
 import { UserEmailToDetails } from '../../../types/user'
 import { Category, Transaction } from '../../../types/transaction'
 import FormLayout from './FormLayout'
-import Loading from "../../commons/loading/Loading";
+import Loading from '../../commons/loading/Loading'
 
 interface TransactionFormProps {
   isEditMode: boolean
@@ -23,9 +22,7 @@ interface TransactionFormProps {
   pairId: string
 }
 
-export const TransactionForm: VFC<TransactionFormProps> = (
-  props: TransactionFormProps,
-) => {
+export const TransactionForm = (props: TransactionFormProps) => {
   const { setIsAuthenticated } = useAuthContext()
   const { pairUsersIds } = usePairContext()
 
@@ -46,7 +43,10 @@ export const TransactionForm: VFC<TransactionFormProps> = (
   }
 
   const postTransactionOnSubmit = async (body: Transaction) => {
-    const result = await postTransaction(URL_TRANSACTION_POST(props.pairId), body)
+    const result = await postTransaction(
+      URL_TRANSACTION_POST(props.pairId),
+      body,
+    )
     afterResponseReceived(result)
   }
 
@@ -76,7 +76,9 @@ export const TransactionForm: VFC<TransactionFormProps> = (
       userEmailToDetails={props.userEmailToDetails}
       pairUsersIds={pairUsersIds}
     />
-  ) : <Loading/>
+  ) : (
+    <Loading />
+  )
 }
 
 export default TransactionForm

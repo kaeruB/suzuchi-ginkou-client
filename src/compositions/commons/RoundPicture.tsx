@@ -1,4 +1,3 @@
-import { VFC } from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
 
@@ -8,9 +7,7 @@ interface RoundPictureProps {
   alt: string
 }
 
-export const RoundPicture: VFC<RoundPictureProps> = (
-  props: RoundPictureProps,
-) => {
+export const RoundPicture = (props: RoundPictureProps) => {
   return (
     <Figure size={props.size}>
       <Image src={props.src} alt={props.alt} layout={'fill'} />

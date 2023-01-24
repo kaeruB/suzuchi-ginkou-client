@@ -1,4 +1,3 @@
-import { VFC } from 'react'
 import styled from 'styled-components'
 import HistoryListItem from './HistoryListItem'
 import { FONT_SIZE_PRIMARY } from '../../../../styles/constants/fontSizes'
@@ -16,7 +15,7 @@ interface HistoryListProps {
   pairId: string
 }
 
-export const HistoryList: VFC<HistoryListProps> = (props: HistoryListProps) => {
+export const HistoryList = (props: HistoryListProps) => {
   const renderHistoryListItem = (transactionData: Transaction) => {
     return (
       <HistoryListItem

@@ -1,4 +1,3 @@
-import { VFC } from 'react'
 import styled from 'styled-components'
 import RoundPicture from '../RoundPicture'
 import Arrow from './Arrow'
@@ -19,9 +18,7 @@ interface SummaryLayoutProps {
   goToPairsPage: () => void
 }
 
-export const SummaryLayout: VFC<SummaryLayoutProps> = (
-  props: SummaryLayoutProps,
-) => {
+export const SummaryLayout = (props: SummaryLayoutProps) => {
   const renderMoneyToReturnMsg = () => (
     <GeneralStateSentence>
       <HighlightedText>{props.personWithDebt.name}</HighlightedText> should

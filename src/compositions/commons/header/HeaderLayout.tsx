@@ -1,7 +1,10 @@
-import { VFC } from 'react'
 import styled from 'styled-components'
 import { IconFactory } from '../IconFactory'
-import {FlexCentered, FlexPageLayout, PageSizing} from '../../../../styles/utils/layout'
+import {
+  FlexCentered,
+  FlexPageLayout,
+  PageSizing,
+} from '../../../../styles/utils/layout'
 import { IconId } from '../../../types/icon'
 import { FONT_SIZE_HEADER_TERTIARY } from '../../../../styles/constants/fontSizes'
 import {
@@ -21,9 +24,7 @@ interface HeaderLayoutProps {
   redirectToSummaryPage: () => void
 }
 
-export const HeaderLayout: VFC<HeaderLayoutProps> = (
-  props: HeaderLayoutProps,
-) => {
+export const HeaderLayout = (props: HeaderLayoutProps) => {
   const { loggedInUserDetails } = useAuthContext()
 
   const renderLoggedInUser = () =>

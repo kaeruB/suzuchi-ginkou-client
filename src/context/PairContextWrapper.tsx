@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, VFC } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { TRANSACTIONS_PATH, PAIRS_PATH } from '../utils/constants/routerPaths'
 import { retrieveUsersIdsFromPairId } from '../utils/functions/commons'
@@ -20,9 +20,7 @@ interface PairContextWrapperProps {
   children: any
 }
 
-export const PairContextWrapper: VFC<PairContextWrapperProps> = (
-  props: PairContextWrapperProps,
-) => {
+export const PairContextWrapper = (props: PairContextWrapperProps) => {
   const router = useRouter()
   const [pairId, setPairId] = useState<string | null>(null)
   const [pairUsersIds, setPairUsersIds] = useState<[string, string] | null>(

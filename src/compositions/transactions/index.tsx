@@ -1,4 +1,4 @@
-import { useEffect, useState, VFC } from 'react'
+import { useEffect, useState } from 'react'
 import { URL_TRANSACTION_SUMMARY } from '../../utils/constants/endpoints'
 import { fetchTransactions } from '../../api/transaction'
 import { DEFAULT_HISTORY_ITEMS } from '../../api/env'
@@ -13,9 +13,7 @@ interface TransactionsProps {
   pairId: string
 }
 
-export const Transactions: VFC<TransactionsProps> = (
-  props: TransactionsProps,
-) => {
+export const Transactions = (props: TransactionsProps) => {
   const { isAuthenticated, setIsAuthenticated } = useAuthContext()
   const [transactionsAndUserDetails, setTransactionsAndUserDetails] =
     useState<TransactionsWithUsersDetails | null>(null)

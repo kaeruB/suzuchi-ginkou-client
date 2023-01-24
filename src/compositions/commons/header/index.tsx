@@ -1,4 +1,3 @@
-import { VFC } from 'react'
 import { HeaderLayout } from './HeaderLayout'
 import { useAuthContext } from '../../../context/AuthContextWrapper'
 import { RequestResult } from '../../../types/request'
@@ -9,7 +8,7 @@ import { usePairContext } from '../../../context/PairContextWrapper'
 
 interface HeaderProps {}
 
-export const Header: VFC<HeaderProps> = (props: HeaderProps) => {
+export const Header = (props: HeaderProps) => {
   const { setIsAuthenticated, isAuthenticated } = useAuthContext()
   const { setPairId } = usePairContext()
 

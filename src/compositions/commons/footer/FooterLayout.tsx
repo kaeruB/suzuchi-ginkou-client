@@ -1,13 +1,10 @@
-import { VFC } from 'react'
 import styled from 'styled-components'
 import { COLOR_STRONG } from '../../../../styles/constants/colors'
 import { FlexPageLayout, PageSizing } from '../../../../styles/utils/layout'
 
 interface FooterLayoutProps {}
 
-export const FooterLayout: VFC<FooterLayoutProps> = (
-  props: FooterLayoutProps,
-) => {
+export const FooterLayout = (props: FooterLayoutProps) => {
   return (
     <FooterWrapper>
       <FooterInside>

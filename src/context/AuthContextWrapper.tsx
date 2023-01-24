@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, VFC } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import {
   LOGIN_PATH,
@@ -29,9 +29,7 @@ interface AuthContextWrapperProps {
   children: any
 }
 
-export const AuthContextWrapper: VFC<AuthContextWrapperProps> = (
-  props: AuthContextWrapperProps,
-) => {
+export const AuthContextWrapper = (props: AuthContextWrapperProps) => {
   const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true)
   const [loggedInUserDetails, setLoggedInUserDetails] =
