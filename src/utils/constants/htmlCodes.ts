@@ -1,0 +1,4 @@
+export const ARROW_DOWN_DEC_CODE = 9660
+export const ARROW_RIGHT_DEC_CODE = 9654
+export const ARROW_RIGHT_DOTTED_DEC_CODE = 8674
+export const SPACE_DEC_CODE = 160

@@ -1,32 +1,25 @@
 import { DataApi } from './dataApi'
-import { BankState, Transaction } from '../types/bankState'
+import { RequestResult } from '../types/request'
+import { Transaction, TransactionsWithUsersDetails } from '../types/transaction'
 
 export const fetchTransactions = async (
   url: string,
   historyListLength: number,
-): Promise<BankState> => {
-  const response = await DataApi.get(url, { params: { historyListLength } })
-  const data = response ? response.data : null
-  return data?.data
-}
+): Promise<RequestResult<TransactionsWithUsersDetails>> =>
+  await DataApi.get(url, {
+    params: { historyListLength },
+  })
 
 export const patchTransaction = async (
   url: string,
   body: Transaction,
-): Promise<Transaction> => {
-  const { data } = await DataApi.patch(url, body)
-  return data?.data
-}
+): Promise<RequestResult<Transaction>> => await DataApi.patch(url, body)
 
 export const postTransaction = async (
   url: string,
   body: Transaction,
-): Promise<Transaction> => {
-  const { data } = await DataApi.post(url, body)
-  return data?.data
-}
+): Promise<RequestResult<Transaction>> => await DataApi.post(url, body)
 
-export const deleteTransaction = async (url: string): Promise<boolean> => {
-  const tmp = await DataApi.delete(url)
-  return tmp.status === 200
-}
+export const deleteTransaction = async (
+  url: string,
+): Promise<RequestResult<boolean>> => await DataApi.delete(url)

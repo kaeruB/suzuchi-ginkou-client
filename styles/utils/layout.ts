@@ -1,6 +1,6 @@
-import styled, {css} from 'styled-components'
-import { COLOR_MEDIUM } from '../constants/colors'
-import {BORDER_RADIUS} from "../constants/other";
+import styled, { css } from 'styled-components'
+import { COLOR_BOX_SHADOW } from '../constants/colors'
+import { BORDER_RADIUS } from '../constants/other'
 
 export const PageSizing = styled.div`
   max-width: 130rem;
@@ -18,7 +18,7 @@ export const FlexPageLayout = css`
 
 export const StyledWidget = styled.div`
   width: 97%;
-  border: 1px solid ${COLOR_MEDIUM};
+  box-shadow: 0 0 3px ${COLOR_BOX_SHADOW};
   border-radius: ${BORDER_RADIUS};
   margin: 3rem 0;
   padding: 2rem;

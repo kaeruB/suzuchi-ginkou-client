@@ -1,6 +1,11 @@
 import styled, { css } from 'styled-components'
-import { COLOR_DELICATE_GRAY, COLOR_STRONG } from '../constants/colors'
+import {
+  COLOR_DELICATE_GRAY,
+  COLOR_FONT_SECONDARY,
+  COLOR_STRONG,
+} from '../constants/colors'
 import { BORDER_RADIUS } from '../constants/other'
+import {FlexCentered} from "../utils/layout";
 
 export const CustomButton = styled.button`
   border: none;
@@ -24,7 +29,6 @@ export const ColoredButton = css`
 `
 
 export const BigButton = css`
-  width: 100%;
   height: 3.5rem;
 `
 
@@ -33,4 +37,16 @@ export const SmallRoundButton = css`
   height: 2.5rem;
   font-size: 2rem;
   border-radius: 50%;
+`
+
+export const DelicateButton = css`
+  background: none;
+  color: ${COLOR_FONT_SECONDARY};
+  padding: 0 4px;
+`
+
+export const CreateButton = styled(CustomButton)`
+  ${ColoredButton};
+  ${SmallRoundButton};
+  ${FlexCentered};
 `
