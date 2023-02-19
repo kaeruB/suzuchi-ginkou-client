@@ -23,7 +23,6 @@ import {
 } from '../../../styles/utils/layout'
 import { convertDecimalCodeToHtmlSymbol } from '../../utils/functions/commons'
 import { ARROW_DOWN_DEC_CODE } from '../../utils/constants/htmlCodes'
-import { DEFAULT_HISTORY_ITEMS } from '../../api/env'
 import {
   Transaction,
   TransactionsWithUsersDetails,
@@ -35,6 +34,7 @@ interface TransactionsLayoutProps {
   fetchTransactionsAndUserDetails: () => void
   loadMoreData: () => void
   pairId: string
+  shouldRenderLoadMoreButton: boolean
 }
 
 export const TransactionsLayout: FC<TransactionsLayoutProps> = (
@@ -65,18 +65,6 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
     setShowModal(true)
   }
 
-  const renderShowMoreButton = () =>
-    props.transactionsAndUserDetails &&
-    props.transactionsAndUserDetails.transactions &&
-    props.transactionsAndUserDetails.transactions.length >
-      DEFAULT_HISTORY_ITEMS && (
-      <LoadMoreButtonWrapper>
-        <LoadMoreButton onClick={() => props.loadMoreData()}>
-          {convertDecimalCodeToHtmlSymbol(ARROW_DOWN_DEC_CODE)}
-        </LoadMoreButton>
-      </LoadMoreButtonWrapper>
-    )
-
   return (
     <>
       <Header />
@@ -86,7 +74,9 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
             <StyledWidget>
               <SummaryHeader
                 summary={props.transactionsAndUserDetails.summary}
-                userEmailToDetails={props.transactionsAndUserDetails.usersDetails}
+                userEmailToDetails={
+                  props.transactionsAndUserDetails.usersDetails
+                }
                 pairId={props.pairId}
                 currency={currency}
               />
@@ -109,10 +99,18 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
                 fetchTransactionsAndUserDetails={
                   props.fetchTransactionsAndUserDetails
                 }
-                userEmailToDetails={props.transactionsAndUserDetails.usersDetails}
+                userEmailToDetails={
+                  props.transactionsAndUserDetails.usersDetails
+                }
                 pairId={props.pairId}
               />
-              {renderShowMoreButton()}
+              {props.shouldRenderLoadMoreButton && (
+                <LoadMoreButtonWrapper>
+                  <LoadMoreButton onClick={() => props.loadMoreData()}>
+                    {convertDecimalCodeToHtmlSymbol(ARROW_DOWN_DEC_CODE)}
+                  </LoadMoreButton>
+                </LoadMoreButtonWrapper>
+              )}
             </StyledWidget>
           </LeftPanel>
 

@@ -20,6 +20,8 @@ export const Transactions = (props: TransactionsProps) => {
   const [historyListLength, setHistoryListLength] = useState<number>(
     DEFAULT_HISTORY_ITEMS,
   )
+  const [shouldRenderLoadMoreButton, setShouldRenderLoadMoreButton] =
+    useState<boolean>(true)
 
   const fetchTransactionsAndUserDetails = async () => {
     const result: RequestResult<TransactionsWithUsersDetails> =
@@ -39,6 +41,18 @@ export const Transactions = (props: TransactionsProps) => {
     fetchTransactionsAndUserDetails()
   }, [historyListLength])
 
+  useEffect(() => {
+    const shouldRenderLoadMoreButton = !!(
+      transactionsAndUserDetails &&
+      transactionsAndUserDetails.transactions &&
+      transactionsAndUserDetails.transactions.length <
+        transactionsAndUserDetails.totalNoOfTransactions &&
+      transactionsAndUserDetails.totalNoOfTransactions > DEFAULT_HISTORY_ITEMS
+    )
+
+    setShouldRenderLoadMoreButton(shouldRenderLoadMoreButton)
+  }, [transactionsAndUserDetails])
+
   const loadMoreData = () => {
     const newHistoryListLength = historyListLength + DEFAULT_HISTORY_ITEMS
     setHistoryListLength(newHistoryListLength)
@@ -50,6 +64,7 @@ export const Transactions = (props: TransactionsProps) => {
       fetchTransactionsAndUserDetails={fetchTransactionsAndUserDetails}
       loadMoreData={loadMoreData}
       pairId={props.pairId}
+      shouldRenderLoadMoreButton={shouldRenderLoadMoreButton}
     />
   ) : (
     <Loading />
