@@ -20,7 +20,7 @@ export const Transactions = (props: TransactionsProps) => {
   const [historyListLength, setHistoryListLength] = useState<number>(
     DEFAULT_HISTORY_ITEMS,
   )
-  const [shouldRenderLoadMoreButton, setShouldRenderLoadMoreButton] =
+  const [showMoreButton, setShowMoreButton] =
     useState<boolean>(true)
 
   const fetchTransactionsAndUserDetails = async () => {
@@ -42,15 +42,16 @@ export const Transactions = (props: TransactionsProps) => {
   }, [historyListLength])
 
   useEffect(() => {
-    const shouldRenderLoadMoreButton = !!(
-      transactionsAndUserDetails &&
-      transactionsAndUserDetails.transactions &&
-      transactionsAndUserDetails.transactions.length <
-        transactionsAndUserDetails.totalNoOfTransactions &&
-      transactionsAndUserDetails.totalNoOfTransactions > DEFAULT_HISTORY_ITEMS
-    )
+    if (!transactionsAndUserDetails) {
+      return
+    }
 
-    setShouldRenderLoadMoreButton(shouldRenderLoadMoreButton)
+    const showMoreButton =
+      transactionsAndUserDetails.transactions?.length <
+        transactionsAndUserDetails.totalTransactions &&
+      transactionsAndUserDetails.totalTransactions > DEFAULT_HISTORY_ITEMS
+
+    setShowMoreButton(showMoreButton)
   }, [transactionsAndUserDetails])
 
   const loadMoreData = () => {
@@ -64,7 +65,7 @@ export const Transactions = (props: TransactionsProps) => {
       fetchTransactionsAndUserDetails={fetchTransactionsAndUserDetails}
       loadMoreData={loadMoreData}
       pairId={props.pairId}
-      shouldRenderLoadMoreButton={shouldRenderLoadMoreButton}
+      showMoreButton={showMoreButton}
     />
   ) : (
     <Loading />

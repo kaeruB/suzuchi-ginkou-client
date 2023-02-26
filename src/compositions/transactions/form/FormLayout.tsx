@@ -25,7 +25,7 @@ interface FormLayoutProps {
   submitButtonName: string
   defaultValues: Transaction
   userEmailToDetails: UserEmailToDetails
-  pairUsersIds: [string, string]
+  pairUserIds: [string, string]
 }
 
 export const FormLayout = (props: FormLayoutProps) => {
@@ -85,8 +85,8 @@ export const FormLayout = (props: FormLayoutProps) => {
         </FormColumn>
         <FormDoubleColumn>
           <FormFlexRow>
-            {renderPersonButton(props.pairUsersIds[0])}
-            {renderPersonButton(props.pairUsersIds[1])}
+            {renderPersonButton(props.pairUserIds[0])}
+            {renderPersonButton(props.pairUserIds[1])}
           </FormFlexRow>
         </FormDoubleColumn>
       </FormRow>

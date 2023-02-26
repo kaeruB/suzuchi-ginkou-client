@@ -34,7 +34,7 @@ interface TransactionsLayoutProps {
   fetchTransactionsAndUserDetails: () => void
   loadMoreData: () => void
   pairId: string
-  shouldRenderLoadMoreButton: boolean
+  showMoreButton: boolean
 }
 
 export const TransactionsLayout: FC<TransactionsLayoutProps> = (
@@ -104,12 +104,12 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
                 }
                 pairId={props.pairId}
               />
-              {props.shouldRenderLoadMoreButton && (
-                <LoadMoreButtonWrapper>
-                  <LoadMoreButton onClick={() => props.loadMoreData()}>
+              {props.showMoreButton && (
+                <MoreButtonWrapper>
+                  <MoreButton onClick={() => props.loadMoreData()}>
                     {convertDecimalCodeToHtmlSymbol(ARROW_DOWN_DEC_CODE)}
-                  </LoadMoreButton>
-                </LoadMoreButtonWrapper>
+                  </MoreButton>
+                </MoreButtonWrapper>
               )}
             </StyledWidget>
           </LeftPanel>
@@ -159,13 +159,13 @@ const SubHeader = styled.h2`
   justify-content: space-between;
 `
 
-const LoadMoreButtonWrapper = styled.div`
+const MoreButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
 `
 
-const LoadMoreButton = styled(CustomButton)`
+const MoreButton = styled(CustomButton)`
   ${BigButton};
   padding: 0 2rem;
 `
