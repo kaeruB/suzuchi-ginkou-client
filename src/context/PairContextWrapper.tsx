@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { TRANSACTIONS_PATH, PAIRS_PATH } from '../utils/constants/routerPaths'
-import { decodePairUserIds } from '../utils/functions/commons'
+import { decodePairIdToUserIds } from '../utils/functions/commons'
 import { useAuthContext } from './AuthContextWrapper'
 
 interface PairContextProps {
@@ -31,7 +31,7 @@ export const PairContextWrapper = (props: PairContextWrapperProps) => {
   useEffect(() => {
     if (isAuthenticated) {
       if (pairId) {
-        setPairUserIds(decodePairUserIds(pairId))
+        setPairUserIds(decodePairIdToUserIds(pairId))
         router.push(TRANSACTIONS_PATH)
       } else {
         router.push(PAIRS_PATH)

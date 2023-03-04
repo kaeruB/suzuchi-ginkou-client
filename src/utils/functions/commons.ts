@@ -39,5 +39,5 @@ export const onClickOutsideElement = (
 export const convertDecimalCodeToHtmlSymbol = (decimalCode: number): string =>
   String.fromCharCode(decimalCode)
 
-export const decodePairUserIds = (pairId: string): [string, string] =>
+export const decodePairIdToUserIds = (pairId: string): [string, string] =>
   pairId.split(PAIR_ID_SEPARATOR) as [string, string]
