@@ -24,7 +24,7 @@ interface TransactionFormProps {
 
 export const TransactionForm = (props: TransactionFormProps) => {
   const { setIsAuthenticated } = useAuthContext()
-  const { pairUsersIds } = usePairContext()
+  const { pairUserIds } = usePairContext()
 
   const afterResponseReceived = (result: RequestResult<Transaction>) => {
     if (result.error && result.error?.status === UNAUTHORIZED) {
@@ -53,8 +53,8 @@ export const TransactionForm = (props: TransactionFormProps) => {
   const transactionFormInitialValues = (): Transaction => ({
     userWhoPaid: props.defaultValues
       ? props.defaultValues.userWhoPaid
-      : pairUsersIds
-      ? pairUsersIds[0]
+      : pairUserIds
+      ? pairUserIds[0]
       : '',
     category: props.defaultValues
       ? props.defaultValues.category
@@ -66,7 +66,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
       : getCurrentTimestamp(),
   })
 
-  return pairUsersIds ? (
+  return pairUserIds ? (
     <FormLayout
       onSubmit={
         props.isEditMode ? patchTransactionOnSubmit : postTransactionOnSubmit
@@ -74,7 +74,7 @@ export const TransactionForm = (props: TransactionFormProps) => {
       submitButtonName={props.isEditMode ? 'Save' : 'Add Transaction'}
       defaultValues={transactionFormInitialValues()}
       userEmailToDetails={props.userEmailToDetails}
-      pairUsersIds={pairUsersIds}
+      pairUserIds={pairUserIds}
     />
   ) : (
     <Loading />

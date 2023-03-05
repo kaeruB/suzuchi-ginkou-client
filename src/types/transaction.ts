@@ -21,6 +21,7 @@ export type Summary = { [userWhoPaid: string]: number }
 
 export type TransactionsWithUsersDetails = {
   transactions: Array<Transaction>
+  totalTransactions: number
   summary: Summary
   usersDetails: UserEmailToDetails
 }

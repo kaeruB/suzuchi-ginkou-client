@@ -20,23 +20,23 @@ export const SummaryHeader = (props: SummaryHeaderProps) => {
   const [moneyAmountToReturn, setMoneyAmountToReturn] = useState<number | null>(
     null,
   )
-  const usersIds = useMemo(() => Object.keys(props.summary), [props.summary])
+  const userIds = useMemo(() => Object.keys(props.summary), [props.summary])
 
   useEffect(() => {
-    const moneyPayedByFirstUser: number = props.summary[usersIds[0]]
-      ? props.summary[usersIds[0]]
+    const moneyPayedByFirstUser: number = props.summary[userIds[0]]
+      ? props.summary[userIds[0]]
       : 0
-    const moneyPayedBySecondUser: number = props.summary[usersIds[1]]
-      ? props.summary[usersIds[1]]
+    const moneyPayedBySecondUser: number = props.summary[userIds[1]]
+      ? props.summary[userIds[1]]
       : 0
     const difference: number = Math.abs(
       moneyPayedBySecondUser - moneyPayedByFirstUser,
     )
 
     const personWithDebt =
-      moneyPayedByFirstUser < moneyPayedBySecondUser ? usersIds[0] : usersIds[1]
+      moneyPayedByFirstUser < moneyPayedBySecondUser ? userIds[0] : userIds[1]
     const personWithoutDebt =
-      personWithDebt === usersIds[0] ? usersIds[1] : usersIds[0]
+      personWithDebt === userIds[0] ? userIds[1] : userIds[0]
 
     const personWithDebtDetails = props.userEmailToDetails[personWithDebt]
     const personWithoutDebtDetails = props.userEmailToDetails[personWithoutDebt]
