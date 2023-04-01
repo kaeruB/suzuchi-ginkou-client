@@ -28,6 +28,7 @@ import {
   TransactionsWithUsersDetails,
 } from '../../types/transaction'
 import { COLOR_FONT_SECONDARY } from '../../../styles/constants/colors'
+import { downloadTransactionInfoCsvFiles } from '../../utils/functions/csv'
 
 interface TransactionsLayoutProps {
   transactionsAndUserDetails: TransactionsWithUsersDetails
@@ -85,12 +86,23 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
             <StyledWidget>
               <SubHeader>
                 <span>Transactions</span>
-                <CreateButton
-                  onClick={() => onShowCreateModal()}
-                  data-testid="btn-add-new-transaction"
-                >
-                  +
-                </CreateButton>
+                <ButtonsWrapper>
+                  <CreateButton
+                    onClick={() =>
+                      downloadTransactionInfoCsvFiles(
+                        props.transactionsAndUserDetails,
+                      )
+                    }
+                  >
+                    CSV
+                  </CreateButton>
+                  <CreateButton
+                    onClick={() => onShowCreateModal()}
+                    data-testid="btn-add-new-transaction"
+                  >
+                    +
+                  </CreateButton>
+                </ButtonsWrapper>
               </SubHeader>
               <History
                 historyData={props.transactionsAndUserDetails.transactions}
@@ -157,6 +169,12 @@ const SubHeader = styled.h2`
   font-size: ${FONT_SIZE_HEADER_SECONDARY};
   display: flex;
   justify-content: space-between;
+`
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  min-width: 1rem;
 `
 
 const MoreButtonWrapper = styled.div`
