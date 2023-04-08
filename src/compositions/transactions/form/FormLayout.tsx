@@ -35,7 +35,9 @@ export const FormLayout = (props: FormLayoutProps) => {
   const [category, setCategory] = useState<Category>(
     props.defaultValues.category,
   )
-  const [amount, setAmount] = useState<number>(props.defaultValues.amount)
+  const [amount, setAmount] = useState<number | undefined>(
+    props.defaultValues.amount === 0 ? undefined : props.defaultValues.amount,
+  )
   const [description, setDescription] = useState<string>(
     props.defaultValues.description,
   )
@@ -44,7 +46,7 @@ export const FormLayout = (props: FormLayoutProps) => {
   )
 
   const createRequestBody = () => ({
-    amount,
+    amount: amount || 0,
     userWhoPaid,
     category,
     description,
@@ -105,7 +107,7 @@ export const FormLayout = (props: FormLayoutProps) => {
             required
             defaultValue={amount}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setAmount(Number(e.target.value))
+              setAmount(e.target.value ? Number(e.target.value) : undefined)
             }
           />
         </FormDoubleColumn>
@@ -160,7 +162,7 @@ export const FormLayout = (props: FormLayoutProps) => {
         </FormDoubleColumn>
       </FormRow>
       <FormSubmitButton
-        disabled={amount.toString() === '' || description === ''}
+        disabled={typeof amount === 'undefined' || description === ''}
         onClick={() => props.onSubmit(createRequestBody())}
       >
         {props.submitButtonName}
