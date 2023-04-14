@@ -1,4 +1,4 @@
-import { MouseEvent, SyntheticEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import RoundPicture from '../../commons/RoundPicture'
 import { Currency, IMG_PATHS } from '../../../utils/constants/commons'
@@ -33,7 +33,7 @@ export const HistoryListItem = (props: HistoryListItemProps) => {
       props.userEmailToDetails[props.transactionData.userWhoPaid]
 
     setUserDetails(userDetails)
-  }, [props.transactionData])
+  }, [props.transactionData, props.userEmailToDetails])
 
   return (
     userDetails && (
@@ -107,15 +107,17 @@ const HistoryListItemRightContainer = (
     }
   }
 
-  const deleteTransactionOnClick = async (
-    event: SyntheticEvent,
-    transactionId: string,
-  ) => {
-    event.preventDefault()
-    const result: RequestResult<boolean> = await deleteTransaction(
-      URL_TRANSACTION_PATCH_OR_DELETE(props.pairId, transactionId),
+  const deleteTransactionIfConfirmed = async (transactionId: string) => {
+    const isDeleteConfirmed = window.confirm(
+      'Are you sure you want to delete this transaction?',
     )
-    afterResponseReceived(result)
+
+    if (isDeleteConfirmed) {
+      const result: RequestResult<boolean> = await deleteTransaction(
+        URL_TRANSACTION_PATCH_OR_DELETE(props.pairId, transactionId),
+      )
+      afterResponseReceived(result)
+    }
   }
 
   return (
@@ -131,9 +133,7 @@ const HistoryListItemRightContainer = (
       </IconButton>
       <IconButton
         id={props.transactionId}
-        onClick={(e: MouseEvent) =>
-          deleteTransactionOnClick(e, props.transactionId!)
-        }
+        onClick={() => deleteTransactionIfConfirmed(props.transactionId!)}
       >
         <IconFactory iconId={IconId.DELETE} size={2} />
       </IconButton>
