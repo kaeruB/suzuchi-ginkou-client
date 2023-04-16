@@ -14,7 +14,11 @@ import Footer from '../commons/footer'
 import { FONT_SIZE_HEADER_TERTIARY } from '../../../styles/constants/fontSizes'
 import { COLOR_FONT_PRIMARY } from '../../../styles/constants/colors'
 import { convertDecimalCodeToHtmlSymbol } from '../../utils/functions/commons'
-import {ARROW_RIGHT_DOTTED_DEC_CODE, SPACE_DEC_CODE} from '../../utils/constants/htmlCodes'
+import {
+  ARROW_RIGHT_DOTTED_DEC_CODE,
+  SPACE_DEC_CODE,
+} from '../../utils/constants/htmlCodes'
+import { media } from '../../../styles/utils/commons'
 
 interface PairsLayoutProps {
   pairsSummariesWithUserDetails: PairsSummariesWithUsersDetails
@@ -83,8 +87,10 @@ const FlexPage = styled.div`
   margin: 5rem 0;
   color: ${COLOR_FONT_PRIMARY};
 
-  @media (max-width: 600px) {
-    flex-direction: column;
+  flex-direction: column;
+
+  ${media.tablet} {
+    flex-direction: row;
   }
 `
 
