@@ -29,6 +29,7 @@ import {
 } from '../../types/transaction'
 import { COLOR_FONT_SECONDARY } from '../../../styles/constants/colors'
 import { downloadTransactionInfoCsvFiles } from '../../utils/functions/csv'
+import { media } from '../../../styles/utils/commons'
 
 interface TransactionsLayoutProps {
   transactionsAndUserDetails: TransactionsWithUsersDetails
@@ -192,8 +193,10 @@ const FlexPage = styled.div`
   ${FlexPageLayout};
   margin: 5rem 0;
 
-  @media (max-width: 600px) {
-    flex-direction: column;
+  flex-direction: column;
+
+  ${media.tablet} {
+    flex-direction: row;
   }
 `
 

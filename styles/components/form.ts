@@ -1,7 +1,12 @@
 import styled from 'styled-components'
 import { FONT_SIZE_PRIMARY } from '../constants/fontSizes'
-import {COLOR_BACKGROUND, COLOR_MEDIUM, COLOR_WARNING} from '../constants/colors'
+import {
+  COLOR_BACKGROUND,
+  COLOR_MEDIUM,
+  COLOR_WARNING,
+} from '../constants/colors'
 import { BigButton, ColoredButton, CustomButton } from './button'
+import { media } from '../utils/commons'
 
 export const FormWrapper = styled.div`
   display: flex;
@@ -13,8 +18,16 @@ export const FormRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  align-items: center;
-  margin: 4px 0 4px;
+  margin: 4px 0 2rem;
+
+  flex-direction: column;
+  align-items: start;
+
+  ${media.tablet} {
+    flex-direction: row;
+    align-items: center;
+    margin: 4px 0 4px;
+  }
 `
 
 export const FormRowSeparator = styled.div`
@@ -36,6 +49,11 @@ export const FormDoubleColumn = styled.div`
 
 export const FormRowLabel = styled.label`
   width: 100%;
+  margin-bottom: 0.8rem;
+
+  ${media.tablet} {
+    margin-bottom: unset;
+  }
 `
 
 export const FormRowInput = styled.input`

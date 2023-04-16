@@ -7,7 +7,6 @@ import {
   FONT_SIZE_HEADER_TERTIARY,
 } from '../../../styles/constants/fontSizes'
 import { MODAL_ROOT_ID } from '../../utils/constants/elementIds'
-import { onClickOutsideElement } from '../../utils/functions/commons'
 import {
   ColoredButton,
   CustomButton,
@@ -72,9 +71,9 @@ export const Modal = (props: ModalProps) => {
 const StyledModal = styled.div`
   background: ${COLOR_BACKGROUND};
   width: 500px;
-  height: 600px;
   border-radius: 6px;
-  padding: 15px;
+  padding: 2rem;
+  margin: 2rem;
 `
 
 const StyledModalOverlay = styled.div`
@@ -106,7 +105,7 @@ const CloseIcon = styled(CustomButton)`
   ${SmallRoundButton};
   ${ColoredButton};
   ${FlexCentered};
-  
+
   a {
     text-decoration: none;
     font-size: ${FONT_SIZE_HEADER_TERTIARY};
