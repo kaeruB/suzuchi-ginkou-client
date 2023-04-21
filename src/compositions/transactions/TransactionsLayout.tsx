@@ -15,7 +15,6 @@ import {
 import { Currency } from '../../utils/constants/commons'
 import TransactionForm from './form'
 import Header from '../commons/header'
-import Footer from '../commons/footer'
 import {
   FlexPageLayout,
   PageSizing,
@@ -135,8 +134,6 @@ export const TransactionsLayout: FC<TransactionsLayoutProps> = (
           </RightPanel>
         </FlexPage>
       </PageSizing>
-
-      <Footer />
 
       <Modal
         show={showModal}
