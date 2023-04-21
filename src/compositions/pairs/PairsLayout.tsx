@@ -10,7 +10,6 @@ import { PairsSummariesWithUsersDetails } from '../../types/pair'
 import { Summary } from '../../types/transaction'
 import SummaryHeader from '../commons/summary'
 import Header from '../commons/header'
-import Footer from '../commons/footer'
 import { FONT_SIZE_HEADER_TERTIARY } from '../../../styles/constants/fontSizes'
 import { COLOR_FONT_PRIMARY } from '../../../styles/constants/colors'
 import { convertDecimalCodeToHtmlSymbol } from '../../utils/functions/commons'
@@ -76,7 +75,6 @@ export const PairsLayout: FC<PairsLayoutProps> = (props: PairsLayoutProps) => {
             </RightPanel>
           </FlexPage>
         </PageSizing>
-        <Footer />
       </>
     )
   )
