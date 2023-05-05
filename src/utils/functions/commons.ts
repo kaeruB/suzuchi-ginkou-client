@@ -41,3 +41,8 @@ export const convertDecimalCodeToHtmlSymbol = (decimalCode: number): string =>
 
 export const decodePairIdToUserIds = (pairId: string): [string, string] =>
   pairId.split(PAIR_ID_SEPARATOR) as [string, string]
+
+export const divideBy = (
+  n: number | undefined,
+  d: number,
+): number | undefined => (typeof n !== 'undefined' && d ? n / d : undefined)

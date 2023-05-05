@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from 'react'
 import {
   convertDateToTimestamp,
   convertTimestampToDateString,
+  divideBy,
 } from '../../../utils/functions/commons'
 import RoundPicture from '../../commons/RoundPicture'
 import { IMG_PATHS } from '../../../utils/constants/commons'
@@ -98,18 +99,27 @@ export const FormLayout = (props: FormLayoutProps) => {
           <FormRowLabel htmlFor="amount">Amount</FormRowLabel>
         </FormColumn>
         <FormDoubleColumn>
-          <FormRowInput
-            type="number"
-            min="0"
-            id="amount"
-            autoComplete="amount"
-            name="amount"
-            required
-            defaultValue={amount}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setAmount(e.target.value ? Number(e.target.value) : undefined)
-            }
-          />
+          <FormFlexRow>
+            <FormRowInput
+              type="number"
+              min="0"
+              id="amount"
+              autoComplete="amount"
+              name="amount"
+              required
+              value={amount || ''}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setAmount(e.target.value ? Number(e.target.value) : undefined)
+              }
+            />
+            <FormButton
+              onClick={() => setAmount(divideBy(amount, 2))}
+              isActive={!!amount}
+              type={'button'}
+            >
+              Split
+            </FormButton>
+          </FormFlexRow>
         </FormDoubleColumn>
       </FormRow>
       <FormRow>
@@ -137,8 +147,8 @@ export const FormLayout = (props: FormLayoutProps) => {
             autoComplete="description"
             name="description"
             required
-            defaultValue={description}
-            onInput={(e: ChangeEvent<HTMLInputElement>) =>
+            value={description}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setDescription(e.target.value)
             }
           />
@@ -153,7 +163,7 @@ export const FormLayout = (props: FormLayoutProps) => {
             type="date"
             id="date"
             name="date"
-            defaultValue={date}
+            value={date}
             autoComplete="date"
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setDate(e.target.value)
